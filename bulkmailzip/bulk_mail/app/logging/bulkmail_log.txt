@@ -40,3 +40,17 @@ WHERE authentication.tbl_users.v_user_id = %(v_user_id_1)s
 (Background on this error at: https://sqlalche.me/e/20/f405)
 additional: 
 ---
+2025-12-02 16:40:46 - bulk_mail/auth/login: line no.: 917
+filename: /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py
+except: (psycopg2.errors.UndefinedTable) relation "authentication.tbl_users" does not exist
+LINE 2: FROM authentication.tbl_users 
+             ^
+
+[SQL: SELECT authentication.tbl_users.id AS authentication_tbl_users_id, authentication.tbl_users.v_user_id AS authentication_tbl_users_v_user_id, authentication.tbl_users.v_password AS authentication_tbl_users_v_password, authentication.tbl_users.i_company_id AS authentication_tbl_users_i_company_id, authentication.tbl_users.bl_admin AS authentication_tbl_users_bl_admin 
+FROM authentication.tbl_users 
+WHERE authentication.tbl_users.v_user_id = %(v_user_id_1)s 
+ LIMIT %(param_1)s]
+[parameters: {'v_user_id_1': 'roger@spacequest.com', 'param_1': 1}]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+additional: 
+---
