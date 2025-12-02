@@ -1,0 +1,31 @@
+{% macro summernote_head(s_id="txt_editor", version="-lite") -%}
+<!-- include summernote -->
+{% if version!="-lite" %}
+<link rel="stylesheet" href="{{ url_for("static", filename=static_prefix+"js/rte/bootstrap.min.css") }}" />
+<script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/rte/bootstrap.min.js") }}"></script>
+{% endif %}
+<link rel="stylesheet" href="{{ url_for("static", filename=static_prefix+"js/rte/summernote" + version + ".css") }}">
+<script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/rte/summernote" + version + ".js") }}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+// https://summernote.org/deep-dive/
+$("#{{ s_id }}").summernote({
+    dialogsInBody: true,
+    tabsize: 2,
+    height: 120,
+    toolbar: [
+      ["style", ["style"]],
+      ["font", ["bold", "underline", "clear"]],
+      ['fontsize', ['fontsize']],
+      ["color", ["color"]],
+      ["para", ["ul", "ol", "paragraph"]],
+      ["table", ["table"]],
+      ["insert", ["link", "picture", "video"]],
+      ["view", ["fullscreen", "codeview", "help"]]
+    ],
+    fontNames: ['CaviarDreams', 'Arial', 'Arial Black', 'Helvetica'],
+    fontNamesIgnoreCheck: ['CaviarDreams']
+ });// end of summernote init
+});// end of document ready
+</script>
+{%- endmacro %}

@@ -1,0 +1,187 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+#ol_values {
+font-size: smaller;
+}
+#ol_values > li {
+display: inline-block;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Group Customers - {{ company_name }} | {{ group_name }}{% endblock %}</h2></span>
+<div class="content-container content">
+<div>
+<form action="{{ url_for("main.group_customers", i_group_id=group_id) }}" method="post" id="frm_change_members">
+{{ change_form.csrf_token }}
+<input type="hidden" name="hid_page" value="{{ page }}">
+{{ change_form.hid_membership_change }}
+{{ change_form.hid_membership_add }}{{ change_form.hid_membership_remove }}
+<button type="submit" id="btn_change_members" name="btn_change_members" value="Change Members" disabled>{{ icons.save_svg(s_label="Change Members") }} Change Members</button>
+</form><!-- end of frm_change_members -->
+</div><!-- end of buttons for actions -->
+<div id="div_filter" class="div_data_filtering">
+<form action="{{ url_for("main.group_customers", i_group_id=group_id) }}" method="post" id="frm_filter">
+<input type="hidden" name="hid_page" value="{{ page }}">
+<!-- Buttons -->
+<div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+<button type="submit" id="btn_filter" value="Apply Filter" style="background-color: rgb(39, 37, 92); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+{{ icons.search_svg(s_label="apply filter") }}
+Apply filter
+</button>
+</div>
+<!-- end of div for buttons -->
+<!-- div containing filter Rows -->
+<div class="div_filter_row" style="margin-bottom: 20px;">
+<!-- filter row -->
+<div style="flex: 1 1 200px;">
+<label for="txt_filter_names">Names Filter</label><input type="text" name="txt_filter_names" id="txt_filter_names" value="{{ filter_names }}">
+<label for="sel_country_filter">Nationality Filter</label>
+<select name="sel_country_filter" id="sel_country_filter">
+{% for country in countries %}
+<option value="{{ country[0] }}"{% if country[0]==country_filter %} selected{% endif %}>{{ country[1] }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+<!-- end of first div.div_filter_row containing filter rows -->
+</form>
+</div><!-- end of #div_filter -->
+{% if customers %}
+<h3>Customers</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_customers">
+<thead>
+<tr>
+<th>Last Name</th><th>First Name(s)</th><th>E-mail Address</th><th>Mobile Number</th><th>Nationality</th><th>Membership <button type="button" id="btn_toggle_membership" value="Toggle Membership">{{ icons.settings_svg(s_label="Toggle Membership") }} Toggle Membership</button></th>
+</tr>
+</thead>
+<tbody>
+{% for customer in customers %}
+<tr>
+<td>{{ customer.v_last_name }}</td><td>{{ customer.v_first_names }}</td><td>{{ customer.v_email }}</td><td>{{ customer.v_mobile_number }}</td><td>{{ customer.v_nationality }}</td>
+<td id="td_{{ customer.id }}">
+<input type="checkbox" name="chk_membership" class="chk_membership" value="{{ customer.id }}"{% if customer.bl_membership %} checked{% endif %}>
+</td>
+</tr>
+{% endfor %}{# end of looping through customers #}
+</tbody>
+</table><!-- end of tbl_customers -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% endif %}{# end of checking if customers existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_groups"]) }}
+{# dlg divs below #}
+<div id="dlg_groups" aria-labeledby="spn_groups">
+<span id="spn_groups">Group Memberships</span><br>
+<div>Hello world</div>
+</div><!-- end of dlg_groups -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_groups = $("#dlg_groups").html();
+
+var bl_members_changed = false;
+var ar_membership = [];
+{% for i_id in membership %}
+ar_membership.push("{{ i_id }}");
+{% endfor %}
+
+function remove_item(ar_items, s_item) {
+    var ar_out = [];
+    for (I=0; I<ar_items.length; I++) {
+        if (ar_items[I]!=s_item) { ar_out.push(ar_items[I]); }
+    }// end of loop
+    return ar_out;
+}// end of remove_item function
+
+$("#tbl_customers").on("change", ".chk_membership", function(event) {
+try {
+    var s_id = String($(this).val());
+    var s_add = String($("#hid_membership_add").val()).trim();
+    var s_remove = String($("#hid_membership_remove").val()).trim();
+    var ar_add = (s_add!="") ? s_add.split(",") : [];
+    var ar_remove = (s_remove!="") ? s_remove.split(",") : [];
+    if ($(this).prop("checked")) {
+        if (ar_add.includes(s_id)==false) { ar_add.push(s_id); }
+        ar_remove = remove_item(ar_remove, s_id);
+    } else {
+        if (ar_remove.includes(s_id)==false) { ar_remove.push(s_id); }
+        ar_add = remove_item(ar_add, s_id);
+    }// end of checking if was checked
+    $("#hid_membership_add").val(ar_add.join(","));
+    $("#hid_membership_remove").val(ar_remove.join(","));
+    if (ar_add.length>0||ar_remove.length>0) {
+        $("#btn_change_members").prop("disabled", false);
+        do_alert("You will need to submit changes to membership before navigating away from current page");
+    } else {
+        $("#btn_change_members").prop("disabled", true);
+    }// end of checking if should change border colour
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_configure_customer click event inside tbl_customers
+
+
+$("#btn_filter").click( function(event) {
+    event.continue();
+});// end of btn_filter click event
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+$("#frm_change_members").submit( function(event) {
+    var s_add = String($("#hid_membership_add").val()).trim();
+    var s_remove = String($("#hid_membership_remove").val()).trim();
+    if (s_add=="" && s_remove=="") { event.preventDefault(); alert("You have not requested any changes"); }
+});// end of frm_change_members submit event
+
+$("#btn_toggle_membership").click( function() {
+    var ar_checkboxes = $("#tbl_customers").find("input[type='checkbox']");
+    $.each(ar_checkboxes, function(ix, chk) {
+        // $(chk).prop("checked", !$(chk).prop("checked"));
+        $(chk).click();
+    });// end of .each
+});// end of btn_toggle_membership click event
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.group_customers", i_group_id=group_id) }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+<input type="hidden" name="txt_filter_names" value="{{ filter_names }}">
+<input type="hidden" name="sel_country_filter" value="{{ country_filter }}">
+</form>
+{% endblock %}

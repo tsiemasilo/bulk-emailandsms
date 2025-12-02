@@ -1,0 +1,17 @@
+https://mailtrap.io/blog/smtplib/#Local-debugging
+
+Local debugging
+Lastly, if you want to test your smtplib configuration without a real SMTP server, that is, on localhost, you can use the aiosmtpd module, which has a DebuggingServer feature that discards outgoing messages and prints them to stdout. 
+To use the module, install it with the following command:
+pip install aiosmtpd
+Copy
+Then, start a local SMTP server on port 1025:
+python -m aiosmtpd -n -c aiosmtpd.controllers.Debugging 
+Copy
+In some versions the path to the Debugging controller can be different. If the above command doesn’t work for you, try this one:
+python -m aiosmtpd -n -c aiosmtpd.handlers.Debugging
+Copy
+However, if you want to run it on port 25 for testing, you’ll need root permissions:
+sudo python -m aiosmtpd -n -c aiosmtpd.controllers.Debugging --port 25
+Copy
+Although this will tell you whether your code is working correctly or not, aiosmtpd module won’t tell you whether your HTML emails are rendered correctly or whether you’re passing spam filters. However, I’ll show you how to handle this in a minute.

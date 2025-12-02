@@ -1,0 +1,154 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Queued E-mails{% endblock %}</h2></span>
+<div class="content-container content">
+<div id="div_filter" class="div_data_filtering">
+<form action="{{ url_for("main.queued_emails") }}" method="post" id="frm_filter">
+<input type="checkbox" id="chk_filter_processed" name="chk_filter_processed"{% if processed %} checked{% endif %} aria-labeledby="lbl_processed"><label id="lbl_processed">Processed E-mail Queues</label>
+</form>
+</div><!-- div_filter -->
+{% if emails %}
+<h3>Queued E-mails</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_emails">
+<thead>
+<tr>
+<th>Subject</th><th>Target Date-Time</th><th>Processed</th><th>Active</th><th>Details</th>
+</tr>
+</thead>
+<tbody>
+{% for email in emails %}
+<tr>
+<td>{{ email.v_subject }}</td><td>{{ email.dt_target|date_time_format }}</td><td><input type="checkbox" value="{{ email.id }}" class="chk_done" {% if email.bl_done %} checked{% endif%} disabled></td><td><input type="checkbox" class="chk_active" value="{{ email.id }}" {% if email.bl_active %} checked{% endif%}{% if email.bl_done %} disabled{% endif%}></td>
+<td id="td_{{ email.id }}">
+<button type="button" class="btn_email_details" value="E-mail Details">{{ icons.settings_svg(s_label="E-mail Details") }}E-mail Details</button>
+</td>
+</tr>
+{% endfor %}{# end of looping through emails #}
+</tbody>
+</table><!-- end of tbl_emails -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% else %}
+<div>Currently no queued e-Mail sending that fall under {% if processed %}processed{% else %}not processed{% endif%}.</div>
+{% endif %}{# end of checking if queued e-mails existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_email"]) }}
+{# dlg divs below #}
+<div id="dlg_email" aria-labeledby="spn_email">
+<span id="spn_email">Queued E-Mail details</span><br>
+<ul id="ul_email">
+</ul>
+</div><!-- end of dlg_email -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_email = $("#dlg_email").html();
+
+$("#tbl_emails").on("click", "button.btn_email_details", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    $("#dlg_email").html(s_dlg_email);
+    $("#dlg_email").redraw();
+    var s_url = "{{ url_for("main.queued_details", i_queued_id=99999) }}".replace("99999", s_id);
+    $.get(s_url, function(o_data) {
+        if (typeof(o_data)=="object") {
+            var s_from = String(o_data.v_email_from);
+            var s_reply_to = String(o_data.v_email_reply_to);
+            var s_date_time = o_data.d_target + " " + o_data.t_target;
+            var s_reference_number = o_data.v_reference_number;
+            var s_subject = o_data.v_subject;
+            var s_body = o_data.t_body;
+            var s_html = "<li><label class=\"label\">From:</label>&nbsp;" + s_from + "</li>\n<li><label class=\"label\">Reply-to:</label>&nbsp;" + s_reply_to + "</li>\n<li><label class=\"label\">Scheduled Date-Time</label>&nbsp;" + s_date_time + "</li>\n<li><label class=\"label\">Reference Number:</label>&nbsp;" + s_reference_number + "</li>\n<li><label class=\"label\">Subject:</label>&nbsp;" + s_subject + "</li>\n<li><label class=\"label\">Body:</label>\n<blockquote>" + s_body + "</blockquote></li>\n";
+            if (o_data.attachments.length>0) {
+                s_html = s_html + "<li><label class=\"label\">Attachments:</label><ul>";
+                for (I=0; I<o_data.attachments.length; I++) { s_html = s_html + "<li>" + o_data.attachments[I] + "</li>"; }
+                s_html = s_html + "</ul></li>\n";
+            }// end of checking attachment count
+            s_html = s_html + "<li><label class=\"label\">Total number of target customers:</label>&nbsp;" + String(o_data.customer_count) + "</li>";
+            $("#ul_email").append(s_html);
+            $("#dlg_email").redraw();
+            $("#dlg_email").dialog("open");
+        } else {
+            do_alert(String(o_data));
+        }// end of typeof check against o_data
+    });// end of .get
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of .btn_email_details click event inside tbl_emails
+
+
+$("#tbl_emails").on("change", ".chk_active", function(event) {
+    var s_id = String($(this).attr("value"));
+    var bl_now = $(this).prop("checked");
+    var bl_done = $($($(this).parent()).parent().find("[type='checkbox']")[0]).prop("checked");
+    if (bl_now==false&&bl_done==true) {
+        $(this).prop("checked", true);
+        do_alert("Already processed");
+    } else if (bl_now==true && bl_done==false) {
+        var s_url = "{{ url_for("main.toggle_queued_active", i_queued_id=99999, bl_active=True) }}".replace("99999", s_id);
+        $.get(s_url, function(o_resp, status) {
+            if (status=="success") { do_alert("This queued e-mail will be processed at the next run matching the target date-time"); }
+        });// end of .get to toggle state
+    } else if(bl_now==false && bl_done==false) {
+        var s_url = "{{ url_for("main.toggle_queued_active", i_queued_id=99999, bl_active=False) }}".replace("99999", s_id);
+        $.get(s_url, function(o_resp, status) {
+            if (status=="success") { do_alert("The queued e-mail will not be processed until reactivated"); }
+        });// end of .get to toggle active state
+    }// end of checking checked state combinations
+});// end of change event on .chk_active inside tbl_emails
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+
+$("#chk_filter_processed").change( function(event) {
+    document.getElementById("frm_filter").submit();
+});// end of change event on chk_filter_processed
+
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.queued_emails") }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{% if processed %}<input type="hidden" name="chk_filter_processed" value="true">{% endif %}
+</form>
+{% endblock %}

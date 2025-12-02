@@ -1,0 +1,214 @@
+﻿@font-face {
+    font-family: CaviarDreams;
+    src:
+      local("CaviarDreams"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams.woff") format("woff"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams.ttf") format('truetype');
+    font-weight: normal;
+  }
+  
+  @font-face {
+    font-family: CaviarDreams;
+    src:
+      local("CaviarDreams"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams_Bold.woff") format("woff"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams_Bold.ttf") format('truetype');
+    font-weight: bold;
+  }
+  
+  :root {
+    --primary-color: rgb(39, 37, 92);
+    --accent-color: rgb(250, 122, 30);
+    --background-color: white;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: CaviarDreams, Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  
+  
+  header {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .header-container {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 5 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo-area {
+    width: 180px;
+    height: 60px;
+    background-image: url("https://dev.blindza.com/static/cv_db/css/alteram/alteram1_1_600x197.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+    margin-left: -250px;
+  }
+  
+  ul.nav {
+    list-style: none;
+    display: flex;
+    gap: 1rem;
+  }
+  
+  ul.nav li {
+    display: inline-block;
+  }
+  
+  ul.nav li a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    border: 2px solid var(--accent-color);
+  }
+  
+  ul.nav li a:hover {
+    background-color: var(--accent-color);
+    color: white;
+  }
+  
+  .content {
+    flex: 1;
+    max-width: 500px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .title h2 {
+  font-family: CaviarDreams, Arial, sans-serif;
+    color: var(--primary-color);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  label {
+    color: var(--primary-color);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid rgba(39, 37, 92, 0.2);
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+  }
+  
+  input[type="text"]:focus,
+  input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent-color);
+  }
+  
+  input[type="submit"] {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 4px;
+    font-family: inherit;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(250, 122, 30, 0.2);
+  }
+  
+  #div_alert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--accent-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    text-align: center;
+    z-index: 1000;
+    display: none;
+    max-width: 80%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  #div_alert.warning {
+    background-color: #e53e3e;
+  }
+  
+  @media (max-width: 768px) {
+    .content {
+      margin: 1rem;
+      padding: 1.5rem;
+    }
+    }
+  
+  .table-container {
+    display: flex;
+    justify-content: center; /* centers the table */
+    padding: 2rem;
+  }
+  
+  .data-table {
+    width:auto;
+    min-width: 100%;
+    border-collapse: collapse;
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    border: 1px solid var(--table-border);
+    table-layout: auto;
+}
+  
+/*   .data-table th, */
+  .data-table td {
+    padding: 1rem;
+    border: 1px solid rgba(39, 37, 92, 0.2);
+    text-align: left;
+    color: var(--primary-color);
+  }
+.data-table th label {
+    color: white;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }

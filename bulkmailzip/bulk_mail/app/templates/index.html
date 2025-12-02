@@ -1,0 +1,129 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Landing page{% endblock %}</h2></span>
+<div class="content-container content">
+{% if current_user.bl_admin %}
+<h3>Administration</h3>
+<ul>
+<li><a href="{{ url_for("main.id_types") }}">I.D. Types</a></li>
+<li><a href="{{ url_for("main.companies") }}">Companies</a></li>
+<li><a href="{{ url_for("main.company_users", i_company_id=0) }}">Company Users</a></li>
+</ul>
+{% else %}
+<h3>Company Activities - {{ company_name }}</h3>
+<ul>
+<li><ul>
+<li><a href="{{ url_for("main.customers", i_company_id=company_id) }}">Customers</a></li>
+<li><a href="{{ url_for("main.customer_groups", i_company_id=company_id) }}">Customer Groups</a></li>
+</ul></li>
+<li><ul>
+<li><a href="{{ url_for("main.email_templates") }}">E-Mail Templates</a></li>
+<li><a href="{{ url_for("main.campaigns") }}">E-Mail Campaigns</a></li>
+<li><a href="{{ url_for("main.queued_emails") }}">Queued E-Mails</a></li>
+<li><a href="{{ url_for("main.campaign_reports") }}">E-Mail Campaign Sending Reports</a></li>
+</ul></li>
+<li><a href="{{ url_for("main.company_email_addresses") }}">E-Mail Addresses</a></li>
+</ul>
+{% endif %}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_details"]) }}
+{# dlg divs below #}
+<div id="dlg_details" aria-labeledby="spn_details">
+<span id="spn_details">Record details</span><br>
+<a href="#" id="a_full_screen" style="font-size: smaller;">(view full-screen)</a><br>
+<div id="div_details">
+<h4>Details</h4>
+<ul id="ul_details"></ul>
+<span id="spn_languages">
+<h4>Languages</h4>
+<ul id="ul_languages"></ul>
+</span>
+<span id="spn_qualifications">
+<h4>Qualifications</h4>
+<ul id="ul_qualifications"></ul>
+</span>
+</div><!-- end of div_details -->
+<div id="div_uploads">
+<h4>Uploads</h4>
+<ul id="ul_uploads"></ul>
+</div>
+<span id="spn_tenders">
+<h4>Prior Tenders</h4>
+<ul id="ul_tenders"></ul>
+</span>
+</div><!-- end of dlg_details -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_details = $("#dlg_details").html();
+
+
+
+$("#btn_clear_filter").click( function(event) {
+    event.preventDefault();
+    // checkbox
+    $("#chk_case_sensitive").prop("checked", false);
+    // text boxes
+    $.each(["#txt_name", "#txt_surname", "#txt_id_number"], function(ix, ss) { $(ss).val(""); });
+    // dependant selects first
+    $.each(["#sel_role", "#sel_qualification_1", "#sel_qualification_2"], function(ix, ss) { $(ss).prop("selectedIndex", 0); });
+    // categorical selects
+    $.each(["#sel_role_department", "#sel_language", "#sel_sap_k_level", "#sel_qualification_type_1", "#sel_qualification_type_2"], function(ix, ss) { $(ss).prop("selectedIndex", 0); });
+    document.getElementById("frm_filters").submit();
+});// end of btn_clear_filter click event
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_filters").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+$("#dlg_details").on("click", "#a_full_screen", function(event) {
+    event.preventDefault();
+try {
+    var s_html = "<!doctype html>\n<html lang=\"en\">\n<head>\n<title>C.V. details</title>\n</head>\n<body>\n<a href=\"#\" onclick=\"window.close();\">(close)</a><br>\n";
+    s_html = s_html + $("#div_details").html();
+    s_html = s_html + "</body>\n</html>";
+    var w = window.open();
+    w.document.write(s_html);
+    //w.close();
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of a_full_screen click event
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+{% endblock %}

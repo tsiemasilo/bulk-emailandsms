@@ -1,0 +1,32 @@
+{% macro tabs_inc() -%}
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename=static_prefix+"js/tabs.css") }}" />
+<script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/tabs-automatic.js") }}"></script>
+{% endmacro %}
+
+{% macro tabs_start(group_id, group_desc, tabs_id, tabs_list) -%}
+<div class="tabs">
+<div id="{{ group_id }}">{{ group_desc }}</div>
+<div role="tablist" aria-labelledby="{{ group_id }}" class="automatic">
+{% for I in range(0, tabs_list|length) %}
+<button id="{{ group_id }}-{{ I }}" type="button" role="tab" aria-selected="true" aria-controls="{{ tabs_id }}-{{ I }}"><span class="focus">{{ tabs_list[I] }}</span></button>
+{% endfor %}
+</div><!-- end of div with role of tablist -->
+{% endmacro %}
+
+{% macro tab_content(tabs_id, group_id, tab_index, tab_content) %}
+<div id="{{ tabs_id }}-{{ tab_index }}" role="tabpanel" tabindex="0" aria-labelledby="{{ group_id }}-{{ tab_num }}">
+<div>{{ tab_content|safe }}</div>
+</div>
+{% endmacro %}
+
+{% macro tabs_end() %}
+</div><!-- end of div.tabs -->
+{% endmacro %}
+{#
+{{ tabs.tabs_start("group_id", "All my tabs", "tabs_id", ["hello", "world"]) }}
+{{ tabs.tab_content(tabs_id="tabs_id", group_id="group_id", tab_index="0", tab_content="<div>How are you feeling today?</div>") }}
+{{ tabs.tab_content(tabs_id="tabs_id", group_id="group_id", tab_index="1", tab_content="<div>Is this working at all?</div>") }}
+{{ tabs.tabs_end() }}
+...
+{{ tabs.tabs_inc() }}
+#}

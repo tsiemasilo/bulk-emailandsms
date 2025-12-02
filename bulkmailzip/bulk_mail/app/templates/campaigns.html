@@ -1,0 +1,211 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Campaigns{% endblock %}</h2></span>
+<div class="content-container content">
+<div><button type="button" id="btn_add_campaign" value="Add campaign">
+{{ icons.add_svg(s_label="add Campaign") }}
+Add campaign
+</button></div>
+{% if campaigns %}
+<h3>Campaigns</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_campaigns">
+<thead>
+<tr>
+<th>Reference Number</th><th>Title</th><th>Description</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{% for campaign in campaigns %}
+<tr>
+<td>{{ campaign.v_reference_number }}</td><td>{{ campaign.v_campaign_title }}</td><td>{{ campaign.v_description }}</td>
+<td id="td_{{ campaign.id }}">
+<button type="button" class="btn_edit_campaign" value="Campaign Basics">{{ icons.edit_svg(s_label="Campaign Basics") }}Campaign Basics</button>
+<button type="button" class="btn_remove_campaign" value="Remove Campaign">{{ icons.delete_svg(s_label="Remove Campaign") }}Remove Campaign</button>
+<button type="button" class="btn_campaign_sending" value="Campaign Sending">{{ icons.settings_svg(s_label="Campaign Sending") }}Campaign Sending</button>
+</td>
+</tr>
+{% endfor %}{# end of looping through campaigns #}
+</tbody>
+</table><!-- end of tbl_campaigns -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% endif %}{# end of checking if campaigns existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_campaign"]) }}
+{# dlg divs below #}
+<div id="dlg_campaign" aria-labeledby="spn_campaign">
+<span id="spn_campaign">campaign details</span><br>
+<form action="{{ url_for("main.campaigns") }}" method="post" id="frm_campaign">
+{{ form.csrf_token }}
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{{ form.hid_campaign_id }}
+<ul>
+<li>{{ form.txt_reference_number.label }}&nbsp;{{ form.txt_reference_number }}</li>
+<li>{{ form.txt_campaign_title.label }}&nbsp;{{ form.txt_campaign_title }}</li>
+<li>{{ form.txt_description.label }}<br>
+{{ form.txt_description }}</li>
+<li>{{ form.sel_email_id.label }}{{ form.sel_email_id }}</li>
+<li>{{ form.d_target.label }}&nbsp;{{ form.d_target }}</li>
+<li>{{ form.t_target.label }}&nbsp;{{ form.t_target }}</li>
+<li><button type="button" id="btn_target_immediate" value="Set to Immediate">{{ icons.settings_svg(s_label="Set to Immediate") }}>Set to Immediate</button></li>
+<li>{{ form.sel_company_email_address_id.label }}{{ form.sel_company_email_address_id }}</li>
+<li>{{ form.txt_email_from.label }}{{ form.txt_email_from(readonly=true) }}</li>
+<li>{{ form.txt_email_reply_to.label }}{{ form.txt_email_reply_to }}</li>
+</ul>
+<input type="submit" name="btn_save_campaign" value="Save">
+</form>
+</div><!-- end of dlg_campaign -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_campaign = $("#dlg_campaign").html();
+
+$("#btn_add_campaign").click( function() {
+    $("#dlg_campaign").html(s_dlg_campaign);
+    $("#dlg_campaign").redraw();
+    $("#dlg_campaign").dialog("open");
+    $("#txt_reference_number").focus();
+});// end of #btn_add_campaign click event
+
+$("#tbl_campaigns").on("click", "button.btn_edit_campaign", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    $("#dlg_campaign").html(s_dlg_campaign);
+    $("#dlg_campaign").redraw();
+    var s_url = "{{ url_for("main.campaign_details", i_campaign_id=99999) }}".replace("99999", s_id);
+    $.get(s_url, function(o_data) {
+        if (typeof(o_data)=="object") {
+            var s_reference_number = String(o_data.v_reference_number);
+            var s_campaign_title = String(o_data.v_campaign_title);
+            var s_description = String(o_data.v_description)
+            var s_email_id = String(o_data.i_email_id);
+            var i_company_email_address_id = String(o_data.i_company_email_address_id);
+            var s_email_from = String(o_data.v_email_from);
+            var s_email_reply_to = String(o_data.v_email_reply_to);
+            $("#hid_campaign_id").val(s_id);
+            $("#txt_reference_number").val(s_reference_number);
+            $("#txt_campaign_title").val(s_campaign_title);
+            $("#txt_description").val(s_description);
+            $("#sel_email_id").val(s_email_id);
+            $("#d_target").val(o_data.d_target);
+            $("#t_target").val(o_data.t_target);
+            $("#sel_company_email_address_id").val(i_company_email_address_id);
+            $("#txt_email_from").val(s_email_from);
+            $("#txt_email_reply_to").val(s_email_reply_to);
+            $("#dlg_campaign").redraw();
+            $("#dlg_campaign").dialog("open");
+            $("#txt_reference_number").focus();
+        } else {
+            do_alert(String(o_data));
+        }// end of typeof check against o_data
+    });// end of .get
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of .btn_edit_campaign click event inside tbl_campaigns
+
+$("#tbl_campaigns").on("click", "button.btn_remove_campaign", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var bl_confirm = confirm("Are you sure?");
+    if (bl_confirm) {
+        $("#hid_remove_campaign_id").val(s_id);
+        document.getElementById("frm_remove_campaign").submit();
+    }// end of confirmation check
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of .btn_remove_campaign click event inside tbl_campaigns
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+$("#tbl_campaigns").on("click", "button.btn_campaign_sending", function() {
+    var s_id = $($(this).parent()).attr("id").replace("td_", "");
+    var s_url = "{{ url_for("main.campaign_sending", i_campaign_id=99999) }}".replace("99999", s_id);
+    window.location.assign(s_url);
+});// end of .btn_campaign_sending click event
+
+var ar_email_reply_to = {};
+{% for email_reply in email_reply_to_addresses %}
+ar_email_reply_to["{{ email_reply.id }}"] = ["{{ email_reply.v_email_address }}", "{{ email_reply.v_reply_to_address }}"];
+{% endfor %}
+
+$("#dlg_campaign").on("change", "#sel_company_email_address_id", function(event) {
+    if ($(this).prop("selectedIndex")>0) {
+        var o_opt = $(this).find(":selected");
+        var opt_id = $(o_opt).val();
+        $("#txt_email_from").val(ar_email_reply_to[opt_id][0]);
+        $("#txt_email_reply_to").val(ar_email_reply_to[opt_id][1]);
+    } else {
+        $("#txt_email_from").val("");
+        $("#txt_reply_to").val("");
+    }// end of making sure option after first placeholder is selected
+});// end of change event on sel_company_email_address_id inside dlg_campaign
+
+$("#btn_target_immediate").click( function(event) {
+try {
+    var s_date_immediate = Date();
+    $("#d_target").val(s_date_immediate);
+    $("#t_target").val(s_date_immediate);
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of btn_target_immediate click event
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.campaigns") }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+</form>
+{% if remove_form %}
+<form action="{{ url_for("main.campaigns") }}" method="post" id="frm_remove_campaign">
+{{ remove_form.csrf_token }}
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{{ remove_form.hid_remove_campaign_id }}
+</form>
+{% endif %}
+{% endblock %}

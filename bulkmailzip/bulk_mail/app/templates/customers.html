@@ -1,0 +1,251 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+#ol_values {
+font-size: smaller;
+}
+#ol_values > li {
+display: inline-block;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Customers - {{ company_name }}{% endblock %}</h2></span>
+<div class="content-container content">
+<div>
+<button type="button" id="btn_add_customer" value="Add Customer">{{ icons.add_svg(s_label="add Customer") }}Add Customer</button>
+<button type="button" id="btn_add_group" value="Add Group">{{ icons.add_svg(s_label="Add Group") }}Add Group</button>
+<button type="button" id="btn_upload_import" value="Bulk Import">{{ icons.settings_svg(s_label="Bulk Import") }}Bulk Import</button>
+</div><!-- end of buttons for actions -->
+<div id="div_filter" class="div_data_filtering">
+<form action="{{ url_for("main.customers", i_company_id=company_id) }}" method="post" id="frm_filter">
+<!-- Buttons -->
+<div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+<button type="submit" id="btn_filter" value="Apply Filter" style="background-color: rgb(39, 37, 92); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+{{ icons.search_svg(s_label="apply filter") }}
+Apply filter
+</button>
+</div>
+<!-- end of div for buttons -->
+<!-- div containing filter Rows -->
+<div class="div_filter_row" style="margin-bottom: 20px;">
+<!-- filter row -->
+<div style="flex: 1 1 200px;">
+<label for="sel_group_filter">Select Group</label>
+<select name="sel_group_filter" id="sel_group_filter" style="width: 100%; padding: 6px;">
+<option value="0">---all groups---</option>
+{% for group in groups %}
+<option value="{{ group.id }}"{% if group.id==group_id %} selected{% endif %}>{{ group.v_group_name }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+<!-- end of first div.div_filter_row containing filter rows -->
+</form>
+</div><!-- end of #div_filter -->
+{% if customers %}
+<h3>Customers</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_customers">
+<thead>
+<tr>
+<th>Last Name</th><th>First Name(s)</th><th>E-mail Address</th><th>Mobile Number</th><th>Nationality</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{% for customer in customers %}
+<tr>
+<td>{{ customer.v_last_name }}</td><td>{{ customer.v_first_names }}</td><td>{{ customer.v_email }}</td><td>{{ customer.v_mobile_number }}</td><td>{{ customer.v_nationality }}</td>
+<td id="td_{{ customer.id }}">
+<button type="button" class="btn_edit_customer" value="Edit Customer">{{ icons.edit_svg(s_label="Edit Customer") }} Edit Customer</button>
+<button type="button" class="btn_remove_customer" value="Remove Customer">{{ icons.delete_svg(s_label="Remove Customer") }} Remove Customer</button>
+</td>
+</tr>
+{% endfor %}{# end of looping through customers #}
+</tbody>
+</table><!-- end of tbl_customers -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% endif %}{# end of checking if customers existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_customer", "dlg_group", "dlg_upload"]) }}
+{# dlg divs below #}
+<div id="dlg_customer" aria-labeledby="spn_customer">
+<span id="spn_customer">Customer details</span><br>
+<form action="{{ url_for("main.customers", i_company_id=company_id) }}" method="post" id="frm_customer">
+{{ form.csrf_token }}
+<input type="hidden" name="sel_group_filter" value="{{ group_id }}">
+<input type="hidden" name="hid_page" value="{{ paging.page }}">
+<!-- here I am -->
+{{ form.hid_customer_id }}
+<!-- and done -->
+<ul>
+<li>{{ form.sel_id_type.label }}&nbsp;{{ form.sel_id_type }}</li>                                                                                   
+<li>{{ form.txt_id_number.label }}&nbsp;{{ form.txt_id_number }}</li>                                                                               
+<li>{{ form.txt_title.label }}&nbsp;{{ form.txt_title }}</li>                                                                                       
+<li>{{ form.txt_first_names.label }}&nbsp;{{ form.txt_first_names }}</li>                                                                           
+<li>{{ form.txt_last_name.label }}&nbsp;{{ form.txt_last_name }}</li>                                                                               
+<li>{{ form.sel_gender.label }}&nbsp;{{ form.sel_gender }}</li>                                                                                     
+<li>{{ form.sel_nationality.label }}&nbsp;{{ form.sel_nationality }}</li>                                                                           
+<li>{{ form.txt_mobile_number.label }}&nbsp;{{ form.txt_mobile_number }}</li>                                                                       
+<li>{{ form.txt_mobile_number_alternate.label }}&nbsp;{{ form.txt_mobile_number_alternate }}</li>                                                   
+<li>{{ form.txt_landline_number.label }}&nbsp;{{ form.txt_landline_number }}</li>                                                                   
+<li>{{ form.txt_landline_number_alternate.label }}&nbsp;{{ form.txt_landline_number_alternate }}</li>                                               
+<li>{{ form.txt_email.label }}&nbsp;{{ form.txt_email }}</li>                                                                                       
+<li>{{ form.txt_email_alternate.label }}&nbsp;{{ form.txt_email_alternate }}</li>                                                                   
+<li>{{ form.txt_address.label }}&nbsp;{{ form.txt_address }}</li>                                                                                   
+<li>{{ form.txt_street_name.label }}&nbsp;{{ form.txt_street_name }}</li>                                                                           
+<li>{{ form.txt_suburb.label }}&nbsp;{{ form.txt_suburb }}</li>                                                                                     
+<li>{{ form.txt_city.label }}&nbsp;{{ form.txt_city }}</li>                                                                                         
+<li>{{ form.txt_province.label }}&nbsp;{{ form.txt_province }}</li>                                                                                 
+<li>{{ form.txt_code.label }}&nbsp;{{ form.txt_code }}</li>
+<li>{{ form.txt_postal_address.label }}<br>{{ form.txt_postal_address }}</li>
+</ul>
+<button type="submit" name="btn_save_customer" value="Save Customer">{{ icons.save_svg(s_label="Save Customer") }} Save Customer</button>
+</form>
+</div><!-- end of dlg_customer -->
+<div id="dlg_group" aria-labeledby="spn_group">
+<span id="spn_group">Group details</span><br>
+<form action="{{ url_for("main.customers", i_company_id=company_id) }}" method="post" id="frm_group">
+{{ group_form.csrf_token }}
+<input type="hidden" name="hid_page" value="{{ page }}">
+{{ group_form.hid_group_id }}
+<ul>
+<li>{{ group_form.txt_group_name.label }}&nbsp;{{ group_form.txt_group_name }}</li>
+<li>{{ group_form.txt_group_description.label }}&nbsp;{{ group_form.txt_group_description }}</li>
+</ul>
+<button type="submit" name="btn_save_group" value="Save Group">{{ icons.save_svg(s_label="Save Group") }} Save Group</button>
+</form>
+</div><!-- end of dlg_group -->
+<div id="dlg_upload" aria-labeledby="spn_upload">
+<span id="spn_upload">Bulk Upload</span><br>
+<form action="{{ url_for("main.customers", i_company_id=company_id) }}" method="post" enctype="multipart/form-data" id="frm_upload">
+{{ upload_form.csrf_token }}
+<input type="hidden" name="hid_page" value="{{ page }}">
+<div>Upload a comma-separated-values .csv file with following columns in each row [column (max. length per value)] - possibly selecting a customer group for association -<br>
+<ol id="ol_values"><li>id_number (64)</li><li>title (32)</li><li>first_names (128)</li><li>last_name (128)</li><li>gender (8)</li><li>nationality (128)</li><li>mobile_number (64)</li><li>landline_number (64)</li><li>email (128)</li><li>address (64)</li><li>street_name (64)</li><li>suburb (64)</li><li>city (64)</li><li>province (64)</li><li>postal_code (32)</li><li>postal_address (128)</li></ol>
+</div>
+<ul>
+<li>{{ upload_form.sel_group_id.label }}&nbsp;{{ upload_form.sel_group_id }}</li>
+<li>{{ upload_form.fil_upload.label }}&nbsp;{{ upload_form.fil_upload }}</li>
+</ul>
+<button type="submit" name="btn_upload_customers" value="Upload Customers">{{ icons.save_svg(s_label="Upload Customers") }} Upload Customers</button>
+</form>
+</div><!-- end of dlg_upload -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_customer = $("#dlg_customer").html();
+var s_dlg_group = $("#dlg_group").html();
+var s_dlg_upload = $("#dlg_upload").html();
+
+$("#btn_add_customer").click( function() {
+    $("#dlg_customer").html(s_dlg_customer);
+    $("#dlg_customer").redraw();
+    $("#dlg_customer").dialog("open");
+});// end of #btn_add_customer click event
+
+$("#btn_add_group").click( function() {
+    $("#dlg_group").html(s_dlg_group);
+    $("#dlg_group").redraw();
+    $("#dlg_group").dialog("open");
+});// end of #btn_add_group click event
+
+$("#btn_upload_import").click( function() {
+    $("#dlg_upload").html(s_dlg_upload);
+    $("#dlg_upload").redraw();
+    $("#dlg_upload").dialog("open");
+});// end of #btn_upload_import click event
+
+$("#tbl_customers").on("click", "button.btn_edit_customer", function() {
+try {
+    $("#dlg_customer").html(s_dlg_customer);
+    $("#dlg_customer").redraw();
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var s_url = "{{ url_for("main.customer_details", i_customer_id=99999) }}".replace("99999", s_id);
+    $.get(s_url, function(o_data) {
+        if (typeof(o_data)=="object") {
+            $("#hid_customer_id").val(s_id);
+            $("#sel_id_type").val(o_data.i_id_type);
+{% for s_field, s_value in {"hid_customer_id": "id", "sel_id_type": "i_id_type", "txt_id_number": "v_id_number", "txt_title": "v_title", "txt_first_names": "v_first_names", "txt_last_name": "v_last_name", "sel_gender": "v_gender", "txt_mobile_number": "v_mobile_number", "txt_mobile_number_alternate": "v_mobile_number_alternate", "txt_landline_number": "v_landline_number", "txt_landline_number_alternate": "v_landline_number_alternate", "txt_email": "v_email", "txt_email_alternate": "v_email_alternate", "txt_address": "v_address", "txt_street_name": "v_street_name", "txt_suburb": "v_suburb", "txt_city": "v_city", "txt_province": "v_province", "txt_code": "v_code", "txt_postal_address": "v_postal_address"}.items() %}
+            $("#{{ s_field }}").val(o_data.{{ s_value }});
+{% endfor %}
+            $.each($("#sel_nationality").children("option"), function(ix, opt) {
+                if ($(opt).text()==o_data.v_nationality) { $(opt).prop("selected", true); }
+            });// end of looping through option children
+            $("#dlg_customer").redraw();
+            $("#dlg_customer").dialog("open");
+        } else {
+            alert("Error! " + String(o_data));
+        }// end of checking if o_data is an object
+    });// end of .get
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_edit_customer click event inside tbl_customers
+
+$("#tbl_customers").on("click", "button.btn_remove_customer", function() {
+try {
+    var bl_confirm = confirm("Are you sure?");
+    if (bl_confirm) {
+        var td_parent = $(this).parent();
+        var s_id = String($(td_parent).attr("id")).replace("td_", "");
+        $("#hid_remove_customer_id").val(s_id);
+        document.getElementById("frm_remove_customer").submit();
+    }// end of confirmation check
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_remove_customer click event inside tbl_customers
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.customers", i_company_id=company_id) }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+</form>
+{% if remove_form %}
+<form action="{{ url_for("main.customers", i_company_id=company_id) }}" method="post" id="frm_remove_customer">
+{{ remove_form.csrf_token }}
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{{ remove_form.hid_remove_customer_id }}
+</form>
+{% endif %}
+{% endblock %}

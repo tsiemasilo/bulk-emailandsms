@@ -1,0 +1,23 @@
+__name__==__main__ pulls all necessary campaigns >= send-by date
+
+call main with list of all queued campaigns
+
+main function -
+loop through campaigns, processing them one by one
+for each campaign, pull list of recipients, basic content and attachments
+pass each campaign's data through to send_emails_in_batches one at a time
+
+send_emails_in_batches function -
+separate recipients into batches of 10-20?
+pass each batch to it's own threading instance of run_async_task function
+wait until all threads are finalised before returning to main function for next queued campaign to be processed?
+
+run_async_task function -
+initiates an asyncio event loop to process each batch with all it's data via process_batch function
+
+process_batch function -
+each batch gets processed asynchronously using it's own aiosmtplib.SMTP server instance
+it does this by using asyncio gather looping through send_email_async function
+
+send_email_async function -
+sends each e-mail instance asynchronously

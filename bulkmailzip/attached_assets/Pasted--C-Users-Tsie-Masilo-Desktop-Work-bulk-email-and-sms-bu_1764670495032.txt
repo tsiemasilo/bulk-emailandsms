@@ -1,0 +1,85 @@
+
+C:\Users\Tsie Masilo\Desktop\Work\bulk_email_and_sms\bulk_mail\bulk_mail>podman pod ps
+POD ID        NAME           STATUS      CREATED         INFRA ID      # OF CONTAINERS
+c47a4f50ee29  bulk_mail_pod  Running     55 minutes ago  7ef5ab1e58d8  3
+
+C:\Users\Tsie Masilo\Desktop\Work\bulk_email_and_sms\bulk_mail\bulk_mail>podman ps -a
+CONTAINER ID  IMAGE                                 COMMAND     CREATED         STATUS         PORTS                                           NAMES
+7ef5ab1e58d8                                                    55 minutes ago  Up 55 minutes  0.0.0.0:5002->5000/tcp, 0.0.0.0:5434->5432/tcp  c47a4f50ee29-infra
+d11fe008f021  docker.io/library/postgres:16-alpine  postgres    55 minutes ago  Up 55 minutes  0.0.0.0:5002->5000/tcp, 0.0.0.0:5434->5432/tcp  db_bulk_mail
+0c3e406ae808  localhost/bulk_mail_app:latest                    55 minutes ago  Up 55 minutes  0.0.0.0:5002->5000/tcp, 0.0.0.0:5434->5432/tcp  app_bulk_mail
+
+C:\Users\Tsie Masilo\Desktop\Work\bulk_email_and_sms\bulk_mail\bulk_mail>podman logs db_bulk_mail
+The files belonging to this database system will be owned by user "postgres".
+This user must also own the server process.
+
+The database cluster will be initialized with locale "en_US.utf8".
+The default database encoding has accordingly been set to "UTF8".
+The default text search configuration will be set to "english".
+
+Data page checksums are disabled.
+
+fixing permissions on existing directory /var/lib/postgresql/data ... ok
+creating subdirectories ... ok
+selecting dynamic shared memory implementation ... posix
+selecting default max_connections ... 100
+selecting default shared_buffers ... 128MB
+selecting default time zone ... UTC
+creating configuration files ... ok
+running bootstrap script ... ok
+sh: locale: not found
+2025-12-02 09:18:07.357 UTC [30] WARNING:  no usable system locales were found
+performing post-bootstrap initialization ... ok
+syncing data to disk ... ok
+
+
+Success. You can now start the database server using:
+
+    pg_ctl -D /var/lib/postgresql/data -l logfile start
+
+initdb: warning: enabling "trust" authentication for local connections
+initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+waiting for server to start....2025-12-02 09:18:11.359 UTC [36] LOG:  starting PostgreSQL 16.11 on x86_64-pc-linux-musl, compiled by gcc (Alpine 14.2.0) 14.2.0, 64-bit
+2025-12-02 09:18:11.370 UTC [36] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-12-02 09:18:11.402 UTC [39] LOG:  database system was shut down at 2025-12-02 09:18:07 UTC
+2025-12-02 09:18:11.436 UTC [36] LOG:  database system is ready to accept connections
+ done
+server started
+CREATE DATABASE
+
+
+/usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+
+waiting for server to shut down....2025-12-02 09:18:11.684 UTC [36] LOG:  received fast shutdown request
+2025-12-02 09:18:11.699 UTC [36] LOG:  aborting any active transactions
+2025-12-02 09:18:11.702 UTC [36] LOG:  background worker "logical replication launcher" (PID 42) exited with exit code 1
+2025-12-02 09:18:11.702 UTC [37] LOG:  shutting down
+2025-12-02 09:18:11.735 UTC [37] LOG:  checkpoint starting: shutdown immediate
+2025-12-02 09:18:12.570 UTC [37] LOG:  checkpoint complete: wrote 926 buffers (5.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.061 s, sync=0.716 s, total=0.868 s; sync files=301, longest=0.015 s, average=0.003 s; distance=4272 kB, estimate=4272 kB; lsn=0/191E928, redo lsn=0/191E928
+2025-12-02 09:18:12.585 UTC [36] LOG:  database system is shut down
+ done
+server stopped
+
+PostgreSQL init process complete; ready for start up.
+
+2025-12-02 09:18:12.686 UTC [1] LOG:  starting PostgreSQL 16.11 on x86_64-pc-linux-musl, compiled by gcc (Alpine 14.2.0) 14.2.0, 64-bit
+2025-12-02 09:18:12.686 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+2025-12-02 09:18:12.686 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+2025-12-02 09:18:12.811 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+2025-12-02 09:18:13.010 UTC [52] LOG:  database system was shut down at 2025-12-02 09:18:12 UTC
+2025-12-02 09:18:13.108 UTC [1] LOG:  database system is ready to accept connections
+2025-12-02 09:23:13.034 UTC [50] LOG:  checkpoint starting: time
+2025-12-02 09:23:41.576 UTC [50] LOG:  checkpoint complete: wrote 280 buffers (1.7%); 0 WAL file(s) added, 0 removed, 0 recycled; write=27.889 s, sync=0.577 s, total=28.545 s; sync files=167, longest=0.012 s, average=0.004 s; distance=1507 kB, estimate=1507 kB; lsn=0/1A977D8, redo lsn=0/1A977A0
+2025-12-02 09:33:13.764 UTC [50] LOG:  checkpoint starting: time
+2025-12-02 09:33:13.945 UTC [50] LOG:  checkpoint complete: wrote 1 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.118 s, sync=0.010 s, total=0.182 s; sync files=1, longest=0.010 s, average=0.010 s; distance=8 kB, estimate=1357 kB; lsn=0/1A997F0, redo lsn=0/1A997B8
+2025-12-02 10:03:14.517 UTC [50] LOG:  checkpoint starting: time
+2025-12-02 10:03:15.033 UTC [50] LOG:  checkpoint complete: wrote 4 buffers (0.0%); 0 WAL file(s) added, 0 removed, 0 recycled; write=0.450 s, sync=0.009 s, total=0.517 s; sync files=2, longest=0.007 s, average=0.005 s; distance=0 kB, estimate=1221 kB; lsn=0/1A999D8, redo lsn=0/1A999A0
+
+C:\Users\Tsie Masilo\Desktop\Work\bulk_email_and_sms\bulk_mail\bulk_mail>podman exec -it db_bulk_mail psql -U bulkmail_user -d bulk_mail -c "SELECT 1"
+ ?column?
+----------
+        1
+(1 row)
+
+
+C:\Users\Tsie Masilo\Desktop\Work\bulk_email_and_sms\bulk_mail\bulk_mail>

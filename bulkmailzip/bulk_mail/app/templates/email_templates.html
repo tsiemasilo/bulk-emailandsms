@@ -1,0 +1,178 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+#tbl_preview {
+border: 0px solid transparent;
+}
+#tbl_preview tr {
+vertical-align: top;
+}
+#tbl_preview th {
+text-align: right;
+}
+</style>
+{% from "macros/summernote.html" import summernote_head with context %}
+{{ summernote_head("txt_body", version="-lite") }}
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}E-Mail Templates{% endblock %}</h2></span>
+<div class="content-container content">
+<div><button type="button" id="btn_add_email" value="Add Template">
+{{ icons.add_svg(s_label="add Template") }}
+Add Template
+</button></div>
+{% if emails %}
+<h3>Current E-mail Templates</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_emails">
+<thead>
+<tr>
+<th>Title</th><th>Subject</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{% for email in emails %}
+<tr>
+<td>{{ email.v_title }}</td><td>{{ email.v_subject }}</td>
+<td id="td_{{ email.id }}">
+<button type="button" class="btn_preview_email" value="Preview E-mail Template">{{ icons.view_svg(s_label="Preview E-mail Template") }}Preview E-mail Template</button>
+<button type="button" class="btn_edit_email" value="Edit E-mail Template">{{ icons.edit_svg(s_label="Edit E-mail Template") }}Edit E-mail Template</button>
+<button type="button" class="btn_remove_email" value="Remove E-mail Template">{{ icons.delete_svg(s_label="Remove E-mail Template") }}Remove E-mail Template</button>
+</td>
+</tr>
+{% endfor %}{# end of looping through emails #}
+</tbody>
+</table><!-- end of tbl_emails -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% endif %}{# end of checking if campaigns existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_preview"]) }}
+{# dlg divs below #}
+<div id="dlg_preview" aria-labeledby="spn_preview">
+<span id="spn_preview">E-Mail Template Preview</span><br>
+<table id="tbl_preview">
+<tr>
+<th>Title</th><td></td>
+</tr>
+<tr>
+<th>Subject</th><td></td>
+</tr>
+<tr>
+<th colspan="2">Body Preview</th>
+</tr>
+<tr>
+<td colspan="2"></td>
+</tr>
+</table>
+</div><!-- end of dlg_preview -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_preview = $("#dlg_preview").html();
+
+$("#btn_add_email").click( function() {
+    var s_url = "{{ url_for("main.email_template_editing", i_email_id=0) }}";
+    location.assign(s_url);
+});// end of #btn_add_email click event
+
+$("#tbl_emails").on("click", "button.btn_preview_email", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var s_url = '{{ url_for("main.email_template_details", i_email_id=99999) }}'.replace("99999", s_id);
+    $.get(s_url, function(o_data) {
+        if (typeof(o_data)=="object") {
+            $("#dlg_preview").html(s_dlg_preview);
+            $("#dlg_preview").redraw();
+            $($("#tbl_preview").find("td")[0]).text(o_data.v_title);
+            $($("#tbl_preview").find("td")[1]).text(o_data.v_subject);
+            $($("#tbl_preview").find("td")[2]).html(o_data.t_body);
+            $("#dlg_preview").redraw();
+            $("#dlg_preview").dialog("open");
+        } else {
+            do_alert(String(o_data));
+        }// end of typeof check
+    });// end of .get
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of .btn_preview_email click event inside tbl_emails
+
+$("#tbl_emails").on("click", "button.btn_edit_email", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var s_url = '{{ url_for("main.email_template_editing", i_email_id=99999) }}'.replace("99999", s_id);
+    location.assign(s_url);
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of .btn_edit_email click event inside tbl_emails
+
+$("#tbl_emails").on("click", "button.btn_remove_email", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var bl_confirm = confirm("Are you sure?");
+    if (bl_confirm) {
+        $("#hid_remove_email_id").val(s_id);
+        document.getElementById("frm_remove_email").submit();
+    }// end of confirmation check
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of .btn_remove_email click event inside tbl_emails
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.email_templates") }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+</form>
+{% if remove_form %}
+<form action="{{ url_for("main.email_templates") }}" method="post" id="frm_remove_email">
+{{ remove_form.csrf_token }}
+<input type="hidden" name="hid_page" value="{{ page }}">
+{{ remove_form.hid_remove_email_id }}
+</form>
+{% endif %}
+{% endblock %}

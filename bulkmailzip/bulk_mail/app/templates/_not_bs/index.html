@@ -1,0 +1,31 @@
+{% extends base %}
+
+{% block content %}
+<span class="title"><h2>{% block title %}Landing page{% endblock %}</h2></span>
+<div class="content">
+
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_client"]) }}
+{# dlg divs below #}
+<div id="dlg_client" aria-labeledby="spn_client">
+<span id="spn_client">Client details</span><br>
+Hello world
+</div><!-- end of dlg_client -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_client = $("#dlg_client").html();
+
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+{% endblock %}

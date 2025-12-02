@@ -1,0 +1,3 @@
+# cron job for mail sending
+*/5 * * * * root python3 /usr/src/app/bulk_mail_sending/bulk_mail.py
+

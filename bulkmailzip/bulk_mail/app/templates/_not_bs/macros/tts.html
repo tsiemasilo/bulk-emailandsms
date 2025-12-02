@@ -1,0 +1,125 @@
+{%- macro basic_tts() %}
+<script type="text/javascript" src="{{ url_for("static", filename="watch_out/js/articulate.min.js") }}"></script>
+<script type="text/javascript">
+<!--
+try {
+var bl_speaking = true;
+if (!("speechSynthesis" in window)) { do_alert("This browser does not support TTS output"); bl_speaking = false; }
+
+function speak(s_content) {
+    if (bl_speaking!=true) { alert(s_content); return false; }
+    speech = new SpeechSynthesisUtterance();
+    speech.text = s_content;
+    var rate = 1.10;
+    var pitch = 1;
+    var volume = 1;
+    speech.rate = rate;
+    speech.pitch = pitch;
+    speech.volume = volume;
+    window.speechSynthesis.speak(speech);
+}// end of speak function
+
+function pause() {
+ window.speechSynthesis.pause();
+};// end of pause
+
+function resume() {
+ window.speechSynthesis.resume();
+};// end of resume
+
+function stop() {
+ window.speechSynthesis.cancel();
+};// end of stop
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("TTS Error! " + s_err);
+}//end of catch
+-->
+</script>
+{% endmacro -%}
+
+
+{%- macro full_tts() %}
+<script type="text/javascript" src="{{ url_for("static", filename="watch_out/js/articulate.min.js") }}"></script>
+<script type="text/javascript">
+<!--
+try {
+
+var bl_speaking = true;
+if (!("speechSynthesis" in window)) { alert("This browser does not support TTS output"); bl_speaking = false; }
+
+var rate = 1.10;
+var pitch = 1;
+var volume = 1;
+var voices = [];
+var chrome = /chrome/i.test( navigator.userAgent );
+var edge = /edge/i.test( navigator.userAgent );
+var isChrome = ((chrome) && (!edge));
+
+// copied from articulate.js
+function voiceObj(name,language) {
+    this.name = name;
+    this.language = language;
+}// end of voiceObj object instantiation definition
+
+function populate_voice_list() {
+    voices = [];
+    var systemVoices = speechSynthesis.getVoices();
+    for(var i = 0; i < systemVoices.length ; i++) {
+        var s_name = systemVoices[i].name;
+        var s_lang = systemVoices[i].lang;
+        voices.push(new voiceObj(systemVoices[i].name,systemVoices[i].lang));
+    }        // end of looping through system voices
+        return voices;
+}// end of populate_voice_list function
+
+function speak(s_in) {
+    if (bl_speaking!=true) { alert("no speech!"); return false; }
+    s_content = (String(s_in).length>0) ? String(s_in) : "don't you want to hear me...?";
+    speech = new SpeechSynthesisUtterance();
+    speech.text = s_content;
+    if (!isNaN($("#rate").val())) { rate = Number($("#rate").val()); }
+    speech.rate = rate;
+    if (!isNaN($("#pitch").val())) { pitch = Number($("#pitch").val()); }
+    speech.pitch = pitch;
+    if (!isNaN($("#volume").val())) { volume = Number($("#volume").val()); }
+    speech.volume = volume;
+    // if (isChrome) { speech.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == "native"; })[0]; };
+    // if (voiceUserDefault !== undefined) { speech.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == voiceUserDefault; })[0]; };
+    if ($("#sel_voice").prop("selectedIndex")>-1) { speech.voice = speechSynthesis.getVoices().filter(function(voice) { return voice.name == $("#sel_voice").val(); })[0]; }
+    window.speechSynthesis.speak(speech);
+}// end of speak function
+
+function pause() {
+ window.speechSynthesis.pause();
+};// end of pause
+
+function resume() {
+ window.speechSynthesis.resume();
+};// end of resume
+
+function stop() {
+ window.speechSynthesis.cancel();
+};// end of stop
+
+$("input[class='btn_voices']").click( function(event) {
+    var s_which = String($(this).attr("id"));
+    if (s_which=="btn_pause") {
+        pause();
+    } else if (s_which=="btn_resume") {
+        resume();
+    } else if (s_which=="btn_stop") {
+        stop();
+    }
+});// end of input buttons click event
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("TTS Error! " + s_err);
+}//end of catch
+-->
+</script>
+{% endmacro -%}

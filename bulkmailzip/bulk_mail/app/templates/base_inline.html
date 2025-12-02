@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" type="image/x-icon" sizes="32x32" href="{{ url_for("static", filename="bulk_mail/favicon.ico") }}">
+{% if js %}
+<script type="text/javascript" src="{{ url_for("static", filename="bulk_mail/js/jquery.js") }}"></script>
+<script type="text/javascript">
+var do_alert;
+
+$(document).ready( function() {
+try {
+
+do_alert = function(s_in) {
+	s_in = String(s_in).replace("\n", "<br />");
+	$("#div_alert").show();
+	//document.getElementById("div_alert").innerHTML = s_in;
+	$("#div_alert").html(s_in);
+}//end of do_alert function
+
+$.fn.redraw =function(){
+	$(this).each(function(){var redraw =this.offsetHeight;});
+};//end of $.fn.redraw function
+
+var s_server_url = "{{ url }}";
+$.each($("ul.nav").find("a"), function(ix, a) {
+    if (s_server_url.endsWith($(a).attr("href"))) { $(a).attr("aria-current", "true"); } else { $(a).attr("aria-current", ""); }
+});// end of .each on nav links
+// alert([s_url, s_server_url]);
+
+var s_msg = "";
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+s_msg = "{{ messages[-1] }}";
+{% endif %}
+{% endwith %}
+if (String(s_msg).length>0) {
+    window.setTimeout( function() {
+    $("#div_alert").toggleClass("warning");
+    do_alert(s_msg);
+    }, 300);
+}
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});//end of document ready
+</script>
+{% endif %}{# end of js check #}
+<title>C.V. Database - {% block title %}{% endblock %}</title>
+<!-- static/bulk_mail/css/styles.css -->
+<style>
+@font-face {
+font-family: CaviarDreams;
+src:
+local("CaviarDreams"),
+url("{{ url_for("static", filename="bulk_mail/css/alteram/CaviarDreams.woff") }}") format("woff"),
+url("{{ url_for("static", filename="bulk_mail/css/alteram/CaviarDreams.ttf") }}") format('truetype');
+font-weight: normal;
+}
+@font-face {
+font-family: CaviarDreams;
+src:
+local("CaviarDreams"),
+url("{{ url_for("static", filename="bulk_mail/css/alteram/CaviarDreams_Bold.woff") }}") format("woff"),
+url("{{ url_for("static", filename="bulk_mail/css/alteram/CaviarDreams_Bold.ttf") }}") format('truetype');
+font-weight: bold;
+font-style: normal;
+}
+
+:root {
+--primary-color: rgb(39, 37, 92);
+--accent-color: rgb(250, 122, 30);
+--accent-light: rgba(250, 122, 30, 0.8);
+--accent-lighter: rgba(250, 122, 30, 0.1);
+--background-color: white;
+--table-header-bg: rgba(39, 37, 92, 0.9);
+--table-row-hover: rgba(250, 122, 30, 0.05);
+--table-border: rgba(39, 37, 92, 0.2);
+} /* end of :root */
+
+* {
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+} /* end of * */
+
+body {
+font-family: CaviarDreams, Arial, sans-serif;
+background-color: var(--background-color);
+color: var(--primary-color);
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+} /* end of body */
+
+.background-container {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+background-image: url("{{ url_for("static", filename="bulk_mail/css/alteram/alteram1_1_600x197.png") }}");
+background-repeat: no-repeat;
+background-position: center;
+background-attachment: fixed;
+background-size: contain;
+z-index: -1;
+opacity: 0.15;
+} /* end of .background-container */
+
+h2 {
+font-family: CaviarDreams, Arial, sans-serif;
+font-size: 14pt;
+background-color: white;
+color: rgb(39, 37, 92);
+} /* end of h2 */
+
+.title h2 {
+font-family: CaviarDreams, Arial, sans-serif;
+color: var(--primary-color);
+font-size: 2rem;
+margin-bottom: 2rem;
+text-align: center;
+} /* end of .title h2 */
+
+nav {
+display: flex;
+align-items: center;
+} /* end of nav */
+
+ul.nav {
+list-style: none;
+display: flex;
+gap: 1rem;
+justify-content: center;
+} /* end of ul.nav */
+
+ul.nav li a {
+color: var(--accent-color);
+text-decoration: none;
+font-weight: 600;
+padding: 0.75rem 1.5rem;
+border-radius: 4px;
+transition: all 0.3s ease;
+background-color: transparent;
+border: 2px solid var(--accent-color);
+} /* end of ul.nav li a */
+
+ul.nav li a:hover,
+ul.nav li a[aria-current="true"] {
+background-color: var(--accent-color);
+color: white;
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(250, 122, 30, 0.2);
+} /* end of combination of ul.nav li a:hover, ul.nav li a[aria-current="true"] */
+
+main {
+padding-top: 250px;
+min-height: calc(100vh - 100px);
+justify-content: center;
+} /* end of main */
+
+a {
+color: rgb(250,122,30);
+} /* end of a */
+
+a.visited {
+color: rgb(250,122,30);
+} /* end of a.visited */
+
+#tbl_layout {
+border: 0px solid transparent;
+} /* end of #tbl_layout */
+
+#tbl_layout td {
+text-align: left;
+} /* end of #tbl_layout td
+
+.td_nav {
+width: 20%;
+} /* end of td.nav */
+
+.td_top {
+vertical-align: top;
+} /* end of .td_top */
+
+div {
+line-height: 1.2;
+margin-bottom: 10px;
+} /* end of div */
+
+
+table.multirow {
+border: 2px solid DimGray;
+}
+
+table.multirow tr {
+vertical-align: top;
+}
+
+table.multirow th {
+text-align: left;
+border: 1px solid DimGray;
+}
+
+table.multirow td {
+text-align: left;
+border: 1px solid DimGray;
+}
+
+.header-container {
+display: flex;
+flex-direction: column;
+gap: 1rem;
+padding: 5 2rem;
+justify-content: space-between;
+max-width: 1140px;
+margin: 0 auto;
+align-items: center;
+} /* end of .header-container */
+
+.logo-area {
+width: 180px;
+height: 60px;
+background-image: url("{{ url_for("static", filename="bulk_mail/css/alteram/alteram1_1_600x197.png") }}");
+background-size: contain;
+background-repeat: no-repeat;
+background-position: left center;
+margin-left: -250px;
+} /* end of .logo-area */
+
+.content-container {
+max-width: 1140px;
+margin: 2rem auto;
+padding: 0 2rem;
+} /* end of .content-container */
+
+.table-container {
+background: rgba(255, 255, 255, 0.95);
+border-radius: 8px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+overflow: hidden;
+margin: 2rem auto;
+width: 100%; /* Increased width */
+max-width: 1400px; /* Optional: limit max width */
+display: flex;
+justify-content: center; /* centers the table */
+padding: 2rem;
+} /* end of .table-container */
+
+.data-table {
+width: 90%; /* increase or adjust to 100% if needed */
+border-collapse: collapse;
+border: 1px solid var(--table-border);
+background-color: rgba(255, 255, 255, 0.95);
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+border-radius: 8px;
+overflow: hidden;
+} /* end of .data-table */
+
+.data-table th {
+background-color: var(--table-header-bg);
+color: white;
+padding: 1rem;
+font-weight: bold;
+border: 1px solid rgba(39, 37, 92, 0.2);
+text-align: left;
+} /* end of .data-table th */
+
+.data-table td {
+padding: 1rem;
+border-bottom: 1px solid var(--table-border);
+border: 1px solid rgba(39, 37, 92, 0.2);
+text-align: left;
+} /* end of .data-table td */
+
+.data-table tbody tr:hover {
+background-color: var(--table-row-hover);
+} /* end of .data-table tbody tr:hover */
+
+#div_alert {
+position: fixed;
+bottom: 20px;
+left: 50%;
+transform: translateX(-50%);
+background-color: var(--accent-color);
+color: white;
+padding: 1rem 2rem;
+border-radius: 4px;
+z-index: 1000;
+display: none;
+max-width: 80%;
+box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+} /* end of #div_alert */
+
+#div_alert.warning {
+background-color: #e53e3e;
+} /* end of #div_alert.warning */
+
+.content {
+flex: 1;
+max-width: 500px;
+margin: 2rem auto;
+padding: 2rem;
+background: rgba(255, 255, 255, 0.95);
+border-radius: 8px;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+} /* end of .content */
+
+@media (max-width: 768px) {
+.content {
+margin: 1rem;
+padding: 1.5rem;
+} /* end of .content inside media ? */
+} /* end of @media (max-width: 768px) */
+
+header {
+background-color: rgba(255, 255, 255, 0.95);
+padding: 1rem 0;
+box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+position: fixed;
+width: 100%;
+top: 0;
+z-index: 100;
+} /* end of header */
+
+ul.nav li {
+display: inline-block;
+} /* end of ul.nav li */
+
+form {
+display: flex;
+flex-direction: column;
+gap: 1.5rem;
+} /* end of form */
+
+label {
+color: var(--primary-color);
+font-weight: bold;
+display: block;
+margin-bottom: 0.5rem;
+} /* end of label */
+
+input[type="text"],
+input[type="password"] {
+width: 100%;
+padding: 0.75rem;
+border: 2px solid rgba(39, 37, 92, 0.2);
+border-radius: 4px;
+font-family: inherit;
+font-size: 1rem;
+transition: border-color 0.3s ease;
+ /* end of input[type="text"], input[type="password"]} */
+
+input[type="text"]:focus,
+input[type="password"]:focus {
+outline: none;
+border-color: var(--accent-color);
+} /* end of input[type="text"]:focus, input[type="password"]:focus */
+
+input[type="submit"] {
+background-color: var(--accent-color);
+color: white;
+border: none;
+padding: 1rem;
+border-radius: 4px;
+font-family: inherit;
+font-weight: bold;
+font-size: 1rem;
+cursor: pointer;
+transition: all 0.3s ease;
+} /* input[type="submit */
+
+input[type="submit"]:hover {
+transform: translateY(-2px);
+box-shadow: 0 4px 12px rgba(250, 122, 30, 0.2);
+} /* end of input[type="submit"]:hover */
+
+</style>
+
+<style>
+.data-table th { /* my own */
+color: white;
+}
+</style>
+{% block head_extra %}{% endblock head_extra %}
+</head>
+<body>
+{% from "macros/console.html" import console_replacement %}
+{# { console_replacement() } #}
+<header>
+<div class="header-container">
+<div class="logo-area"></div>
+<nav>
+<ul class="nav" role="navigation">
+{% if current_user %}
+<li><a href="{{ url_for("main.index") }}">Landing page</a></li>
+{% if current_user.bl_admin %}
+<li><a href="{{ url_for("main.qualifications") }}">Qualifications</a></li>
+<li><a href="{{ url_for("main.roles") }}">Positions | Roles</a></li>
+<li><a href="{{ url_for("main.users") }}">Access User Profiles</a></li>
+{% endif %}{# end of checking for bl_admin #}
+{% if current_user.bl_capture or current_user.bl_admin %}
+<li><a href="{{ url_for("main.capture_record") }}">Capture record</a></li>
+{% endif %}{# end of checking if either bl_capture or bl_admin #}
+<li><a href="{{ url_for("auth.logout") }}">Logout</a></li>
+{% else %}
+<li><a href="{{ url_for("auth.login") }}">Login</a></li>
+{% endif %}
+</ul>
+</nav>
+</div><!-- end of div.header-container -->
+</header>
+
+<main>
+<div class="background-container"></div>
+<div class="content-container content">
+<div id="div_alert" style="text-align: center;" aria-live="assertive">&nbsp;</div>
+{% block content %}{% endblock %}
+</div><!-- end of div.content -->
+</main>
+</body>
+</html>

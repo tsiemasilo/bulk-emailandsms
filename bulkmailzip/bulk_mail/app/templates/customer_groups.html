@@ -1,0 +1,172 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+#ol_values {
+font-size: smaller;
+}
+#ol_values > li {
+display: inline-block;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Customer Groups - {{ company_name }}{% endblock %}</h2></span>
+<div class="content-container content">
+<div>
+<button type="button" id="btn_add_group" value="Add Group">{{ icons.add_svg(s_label="Add Group") }}Add Group</button>
+</div><!-- end of buttons for actions -->
+{% if groups %}
+<h3>Customer Groups</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_groups">
+<thead>
+<tr>
+<th>Group Name</th><th>Description</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{% for group in groups %}
+<tr>
+<td>{{ group.v_group_name }}</td><td>{{ group.v_description }}</td>
+<td id="td_{{ group.id }}">
+<button type="button" class="btn_edit_group" value="Edit Group">{{ icons.edit_svg(s_label="Edit Group") }} Edit Group</button>
+<button type="button" class="btn_remove_group" value="Remove Group">{{ icons.delete_svg(s_label="Remove Group") }} Remove Group</button>
+<button type="button" class="btn_group_customers" value="Group Customers">{{ icons.settings_svg(s_label="Group Customers") }} Group Customers</button>
+</td>
+</tr>
+{% endfor %}{# end of looping through groups #}
+</tbody>
+</table><!-- end of tbl_groups -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% endif %}{# end of checking if groups existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_group"]) }}
+{# dlg divs below #}
+<div id="dlg_group" aria-labeledby="spn_group">
+<span id="spn_group">Group details</span><br>
+<form action="{{ url_for("main.customer_groups", i_company_id=company_id) }}" method="post" id="frm_group">
+{{ group_form.csrf_token }}
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{{ group_form.hid_group_id }}
+<ul>
+<li>{{ group_form.txt_group_name.label }}&nbsp;{{ group_form.txt_group_name }}</li>
+<li>{{ group_form.txt_group_description.label }}&nbsp;{{ group_form.txt_group_description }}</li>
+</ul>
+<button type="submit" name="btn_save_group" value="Save Group">{{ icons.save_svg(s_label="Save Group") }} Save Group</button>
+</form>
+</div><!-- end of dlg_group -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_group = $("#dlg_group").html();
+
+$("#btn_add_group").click( function() {
+    $("#dlg_group").html(s_dlg_group);
+    $("#dlg_group").redraw();
+    $("#dlg_group").dialog("open");
+});// end of #btn_add_group click event
+
+$("#tbl_groups").on("click", "button.btn_edit_group", function() {
+try {
+    $("#dlg_group").html(s_dlg_group);
+    $("#dlg_group").redraw();
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var s_url = "{{ url_for("main.group_details", i_group_id=99999) }}".replace("99999", s_id);
+    $.get(s_url, function(o_data) {
+        if (typeof(o_data)=="object") {
+            $("#hid_group_id").val(s_id);
+            $("#txt_group_name").val(o_data.v_group_name);
+            $("#txt_group_description").val(o_data.v_description);
+            $("#dlg_group").redraw();
+            $("#dlg_group").dialog("open");
+        } else {
+            alert("Error! " + String(o_data));
+        }// end of checking if o_data is an object
+    });// end of .get
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_edit_customer click event inside tbl_customers
+
+$("#tbl_groups").on("click", "button.btn_remove_group", function() {
+try {
+    var bl_confirm = confirm("Are you sure? - Removing a group will not remove customers assigned to it, but just the group designation");
+    if (bl_confirm) {
+        var td_parent = $(this).parent();
+        var s_id = String($(td_parent).attr("id")).replace("td_", "");
+        $("#hid_remove_group_id").val(s_id);
+        document.getElementById("frm_remove_group").submit();
+    }// end of confirmation check
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_remove_group click event inside tbl_groups
+
+$("#tbl_groups").on("click", "button.btn_group_customers", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var s_url = "{{ url_for("main.group_customers", i_group_id=99999) }}".replace("99999", s_id);
+    window.location.assign(s_url);
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_group_customers click event inside tbl_groups
+
+
+
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.customer_groups", i_company_id=company_id) }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+</form>
+{% if remove_form %}
+<form action="{{ url_for("main.customer_groups", i_company_id=company_id) }}" method="post" id="frm_remove_group">
+{{ remove_form.csrf_token }}
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{{ remove_form.hid_remove_group_id }}
+</form>
+{% endif %}
+{% endblock %}

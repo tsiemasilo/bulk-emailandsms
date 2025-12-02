@@ -1,0 +1,112 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+</style>
+{% from "macros/summernote.html" import summernote_head with context %}
+{{ summernote_head("txt_body", version="-lite") }}
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<div role="nav"><button type="button" onclick="location.assign('{{ url_for("main.email_templates") }}');" value="Back">{{ icons.back_svg(s_label="Back") }} Back</button></div>
+<span class="title"><h2>{% block title %}Edit E-Mail Template Contents{% endblock %}</h2></span>
+<div class="content-container content">
+<h3>E-mail Templates</h3>
+<form action="{{ url_for("main.email_template_editing", i_email_id=email_id) }}" method="post" id="frm_email">
+{{ form.csrf_token }}
+
+<div class="table-container">
+<table class="data-table" id="tbl_email">
+<tr>
+<th>{{ form.txt_title.label }}</th><td>{{ form.txt_title }}</td>
+</tr>
+<tr>
+<th>{{ form.txt_subject.label }}</th><td>{{ form.txt_subject }}</td>
+</tr>
+<tr>
+<th><label for="sel_tag">Database content</label></th><td><select id="sel_tag">{% for tag in tags %}
+<option value="||{{ tag }}||">{{ tag }}</option>
+{% endfor %}</select><button type="button" id="btn_insert_tag" value="+" aria-label="insert content">+</button></td>
+</tr>
+<tr>
+<th>Add click-through link</th><td style="position: relative;"><button type="button" id="btn_click_through" value="Add Click-Through">{{ icons.add_svg(s_label="Add Click-Through") }}Add Click-Through</button>
+<div style="display: none; position: absolute; top:30px; left: 50px; backdrop-filter: blur(10px);" id="div_click_through">
+<ul>
+<li><label for="txt_click_text">Visible text</label><input type="text" id="txt_click_text" value=""></li>
+<li><label for="txt_click_url">Destination URL</label><input type="url" id="txt_click_url" value=""></li>
+</ul>
+<button type="button" id="btn_insert_click_through" value="Insert click-through">{{ icons.save_svg(s_label="Insert Click-through") }} Insert Click-through</button><button type="button" id="btn_cancel_click_through" value="Cancel">{{ icons.delete_svg(s_label="Cancel") }} Cancel</button>
+</div>
+</td>
+</tr>
+<tr style="vertical-align: top;">
+<th>{{ form.txt_body.label }}</th>
+<td>{{ form.txt_body }}</td>
+</tr>
+</table><!-- end of tbl_email -->
+</div><!-- end of div.table-container -->
+<button type="submit" form="frm_email" name="btn_save_email" id="btn_save_email" value="Save E-mail Template">{{ icons.save_svg(s_label="Save E-mail Template") }} Save E-mail Template</button>
+</form>
+
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_email"]) }}
+{# dlg divs below #}
+<div id="dlg_email" aria-labeledby="spn_email">
+<span id="spn_email">E-Mail Template Details</span><br>
+<div>Hello world...</div>
+</div><!-- end of dlg_email -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_email = $("#dlg_email").html();
+
+$("#btn_insert_tag").click( function(event) {
+    event.preventDefault();
+    var s_tag = ($("#sel_tag").prop("selectedIndex")>=0) ? String($("#sel_tag").val()) : $($("#sel_tag").children("option")[0]).attr("value");
+    $("#txt_body").summernote("editor.insertText", s_tag);
+    $("#txt_body").summernote("focus");
+});// end of btn_insert_tag click event
+
+$("#btn_click_through").click( function(event) {
+    event.preventDefault();
+    $("#txt_click_text").val(""); $("#txt_click_url").val("https://");
+    $("#div_click_through").show();
+    $("#txt_click_text").focus();
+});// end of btn_click_through click event
+
+$("#btn_cancel_click_through").click( function(event) {
+    event.preventDefault();
+    $("#div_click_through").hide();
+    $("#btn_click_through").focus();
+});// end of btn_cancel_click_through click event
+
+$("#btn_insert_click_through").click( function(event) {
+    event.preventDefault();
+    var s_text = String($("#txt_click_text").val());
+    var s_url = String($("#txt_click_url").val());
+    $("#txt_body").summernote("createLink", {text: s_text, url: s_url, isNewWindow: true, title: "||##redirect##||"});
+    $("#div_click_through").hide();
+    $("#txt_click_text").val(""); $("#txt_click_url").val("");
+    $("#txt_body").focus();
+});// end of btn_insert_click through click event
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+{% endblock %}

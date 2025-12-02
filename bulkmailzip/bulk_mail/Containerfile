@@ -1,0 +1,54 @@
+# Use a single, larger image for simplicity and dependency guarantee
+FROM python:3.12
+
+# Set the working directory first
+WORKDIR /usr/src/app
+
+# Install ONLY necessary system dependencies (gcc for compiling, postgresql-client, dos2unix)
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends gcc postgresql-client dos2unix
+# leaving out these two for now - cron bash
+RUN rm -rf /var/lib/apt/lists/*
+
+# Copy requirements and install all Python dependencies
+COPY requirements.txt .
+# Pip installs Gunicorn and all other Python dependencies into /usr/local/lib/python3.10/site-packages
+RUN pip install --no-cache-dir -r requirements.txt
+
+# The gunicorn dependency is handled above, so remove the duplicate line:
+# run pip install gunicorn 
+
+# The ENV PYTHONPATH is generally unnecessary for standard pip installs in this base image, but harmless.
+# ENV PYTHONPATH=/usr/src/app:/usr/local/lib/python3.10/site-packages:$PYTHONPATH
+ENV PYTHONPATH=/usr/src/app:$PYTHONPATH
+
+# Copy all application source files
+COPY . .
+# copy bash shell scripts and cron job file to another to avoid overriding when mapping local file system
+COPY bulk_mail.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/bulk_mail.sh
+COPY bulk_mail_sending/bulk_mail_sending.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/bulk_mail.sh
+COPY bulk_mail_sending/cronfile.cronjob /usr/local/bin/
+# copy .sql file to another path to avoid override
+RUN mkdir -p /usr/local/bulk_mail_data
+COPY bulk_mail.sql /usr/local/bulk_mail_data/
+
+# run additional pip install against bulk_mail_sending/requirements.txt
+RUN pip install --no-cache-dir -r bulk_mail_sending/requirements.txt
+
+# Ensure the entrypoint and cron scripts use Unix line endings (Crucial for Windows dev)
+# RUN dos2unix bulk_mail.sh
+RUN dos2unix /usr/local/bin/bulk_mail.sh
+RUN dos2unix /usr/local/bin/bulk_mail_sending.sh
+RUN dos2unix /usr/local/bin/cronfile.cronjob
+
+# Make the entrypoint and cron scripts executable
+# RUN chmod +x /usr/local/bin/bulk_mail.sh
+RUN chmod +x /usr/local/bin/bulk_mail_sending.sh
+
+# Expose the Gunicorn default port
+EXPOSE 5000
+
+# The entrypoint will now be the shell script
+ENTRYPOINT ["/usr/local/bin/bulk_mail.sh"]

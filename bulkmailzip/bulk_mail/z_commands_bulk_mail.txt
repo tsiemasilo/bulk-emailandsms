@@ -1,0 +1,134 @@
+================================================================================
+BULK MAIL POD - PODMAN SETUP INSTRUCTIONS
+================================================================================
+
+All commands below should be run in command line/terminal from inside the 
+bulk_mail folder where the downloaded files are located.
+
+--------------------------------------------------------------------------------
+STEP 1: BUILD THE FLASK APPLICATION IMAGE
+--------------------------------------------------------------------------------
+podman build -t bulk_mail_app:latest .
+
+--------------------------------------------------------------------------------
+STEP 2: CREATE NETWORK FOR CONTAINER COMMUNICATION
+--------------------------------------------------------------------------------
+podman network create bulk_mail_net
+
+--------------------------------------------------------------------------------
+STEP 3: CREATE THE POD WITH PORT MAPPINGS
+--------------------------------------------------------------------------------
+# Flask app will be available from port 5002
+# PostgreSQL database will be available from port 5434
+podman pod create --name bulk_mail_pod --network bulk_mail_net -p 5002:5000 -p 5434:5432
+
+--------------------------------------------------------------------------------
+STEP 4: CREATE POSTGRESQL CONTAINER INSIDE THE POD
+--------------------------------------------------------------------------------
+# Creates PostgreSQL 16 container with:
+# - Container name: db_bulk_mail (used as hostname inside pod)
+# - Database: bulk_mail
+# - User: bulkmail_user
+# - Password: bUlK-123
+# - Persistent volume: bulk_mail_db_data
+podman create --pod bulk_mail_pod --name db_bulk_mail -e POSTGRES_USER=bulkmail_user -e POSTGRES_PASSWORD=bUlK-123 -e POSTGRES_DB=bulk_mail -v bulk_mail_db_data:/var/lib/postgresql/data postgres:16-alpine
+
+--------------------------------------------------------------------------------
+STEP 5: CREATE APP CONTAINER INSIDE THE POD
+--------------------------------------------------------------------------------
+# Creates the Flask app container using the image built in Step 1
+# Loads environment variables from .env file
+podman create --pod bulk_mail_pod --name app_bulk_mail --env-file .env bulk_mail_app:latest
+
+--------------------------------------------------------------------------------
+STEP 6: START THE POD
+--------------------------------------------------------------------------------
+podman pod start bulk_mail_pod
+
+# If successful, this will output the pod name
+
+--------------------------------------------------------------------------------
+ACCESS THE APPLICATION
+--------------------------------------------------------------------------------
+After starting the pod:
+- Flask App:  http://localhost:5002/bulk_mail/
+- Database:   localhost:5434 (for external tools like pgAdmin, DBeaver)
+
+Database connection details for external tools:
+- Host: localhost
+- Port: 5434
+- Database: bulk_mail
+- Username: bulkmail_user
+- Password: bUlK-123
+
+================================================================================
+MANAGEMENT COMMANDS
+================================================================================
+
+# Stop the pod
+podman pod stop bulk_mail_pod
+
+# Start the pod again
+podman pod start bulk_mail_pod
+
+# View all running containers
+podman ps
+
+# View all containers (including stopped)
+podman ps -a
+
+# View all pods
+podman pod ps
+
+# Stream live logs from the Flask app container
+podman logs -f app_bulk_mail
+
+# Interactive shell inside the Flask app container
+podman exec -it app_bulk_mail /bin/bash
+# Type 'exit' or press Ctrl+D to exit the shell
+
+================================================================================
+CLEANUP COMMANDS
+================================================================================
+
+# Forcefully remove pod and all its containers
+podman pod rm -f bulk_mail_pod
+
+# Remove the image that was generated
+podman image rm bulk_mail_app
+
+# Remove the network
+podman network rm bulk_mail_net
+
+# Remove the database volume (WARNING: This deletes all database data!)
+podman volume rm bulk_mail_db_data
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+If the app doesn't start, check the logs:
+podman logs app_bulk_mail
+
+If database connection fails, check if postgres is running:
+podman logs db_bulk_mail
+
+To rebuild after code changes:
+1. podman pod stop bulk_mail_pod
+2. podman pod rm -f bulk_mail_pod
+3. podman image rm bulk_mail_app
+4. podman build -t bulk_mail_app:latest .
+5. Then repeat steps 3-6 above
+
+================================================================================
+RUNNING EMAIL SENDING (MANUAL)
+================================================================================
+
+From inside the app container, you can manually run the email sending script:
+podman exec -it app_bulk_mail /bin/bash -c "cd /usr/src/app/bulk_mail_sending && python3 bulk_mail.py"
+
+Or with interactive shell:
+podman exec -it app_bulk_mail /bin/bash
+cd /usr/src/app/bulk_mail_sending
+python3 bulk_mail.py
+exit

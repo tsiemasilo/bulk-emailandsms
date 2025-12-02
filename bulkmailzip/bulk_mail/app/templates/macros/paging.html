@@ -1,0 +1,27 @@
+{% macro paging_basics() -%}
+<div class="paging" style="color: dark-blue; font-size: smaller;">
+<div>Paging...</div>
+
+{#
+{% if paging.has_prev %}
+<!-- prev_num --><span><a class="a_page_number" href="#{{ paging.prev_num }}"{{ "<<" }}</a></span>
+{% endif %}
+#}
+
+{% for number in paging.iter_pages() %}
+{% if paging.page != number %}
+<!-- page_num --><span><a class="a_page_number" href="#{{ number }}">{{ number }}</a></span>&nbsp;&nbsp;
+{% else %}
+<!-- current_num --><span class="current-page-number">{{ number }}</span>&nbsp;&nbsp;
+{% endif %}
+{% endfor %}
+
+{#
+{% if paging.has_next %}
+<span>
+<!-- next_num --><a class="a_page_number" href="#{{ paging.next_num }}">{{ ">>" }}</a></span>
+{% endif %}
+#}
+
+</div><!-- end of div.paging -->
+{%- endmacro %}

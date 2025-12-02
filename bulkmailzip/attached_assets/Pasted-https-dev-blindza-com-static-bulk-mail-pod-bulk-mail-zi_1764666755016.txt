@@ -1,0 +1,95 @@
+https://dev.blindza.com/static/bulk_mail_pod/bulk_mail.zip
+
+https://dev.blindza.com/static/bulk_mail_pod/z_commands_bulk_mail.txt
+
+ 
+
+The repo that contains the same files as the .zip file, and could be used for interaction later on - just sending .zip file in case/anyway is here - gogs offering web-interface as well as git client interaction:
+
+http://blindza.com:3000/rogerwilco/bulk_mail_pod
+
+ 
+
+Think provided you with credentials to log on there a little while ago, or else can provide you with password again if you need it - user ID was tsie_masilo, if relevant.
+
+ 
+
+Alternatively, from command line, the git commands to set it up/clone it should be the following collection - if you need/want these - from within the console in an empty folder where you want to store it - these won't override any normal git client creds, but store these specific to this repo instance:
+
+git init
+
+git config user.email "Tsie.Masilo@alteram.co.za"
+
+git config user.name "tsie_masilo"
+
+git remote add origin http://blindza.com:3000/rogerwilco/bulk_mail_pod
+
+git pull origin master
+
+ 
+
+Think that will collect all files from repo - let me know if that works, and you should then be able to use whatever git client you prefer on that repo folder then - it won't necesarily require password authentication immediately during process - possibly only if you try to push/commit changes, but this repo is marked as a collaboration between our identities - should be anyway.
+
+ 
+
+Anyway, in terms of actual pod instance, first check out the contents of the zip file, and more importantly the commands text file - sure you can replicate all of that behaviour from the podman desktop UI, but, your choice - effectively, what it does is generate a code/app image = bulk_mail_app - creates a form of internal network for the two containers that will be running inside the pod to communicate via = bulk_mail_net - and then creates a pod which is instructed to route internal traffic towards ports 5000 and 5432 (flask application and postgresql database), and you then create a container running inside the pod, based on the dockerised/standard image of a postgresql database, passing it environment variables that relate to default database details/credentials.
+
+ 
+
+The sort of last step is then to create a container based on the custom image you built/generated in first step, and add it to run inside the pod - will provide explanation of some of the files inside that image/folder that are specifically relevant in this context, but the z_commands_bulk_mail.txt file outlines each of the commands to be executed from command line up to the podman pod start bulk_mail_pod command which launches it – others that are important after that are to do with viewing output log and possibly shell interaction – check it out.
+
+ 
+
+- .containerignore is the file telling podman which files to ignore when building an image and .gitignore is the same for git clients.
+
+- .env is a file that loads environment variables on startup
+
+- containerfile is more or less the image-building instructions/set of commands that are used to initiate the image
+
+- bulk_mail.sh is a bash script - similar to a dos/windows batch file with instructions it carries out on startup - it is marked as ENTRYPOINT inside the containerfile, and it populates the clean/empty database from bulk_mail.sql file, and then launches the gunicorn WSGI wrapper around the flask app
+
+- wsgi.py is the python module/wrapper/contaner file that gets sort of instantiated by gunicorn and it loads an instance of the flask application from the ./app folder
+
+- requirements.txt is the list of modules the software needs to be able to make use of during runtime
+
+- bulk_mail.sql is the pg_dump .sql script to create database structures, etc.
+
+ 
+
+Otherwise, inside ./app is the same/standard flask web application have running on the server normally - also wrapped/delivered via gunicorn and nginx web server together, but the structure inside there is all standard for the blueprinted version of flask work with normally - all markup files are inside ./app/templates, and all static content is inside ./app/static/bulk_mail, and most of the actual code that handles interaction from the server-side is in the auth, main and models folders - auth and main contain end-point code, and models relates to ORM interaction with database.  What was talking about in terms of style-sheeting is in ./templates/combined_styles.css - it also has some dynamic content inside it and is included in all the template files at run-time, and most of them are based on base.html - it is the base template for all pages.
+
+ 
+
+There are also various jinja macros inside the ./templates/macros folder, including the ones that I derive/generate button icon images using, pulling static icons from the ./static/bulk_mail/action_icons folder - the additional bulk_mail in the static path relates to when this is running on a server alongside other apps inside a nginx server container/block, etc.
+
+ 
+
+One other thing is that while it’s running inside this pod container, web output will not get updated by changes until you re-genrate the image and restart the pod – first command in the commands text file to generate image, and then you might need to re-add it to pod and tried sorting out live update reflection but didn’t seem to want to cooperate all the time – experiment?
+
+ 
+
+On that note, if your setup of python virtual environments was working, from within the same folder where all of the above happens, if you did something like run the following sets of commands, with python 3.12 installed on your machine, it _might_ run it the same way I do when developing it - but, you'd need to have an instance of postgresql available as well, with contents of bulk_mail.sql inserted, etc.:
+
+python -m venv venv
+
+venv\Scripts\activate.bat
+
+python -m pip install --update pip
+
+python -m pip install -r requirements.txt
+
+# last one to launch software
+
+flask run --debug --host localhost --port 5000
+
+ 
+
+Same way, the flask app itself will not handle e-mail delivery - the bulk_mail_sending folder has it's own requirements.txt file, and the main code is inside the ./bulk_mail_sending/bulk_mail.py file - on the server I have it set up to run as a cron job every 5 minutes, but inside the pod you would probably need to execute it manually against the internal database - either from within the interactive shell, or from outside, working via port 5434 to access the internal database while bulk_mail_pod is running.
+
+ 
+
+Overall, just have a look at all of this, and feel free to ask any questions.
+
+ 
+
+Lastly, still fiddling around with putting podman/docker containers in place on a ubuntu server, and haven't got an open channel for you to access it on my internal dev server as of yet, which is why have just put that repo up on dev.blindza.com for now.

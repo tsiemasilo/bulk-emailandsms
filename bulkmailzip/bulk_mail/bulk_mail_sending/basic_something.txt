@@ -1,0 +1,63 @@
+s = """
+for msg in mailbox.fetch():  # generator: imap_tools.MailMessage
+    msg.uid          # str | None: '123'
+    msg.subject      # str: 'some subject ? ??????'
+    msg.from_        # str: 'Bartölke@ya.ru'
+    msg.to           # tuple: ('iam@goo.ru', 'friend@ya.ru', )
+    msg.cc           # tuple: ('cc@mail.ru', )
+    msg.bcc          # tuple: ('bcc@mail.ru', )
+    msg.reply_to     # tuple: ('reply_to@mail.ru', )
+    msg.date         # datetime.datetime: 1900-1-1 for unparsed, may be naive or with tzinfo
+    msg.date_str     # str: original date - 'Tue, 03 Jan 2017 22:26:59 +0500'
+    msg.text         # str: 'Hello ? ??????'
+    msg.html         # str: '<b>Hello ? ??????</b>'
+    msg.flags        # tuple: ('\\Seen', '\\Flagged', 'ENCRYPTED')
+    msg.headers      # dict: {'received': ('from 1.m.ru', 'from 2.m.ru'), 'anti-virus': ('Clean',)}
+    msg.size_rfc822  # int: 20664 bytes - size info from server (*useful with headers_only arg)
+    msg.size         # int: 20377 bytes - size of received message
+
+    for att in msg.attachments:  # list: imap_tools.MailAttachment
+        att.filename             # str: 'cat.jpg'
+        att.payload              # bytes: b'\xff\xd8\xff\xe0\'
+        att.content_id           # str: 'part45.06020801.00060008@mail.ru'
+        att.content_type         # str: 'image/jpeg'
+        att.content_disposition  # str: 'inline'
+        att.part                 # email.message.Message: original object
+        att.size                 # int: 17361 bytes
+
+    msg.obj              # email.message.Message: original object
+    msg.from_values      # imap_tools.EmailAddress | None
+    msg.to_values        # tuple: (imap_tools.EmailAddress,)
+    msg.cc_values        # tuple: (imap_tools.EmailAddress,)
+    msg.bcc_values       # tuple: (imap_tools.EmailAddress,)
+    msg.reply_to_values  # tuple: (imap_tools.EmailAddress,)
+    # EmailAddress(name='Ya', email='im@ya.ru')  # "full" property = 'Ya <im@ya.ru>'
+>> Search criteria
+ 
+from imap_tools import AND
+
+mailbox.fetch(AND(subject='weather'))  # query, the str-like object
+mailbox.fetch('TEXT "hello"')          # str
+mailbox.fetch(b'TEXT "\xd1\x8f"')      # bytes
+>> Mailbox actions
+ 
+with MailBox('imap.mail.com').login('test@mail.com', 'pwd', initial_folder='INBOX') as mailbox:
+
+    # COPY messages with uid in 23,27 from current folder to folder1
+    mailbox.copy('23,27', 'folder1')
+
+    # MOVE all messages from current folder to INBOX/folder2
+    mailbox.move(mailbox.uids(), 'INBOX/folder2')
+
+    # DELETE messages with 'cat' word in its html from current folder
+    mailbox.delete([msg.uid for msg in mailbox.fetch() if 'cat' in msg.html])
+
+    # FLAG unseen messages in current folder as \Seen, \Flagged and TAG1
+    flags = (imap_tools.MailMessageFlags.SEEN, imap_tools.MailMessageFlags.FLAGGED, 'TAG1')
+    mailbox.flag(mailbox.uids(AND(seen=False)), flags, True)
+
+    # APPEND: add message to mailbox directly, to INBOX folder with \Seen flag and now date
+    with open('/tmp/message.eml', 'rb') as f:
+        msg = imap_tools.MailMessage.from_bytes(f.read())  # *or use bytes instead MailMessage
+    mailbox.append(msg, 'INBOX', dt=None, flag_set=[imap_tools.MailMessageFlags.SEEN])
+"""

@@ -1,0 +1,191 @@
+﻿@font-face {
+    font-family: CaviarDreams;
+    src:
+      local("CaviarDreams"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams.woff") format("woff"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams.ttf") format('truetype');
+    font-weight: normal;
+  }
+  
+  @font-face {
+    font-family: CaviarDreams;
+    src:
+      local("CaviarDreams"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams_Bold.woff") format("woff"),
+      url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams_Bold.ttf") format('truetype');
+    font-weight: bold;
+    font-style: normal;
+  }
+  
+  :root {
+    --primary-color: rgb(39, 37, 92);
+    --accent-color: rgb(250, 122, 30);
+    --accent-light: rgba(250, 122, 30, 0.8);
+    --accent-lighter: rgba(250, 122, 30, 0.1);
+    --background-color: white;
+    --table-header-bg: rgba(39, 37, 92, 0.9);
+    --table-row-hover: rgba(250, 122, 30, 0.05);
+    --table-border: rgba(39, 37, 92, 0.2);
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: CaviarDreams, Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--primary-color);
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  .background-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-image: url("https://dev.blindza.com/static/cv_db/css/alteram/alteram1_1_600x197.png");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    background-size: contain;
+    z-index: -1;
+    opacity: 0.15;
+  }
+  
+  header {
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 1rem 0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 2rem;
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+  
+  .logo-area {
+    width: 180px;
+    height: 60px;
+    background-image: url("https://dev.blindza.com/static/cv_db/css/alteram/alteram1_1_600x197.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: left center;
+    margin-left: -250px;
+  }
+  
+  nav {
+    display: flex;
+    align-items: center;
+  }
+  
+  ul.nav {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+  }
+  
+  ul.nav li a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    background-color: transparent;
+    border: 2px solid var(--accent-color);
+  }
+  
+  ul.nav li a:hover, 
+  ul.nav li a[aria-current="true"] {
+    background-color: var(--accent-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(250, 122, 30, 0.2);
+  }
+  
+  main {
+    padding-top: 250px;
+    min-height: calc(100vh - 100px);
+    justify-content: center;
+  }
+.content-container {
+  width: 100%;
+  margin: 2rem auto;
+  padding: 0 2rem;
+  overflow-x: auto; /* Allows horizontal scroll if table grows */
+  display: block;
+}
+.data-table {
+    width: auto;
+    min-width: 100%;
+    border-collapse: collapse;
+    border: 1px solid var(--table-border);
+    table-layout: auto;
+  }
+  
+  .data-table th {
+    background-color: var(--table-header-bg);
+    color: white;
+    padding: 1rem;
+    text-align: left;
+    font-weight: bold;
+  }
+  
+  .data-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--table-border);
+  }
+  
+  .data-table tbody tr:hover {
+    background-color: var(--table-row-hover);
+  }
+  
+  #div_alert {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--accent-color);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    z-index: 1000;
+    display: none;
+    max-width: 80%;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  #div_alert.warning {
+    background-color: #e53e3e;
+  }
+  
+  @media (max-width: 768px) {
+    .header-container {
+      flex-direction: column;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    
+    ul.nav {
+      justify-content: center;
+    }
+    
+    .data-table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+}

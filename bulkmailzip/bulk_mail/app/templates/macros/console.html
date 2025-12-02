@@ -1,0 +1,77 @@
+{%- macro console_replacement(bl_alert) -%}
+<script type="text/javascript">
+
+var ar_logging = Array();
+// override console output etc.
+(function(){
+    var _log = console.log;
+    var _error = console.error;
+    var _warning = console.warning;
+    var _dir = console.dir;
+    
+    console.error = function(errMessage){
+        ar_logging.push({type: "error", value: String(errMessage)});
+        // $(s_div_id).text("Error! - " + String(errMessage));
+        _error.apply(console,arguments);
+    };
+    
+    console.log = function(logMessage){
+        ar_logging.push({type: "log", value: String(logMessage)});
+        // $(s_div_id).text("Log - " + String(logMessage));
+        _log.apply(console,arguments);
+    };
+    
+    console.dir = function(dirObject){
+        // $(s_div_id).text("dir - " + JSON.stringify(Object.keys(dirObject)));
+        _dir.apply(console,arguments);
+    };
+    
+    console.warning = function(warnMessage){
+        ar_logging.push({type: "warning", value: String(warnMessage)});
+        // $(s_div_id).text("Warning - " + String(warnMessage));
+        _warning.apply(console,arguments);
+    };
+})();// end of overriding console methods
+
+var bl_alert = {% if bl_alert is sameas true %}true{% else %}false{% endif %};
+function show_logging() {
+    if (ar_logging.length>0) {
+        var s_logging = "";
+        if (bl_alert==false) { s_logging = "<div>\n<ul>\n"; }
+        for (let it in ar_logging) {
+            var o_item = ar_logging[it];
+            var s_type = o_item.type;
+            var s_value = o_item.value;
+            if (bl_alert==true) {
+                s_logging = s_logging + String(s_type) + " - " + String(s_value) + "\n";
+            } else {
+                s_logging = s_logging + "<li><b>" + String(s_type) + "</b> - " + String(s_value) + "</li>\n";
+            }
+        }// end of looping through ar_logging items
+        if (bl_alert==false) { s_logging = s_logging + "</ul>\n"; }
+        if (bl_alert) {
+            alert(s_logging);
+        } else {
+            //var w_console = window.open("", "console_output", "location=no,menubar=no,toolbars=no,scrollbars=yes,resizable=yes");
+            //w_console.document.body.innerHTML = s_logging;
+            var dlg = document.createElement("dialog");
+            dlg.role = "dialog";
+            dlg.style.backgroundColor = "silver";
+            dlg.style.color = "black";
+            dlg.style.backdropFilter = "blur(10px)";
+            var inner_div = document.createElement("div");
+            inner_div.innerHTML = "<form method='dialog'><button autofocus>close</button></form>\n" + s_logging;
+            dlg.appendChild(inner_div);
+            var body = document.getElementsByTagName("body")[0];
+            body.appendChild(dlg);
+            dlg.showModal();
+        }// end of checking if should just alert or not
+        // if (confirm("clear log?")) { ar_logging = Array(); }
+    } else {
+        alert("No logging records currently captured");
+    }// end of length check on global ar_logging array
+}// end of show_logging function
+
+</script>
+<a href="#" onclick="show_logging();">output console</a><br>
+{% endmacro -%}

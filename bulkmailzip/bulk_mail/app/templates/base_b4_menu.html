@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<META http-equiv="Content-Type" content="text/html; charset=utf-8">
+<META http-equiv="Content-Style-Type" content="text/css">
+<meta name="viewport" content="width=device-width, initial-scale=0.8">
+<link rel="icon" type="image/x-icon" sizes="32x32" href="{{ url_for("static", filename=static_prefix+"favicon.ico") }}">
+{% if js %}
+<script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/jquery.js") }}"></script>
+<script type="text/javascript">
+var do_alert;
+
+$(document).ready( function() {
+try {
+
+do_alert = function(s_in) {
+	s_in = String(s_in).replace("\n", "<br />");
+	$("#div_alert").show();
+	//document.getElementById("div_alert").innerHTML = s_in;
+	$("#div_alert").html(s_in);
+}//end of do_alert function
+
+$.fn.redraw =function(){
+	$(this).each(function(){var redraw =this.offsetHeight;});
+};//end of $.fn.redraw function
+
+var s_server_url = "{{ url }}";
+$.each($("ul.nav").find("a"), function(ix, a) {
+    if (s_server_url.endsWith($(a).attr("href"))) { $(a).attr("aria-current", "true"); } else { $(a).attr("aria-current", ""); }
+});// end of .each on nav links
+// alert([s_url, s_server_url]);
+
+var s_msg = "";
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+s_msg = "{{ messages[-1] }}";
+{% endif %}
+{% endwith %}
+if (String(s_msg).length>0) {
+    window.setTimeout( function() {
+    $("#div_alert").toggleClass("warning");
+    do_alert(s_msg);
+    }, 300);
+}
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});//end of document ready
+</script>
+{% endif %}{# end of js check #}
+<title>Bulk Mail - {% block title %}{% endblock %}</title>
+<style>
+{% include("combined_styles.css") %}
+</style>
+{% block head_extra %}{% endblock head_extra %}
+</head>
+<body>
+{% from "macros/console.html" import console_replacement %}
+{{ console_replacement() }}
+<header>
+<div class="header-container">
+<div class="logo-area"></div>
+<nav>
+<ul class="nav" role="navigation">
+{% if current_user.id %}
+<li><a href="{{ url_for("main.index") }}">Landing page</a></li>
+{% if current_user.bl_admin %}
+<li><a href="{{ url_for("main.id_types") }}">I.D. Types</a></li>
+<li><a href="{{ url_for("main.companies") }}">Companies</a></li>
+<li><a href="{{ url_for("main.company_users", i_company_id=0) }}">Company Users</a></li>
+{% endif %}{# end of checking for bl_admin #}
+<li><a href="{{ url_for("auth.logout") }}">Logout</a></li>
+{% else %}
+<li><a href="{{ url_for("auth.login") }}">Login</a></li>
+{% endif %}
+</ul>
+</nav>
+</div><!-- end of div.header-container -->
+</header>
+
+<main>
+<div class="background-container"></div>
+<div class="content-container content">
+<div id="div_alert" style="text-align: center;" aria-live="assertive">&nbsp;</div>
+{% block content %}{% endblock %}
+</div><!-- end of div.content -->
+</main>
+</body>
+</html>

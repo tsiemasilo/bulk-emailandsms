@@ -1,0 +1,186 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Campaign Sending{% endblock %}</h2></span>
+<div class="content-container content">
+<h3>Campaign Basics</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_basics">
+<tr>
+<th>Reference Number</th><td>{{ campaign.v_reference_number }}</td>
+</tr>
+<tr>
+<th>Campaign Title</th><td>{{ campaign.v_campaign_title }}</td>
+</tr>
+<tr style="vertical-align: top;">
+<th>Description</th><td>{{ campaign.v_description }}</td>
+</tr>
+<tr>
+<th>Target Date-Time</th><td>{{ campaign.dt_target|date_time_format }}</td>
+</tr>
+<tr>
+<th>From E-Mail Address</th><td>{{ campaign.v_email_from }}</td>
+</tr>
+<tr>
+<th>Reply-to E-Mail Address</th><td>{% if campaign.v_email_reply_to %}{{ campaign.v_email_reply_to }}{%  else %}&nbsp;{% endif %}</td>
+</tr>
+</table>
+</div><!-- end of div.table-container -->
+{% if email %}
+<h3>E-Mail Template details</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_email">
+<tr>
+<th>E-Mail Subject</th><td>{{ email.v_subject }}</td>
+</tr>
+<tr style="vertical-align: top;">
+<th>E-Mail Body</th><td>{{ email.t_body|safe }}</td>
+</tr>
+</table>
+<h3>Attachments</h3>
+<div><button type="button" id="btn_add_attachment" value="Upload Attachment">{{ icons.add_svg(s_label="Upload Attachment") }} Upload Attachment</button></div>
+{% if attachments %}
+<div class="table-container">
+<table class="data-table" id="tbl_attachments">
+<thead>
+<tr>
+<th>File Name</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{% for attachment in attachments %}
+<tr>
+<td>{{ attachment.v_file_name }}</td>
+<td id="td_{{ attachment.id }}">
+<button type="button" class="btn_download_attachment" value="Download Attachment">{{ icons.save_svg(s_label="Download Attachment") }} Download Attachment</button>
+<button type="button" class="btn_remove_attachment" value="Remove Attachment">{{ icons.delete_svg(s_label="Remove Attachment") }} Remove Attachment</button>
+</td>
+</tr>
+{% endfor %}{# end of looping through attachments #}
+</tbody>
+</table><!-- end of tbl_attachments -->
+</div>
+{% endif %}{# end of checking for existing attachments #}
+{% if groups|length>0 %}
+<h3>Target Groups</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_groups">
+{% for group in groups %}
+<tr>
+<th>Group Name (number of customers)</th><td>{{ group.v_group_name }} (<span class="spn_count">{{ group.i_customer_count }}</span>) <input type="checkbox" name="chk_group" value="{{ group.id }}"{% if group.bl_assigned %} checked{% endif %}></td>
+</tr>
+{% endfor %}{# end of looping through groups #}
+</table>
+{% endif %}{# end of checking for groups for assignation #}
+<h3>Confirm E-Mail queueing</h3>
+<div aria-live="assertive">Currently, a total of <span id="spn_total">{{ total_recipients }}</span> recipients are assigned to this campaign.</div>
+<div>
+<form action="{{ url_for("main.campaign_sending", i_campaign_id=campaign_id) }}" method="post" id="frm_queueing">
+{{ queue_form.csrf_token }}{{ queue_form.hid_campaign_queueing_id }}
+<button type="submit" id="btn_queue_sending" value="Queue Sending">{{ icons.save_svg(s_label="Queue Sending") }} Queue Sending</button>
+</form>
+</div>
+{% endif %}{# end of making sure email was retrieved #}
+</table>
+</div><!-- end of div.table-container -->
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_attachment"]) }}
+{# dlg divs below #}
+<div id="dlg_attachment" aria-labeledby="spn_attachment">
+<span id="spn_attachment">Upload Attachment</span><br>
+<form action="{{ url }}" method="post" enctype="multipart/form-data" id="frm_attachment">
+{{ upload_form.csrf_token }}
+{{ upload_form.fil_upload.label }}{{ upload_form.fil_upload }}<br>
+<input type="submit" name="btn_upload_attachment" value="Upload">
+</form>
+</div><!-- end of dlg_attachment -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_attachment = $("#dlg_attachment").html();
+
+
+$("#btn_add_attachment").click( function() {
+    $("#dlg_attachment").html(s_dlg_attachment);
+    $("#dlg_attachment").redraw();
+    $("#dlg_attachment").dialog("open");
+});// end of btn_add_attachment click event
+
+$("#tbl_attachments").on("click", ".btn_download_attachment", function(event) {
+try {
+    var s_id = $($(this).parent()).attr("id").replace("td_", "");
+    var s_url = "{{ url_for("main.download_campaign_attachment", i_attachment_id=99999) }}".replace("99999", s_id);
+    var w = window.open(s_url);
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of click event on .btn_download_attachment inside tbl_attachments
+
+$("#tbl_attachments").on("click", ".btn_remove_attachment", function(event) {
+    var s_id = $($(this).parent()).attr("id").replace("td_", "");
+    var bl_confirm = confirm("Are you sure?");
+    if (bl_confirm) {
+        $("#hid_remove_attachment_id").val(s_id);
+        document.getElementById("frm_remove_attachment").submit();
+    }// end of confirmation check
+});// end of click event on .btn_remove_attachment inside tbl_attachments
+
+var i_total_recipients = {{ total_recipients }};
+
+$("#tbl_groups").on("change", "input[name='chk_group']", function(event) {
+    var s_id = String($(this).attr("value"));
+    var s_checked = ($(this).prop("checked")) ? "true" : "false";
+    var spn_count = $($(this).parent()).children(".spn_count")[0];
+    var i_count = Number($(spn_count).text());
+    var s_url = "{{ url_for("main.toggle_campaign_group", i_campaign_id=campaign_id, i_group_id=99999, bl_assigned=True) }}".replace("99999", s_id).replace("True", s_checked);
+    $.get(s_url, function(o_resp, status) {
+        if (status=="success") {
+            // var i_prior = Number($("#spn_total").text());
+            i_total_recipients = (s_checked=="true") ? i_total_recipients+i_count : i_total_recipients-i_count;
+            $("#spn_total").text(String(i_total_recipients));
+        }// end of checking for 200 status
+        do_alert(String(o_resp));
+    });// end of .get to submit group assignation toggle
+});// end of change event on chk_group checkboxes inside tbl_groups
+
+
+$("#frm_queueing").submit( function(event) {
+    var bl_confirm = confirm("Are you sure you wish to queue sending of this campaign?");
+    if (bl_confirm==false) {
+        event.preventDefault();
+    }// end of blocking submission if not confirmed
+});// end of frm_queueing submit event
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+{% if remove_form %}
+<form action="{{ url_for("main.campaign_sending", i_campaign_id=campaign_id) }}" method="post" id="frm_remove_attachment">
+{{ remove_form.csrf_token }}
+{{ remove_form.hid_remove_attachment_id }}
+</form>
+{% endif %}
+{% endblock %}

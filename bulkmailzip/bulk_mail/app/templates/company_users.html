@@ -1,0 +1,161 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons.html" as icons with context %}
+<span class="title"><h2>{% block title %}Company Users{% endblock %}</h2></span>
+<div class="content-container content">
+{% if current_user.bl_admin %}
+<div id="div_filter" class="div_data_filtering">
+<form action="#" method="post" id="frm_filter">
+<!-- Buttons -->
+<div style="margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+<button type="button" id="btn_add_user" value="Add User" disabled>{{ icons.add_svg(s_label="Add User") }} Add User</button>
+<button type="button" id="btn_filter" value="Apply Filters" style="background-color: rgb(39, 37, 92); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+{{ icons.search_svg(s_label="apply filters") }}
+Apply Filters
+</button>
+</div>
+<!-- end of div for buttons -->
+<!-- div containing filter Rows -->
+<div class="div_filter_row" style="margin-bottom: 20px;">
+<!-- filter row -->
+<div style="flex: 1 1 200px;">
+<label for="sel_company_filter">Select Company</label>
+<select name="sel_company_filter" id="sel_company_filter" style="width: 100%; padding: 6px;">
+<option value="0">---all companies---</option>
+{% for company in companies %}
+<option value="{{ company.id }}"{% if company.id==company_id %} selected{% endif %}>{{ company.v_organisation_name }}</option>
+{% endfor %}
+</select>
+</div>
+</div>
+<!-- end of first div.div_filter_row containing filter rows -->
+</form>
+</div><!-- end of #div_filter -->
+{% endif %}{# end of checking if admin user #}
+{% if users %}
+{# v_organisation_name #}
+<div class="table-container">
+<table class="data-table" id="tbl_users">
+<thead>
+<tr>
+<th>User ID</th><th>Company</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{% for user in users %}
+<tr>
+<td>{{ user.v_user_id }}</td><td>{{ user.v_organisation_name }}</td>
+<td id="td_{{ user.id }}">
+<button type="button" class="btn_edit_user" value="Edit User">{{ icons.edit_svg(s_label="Edit User") }} Edit User</button>
+<button type="button" class="btn_remove_user" value="Remove User">{{ icons.delete_svg(s_label="Remove User") }} Remove User</button>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+</div><!-- end of div.table-container -->
+{% endif %}{# end of checking if users exist #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_user"]) }}
+{# dlg divs below #}
+<div id="dlg_user" aria-labeledby="spn_user">
+<span id="spn_user">User details</span><br>
+<form action="{{ url_for("main.company_users", i_company_id=company_id) }}" method="post" id="frm_user">
+{{ form.csrf_token }}
+{{ form.hid_user_id }}
+<ul>
+<li>{{ form.txt_user_id.label }}: {{ form.txt_user_id() }}</li>
+<li>{{ form.txt_password.label }}: {{ form.txt_password() }}</li>
+<li>{{ form.txt_password_confirm.label }}: {{ form.txt_password_confirm() }}</li>
+{% if current_user.bl_admin %}
+{{ form.sel_company.label }}&nbsp;{{ form.sel_company }}</li>
+{% else %}
+<input type="hidden" name="sel_company" id="sel_company" value="{{ company_id }}">
+{% endif %}
+</ul>
+<input type="submit" name="btn_save_user" value="Save">
+</form>
+</div><!-- end of dlg_user -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_user = $("#dlg_user").html();
+
+$("#frm_filter").on("submit", function(event) {
+    event.preventDefault();
+});// end of frm_filter submit event
+
+$("#btn_add_user").click( function() {
+    $("#dlg_user").html(s_dlg_user);
+    $("#dlg_user").redraw();
+    $("#dlg_user").dialog("open");
+});// end of btn_add_user click event
+
+$("#btn_filter").on("click", function() {
+    var s_company = String($("#sel_company_filter").val());
+    var s_url = "{{ url_for("main.company_users", i_company_id=0) }}";
+    if (s_company!="0") {
+            s_url = "{{ url_for("main.company_users", i_company_id=99999) }}".replace("99999", s_company);
+    }
+    window.location.assign(s_url);
+});// end of btn_filter click event
+
+$("#tbl_users").on("click", "button.btn_edit_user", function() {
+    var td_parent = $(this).parent();
+    var s_user_id = String($(td_parent).attr("id")).replace("td_", "");
+    var s_url = "{{ url_for("main.company_user_details", i_company_user_id=99999) }}".replace("99999", s_user_id);
+    $.get(s_url, function(o_data) {
+    if (typeof(o_data)=="object") {
+        $("#dlg_user").html(s_dlg_user);
+        $("#dlg_user").redraw();
+        $("#hid_user_id").val(s_user_id)
+        $("#txt_user_id").val(o_data.v_user_id);
+        $("#sel_company").val(o_data.i_company_id);
+        $("#dlg_user").redraw();
+        $("#dlg_user").dialog("open");
+    } else {
+        alert(String(o_data));
+    }// end of typeof check
+    });// end of .get to retrieve user details
+});// end of button.btn_edit_user click event inside tbl_users
+
+$("#tbl_users").on("click", "button.btn_remove_user", function() {
+    var td_parent = $(this).parent();
+    var s_user_id = String($(td_parent).attr("id")).replace("td_", "");
+    var bl_confirm = confirm("Are you sure?");
+    if (bl_confirm) {
+        $("#hid_remove_user_id").val(s_user_id);
+        document.getElementById("frm_remove_user").submit();
+    }// end of checking for confirmation
+});// end of button.btn_edit_user click event inside tbl_users
+
+var s_company_id = "{{ company_id}}";
+window.setTimeout( function() {
+    $("#sel_company_filter").val(s_company_id);
+    if (s_company_id!="0") { $("#btn_add_user").prop("disabled", false); }
+}, 300);
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form method="post" action="{{ url_for("main.company_users", i_company_id=company_id) }}" id="frm_remove_user">
+{{ remove_form.csrf_token }}
+{{ remove_form.hid_remove_user_id }}
+</form>
+{% endblock %}

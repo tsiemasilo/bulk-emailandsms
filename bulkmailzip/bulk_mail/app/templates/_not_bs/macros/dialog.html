@@ -1,0 +1,32 @@
+{% macro dlg_prep(l_ids) -%}
+<script type="text/javascript" src="{{ url_for("static", filename="watch_out/js/jquery-ui.js") }}"></script>
+<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="watch_out/js/jquery-ui.css") }}" />
+<script type="text/javascript">
+$(document).ready( function() {
+
+$.fn.redraw =function(){
+	$(this).each(function(){var redraw =this.offsetHeight;});
+};//end of $.fn.redraw function
+
+{% for s_dlg in l_ids %}
+var s_{{ s_dlg }} = "";
+$("#{{ s_dlg }}").dialog({autoOpen: false,
+width: "auto",
+height: "auto",
+modal: true,
+buttons: {Cancel: function() {
+$("#{{ s_dlg }}").dialog("close");
+}},
+close: function(event, ui) {
+$("#{{ s_dlg }}").html(s_{{ s_dlg }});
+$("#{{ s_dlg }}").redraw();
+}//end of close event
+});//end of {{ s_dlg }} init
+s_{{ s_dlg }} = $("#dlg_server").html();
+
+{% endfor %}
+
+});//end of document ready
+</script>
+{%- endmacro %}
+{# comment - the - characters above remove leading and trailing whitespace #}

@@ -1,0 +1,21 @@
+{% macro lookup_list(s_id, s_which, l_options, action="edit", first="new") -%}
+<form method="POST" action="#" class="dummy" id="frm_{{ s_id }}">
+<label for="sel_{{ s_id }}">Select {{ s_which }}</label><select name="sel_{{ s_id }}" id="sel_{{ s_id }}">
+<option value="0" selected>--{{ first }} {{ s_which }}--</option>
+{%- if l_options %}
+{% for option in l_options %}
+<option value="{{ option.id }}">{{option.text }}</option>
+{% endfor %}
+{% endif -%}
+</select><input type="button" id="btn_{{ s_which|lower }}_edit" value="{{ action|title }}">
+</form>
+{%- endmacro %}
+
+{% macro filter_list(s_id, s_filter, l_options, first="all") -%}
+<label for="{{ s_id }}">{{ s_filter }}</label><select id="{{ s_id }}">
+<option value="0" selected>-- {{ first }} --</option>
+{% for filter_option in l_options %}
+<option value="{{ filter_option.id }}">{{ filter_option.text }}</option>
+{% endfor %}
+</select>
+{%- endmacro %}

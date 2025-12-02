@@ -1,0 +1,141 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+td.td_number {
+text-align: right;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Recipient Customer Listings{% endblock %}</h2></span>
+<div class="content-container content">
+<div><button type="button" id="btn_init_export" value="Export Data">{{ icons.save_svg(s_label="Export Data") }} Export Data</button></div>
+<div id="div_filter" class="div_data_filtering">
+<form action="{{ url_for("main.queued_email_recipients", i_email_id=email_id) }}?sort_field={{ sort_field }}&sort_dir={{ sort_dir }}" method="post" id="frm_filter">
+<label for="sel_status">Sent status</label><select id="sel_status" name="sel_status">{% for s_status in ["all", "success", "failed"] %}
+<option value="{{ s_status }}"{% if sent_status==s_status %} selected{% endif %}>{{ s_status }}</option>
+{% endfor %}</select>
+</form>
+</div><!-- div_filter -->
+
+{% if customers %}
+<h3>E-Mail Recipients</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_emails">
+<thead>
+<tr>
+<th><a href="#v_last_name" class="a_sort_up">{{ icons.sort_up_svg(s_label="sort asc") }}</a> Last Name <a href="#v_last_name" class="a_sort_down">{{ icons.sort_down_svg(s_label="sort desc") }}</a></th><th><a href="#v_first_names" class="a_sort_up">{{ icons.sort_up_svg(s_label="sort asc") }}</a> First Name(s) <a href="#v_first_names" class="a_sort_down">{{ icons.sort_down_svg(s_label="sort desc") }}</a></th><th><a href="#v_email" class="a_sort_up">{{ icons.sort_up_svg(s_label="sort asc") }}</a> E-Mail Address <a href="#v_email" class="a_sort_down">{{ icons.sort_down_svg(s_label="sort desc") }}</a></th><th><a href="#dt_processed" class="a_sort_up">{{ icons.sort_up_svg(s_label="sort asc") }}</a> Date-Time Processed <a href="#dt_processed" class="a_sort_down">{{ icons.sort_down_svg(s_label="sort desc") }}</a></th><th>Result</th><th>Content Click-Throughs</th>
+</tr>
+</thead>
+<tbody>
+{% for customer in customers %}
+<tr>
+<td>{{ customer.v_last_name }}</td><td>{{ customer.v_first_names }}</td><td>{{ customer.v_email }}</td><td>{{ customer.dt_processed }}</td>
+<td>{% if customer.bl_success %}Success{% else %}Failure - {{ customer.v_reason }}{% endif %}</td>
+<td>{% if customer.bl_success %}{{ customer.click_summary }}{% else %}&nbsp;{% endif %}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table><!-- end of tbl_emails -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% else %}
+<div>No customers with sent-state of &quot;{{ sent_status }}&quot; on record.</div>
+{% endif %}{# end of checking if customers existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_export"]) }}
+{# dlg divs below #}
+<div id="dlg_export" aria-labeledby="spn_export">
+<span id="spn_export">Export Recipient Result Data</span><br>
+<form action="{{ url_for("main.export_email_recipients") }}" method="post" target="_blank" id="frm_export">
+{{ export_form.csrf_token }}
+{{ export_form.hid_export_email_id }}
+<ul>
+<li>{{ export_form.sel_export_format.label }}{{ export_form.sel_export_format }}</li>
+<li>{{ export_form.sel_export_status.label }}{{ export_form.sel_export_status }}</li>
+</ul>
+<button type="submit" id="btn_export" name="btn_export" value="Export Data">{{ icons.save_svg(s_label="Export Data") }} Export Data</button>
+</form>
+</div><!-- end of dlg_export -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_export = $("#dlg_export").html();
+
+
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+$(".a_sort_up").click( function(event) {
+    event.preventDefault();
+    var s_field = String($(this).attr("href")).replace("#", "");
+    var s_url = location.protocol + "//" + location.hostname + ":" + location.port + "{{ url_for("main.queued_email_recipients", i_email_id=email_id) }}?sort=" + s_field;
+    location.assign(s_url);
+});// end of click event for .a_sort_up
+
+$(".a_sort_down").click( function(event) {
+    event.preventDefault();
+    var s_field = String($(this).attr("href")).replace("#", "");
+    var s_url = location.protocol + "//" + location.hostname + ":" + location.port + "{{ url_for("main.queued_email_recipients", i_email_id=email_id) }}?sort=" + s_field + "&sort_dir=desc";
+    location.assign(s_url);
+});// end of click event for .a_sort_down
+
+$("#sel_status").change( function(event) {
+    document.getElementById("frm_filter").submit();
+});// end of sel_state change event
+
+$("#btn_init_export").click( function(event) {
+    event.preventDefault();
+    $("#dlg_export").html(s_dlg_export);
+    $("#dlg_export").redraw();
+    $("#dlg_export").dialog("open");
+    $("#sel_format").focus();
+});// end of btn_init_export click event
+
+$("#frm_export").submit( function(event) {
+    $("#dlg_export").dialog("close");
+});// end of frm_export submit event
+
+$("#btn_export").click( function(event) {
+    //event.preventDefault();
+    //document.getElementById("frm_export").submit();
+});// end of btn_export click event
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.queued_email_recipients", i_email_id=email_id) }}?sort_field={{ sort_field }}&sort_dir={{ sort_dir }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+<input type="hidden" name="sel_status" value="{{ sent_status }}">
+</form>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% macro menu_system_head() -%}
+<link rel="stylesheet" href="{{ url_for("static", filename=static_prefix+"js/slim_menu/slimmenu.min.css") }}" type="text/css">
+<script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/slim_menu/jquery.slimmenu.min.js") }}"></script>
+{%- endmacro %}{# end of menu_system_head macro #}
+
+{% macro menu_system(s_id="ul_navigation", s_title="Menu system") -%}
+{# initialise menu #}
+<script type="text/javascript">
+$(document).ready( function() {
+$("#{{ s_id }}").slimmenu({
+    resizeWidth: "800",
+    initiallyVisible: false,
+    collapserTitle: "{{ s_title }}",
+    animSpeed: "medium",
+    easingEffect: null,
+    indentChildren: true,
+    childrenIndenter: "&nbsp;&nbsp;"
+});// end of .slimmenu() initialisation
+});// end of document.ready wrapper to initialise menu system
+</script>
+{%- endmacro %}{# end of menu_system macro #}

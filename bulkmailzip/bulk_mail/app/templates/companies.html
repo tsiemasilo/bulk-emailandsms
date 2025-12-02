@@ -1,0 +1,160 @@
+{% extends base %}
+{% block head_extra %}
+<style>
+.label {
+font-weight: bold;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+{% import "macros/action_icons_static.html" as icons with context %}
+<span class="title"><h2>{% block title %}Companies{% endblock %}</h2></span>
+<div class="content-container content">
+<div><button type="button" id="btn_add_company" value="Add Company">{{ icons.add_svg(s_label="Add Company") }} Add Company</button></div>
+{% if companies %}
+<h3>Companies</h3>
+<div class="table-container">
+<table class="data-table" id="tbl_companies">
+<thead>
+<tr>
+<th>Company Registration</th><th>Organisation-Trading Name</th><th>Contact Person</th><th>E-mail Address</th><th>Mobile Number</th><th>City</th><th>Country</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+{% for company in companies %}
+<tr>
+<td>{{ company.v_registration_type }} - {{ company.v_registration_number }}</td><td>{{ company.v_organisation_name }} - {{ company.v_trading_name }}</td><td>{{ company.v_contact_person }}</td><td>{{ company.v_email }}</td><td>{{ company.v_mobile_number }}</td><td>{{ company.v_city }}</td><td>{{ company.v_country_name }}</td>
+<td id="td_{{ company.id }}">
+<button type="button" class="btn_edit_company" value="Edit Company">{{ icons.edit_svg(s_label="Edit Company") }} Edit Company</button>
+<button type="button" class="btn_remove_company" value="Remove Company">{{ icons.delete_svg(s_label="Remove Company") }} Remove Company</button>
+<button type="button" onclick="location.assign('{{ url_for("main.company_users", i_company_id=company.id) }}');" class="btn_company_users" value="Company Users">{{ icons.search_svg(s_label="Company Users") }} Company Users</button>
+<button type="button" onclick="location.assign('{{ url_for("main.customers", i_company_id=company.id) }}');" class="btn_company_customers" value="Company Customers">{{ icons.search_svg(s_label="Company Customers") }} Company Customers</button>
+</td>
+</tr>
+{% endfor %}{# end of looping through companies #}
+</tbody>
+</table><!-- end of tbl_companies -->
+</div><!-- end of div.table-container -->
+{% from "macros/paging.html" import paging_basics with context %}
+{{ paging_basics() }}
+{% endif %}{# end of checking if companies existed #}
+</div><!-- end of div.content -->
+{% from "macros/dialog.html" import dlg_prep with context %}
+{{ dlg_prep(["dlg_company"]) }}
+{# dlg divs below #}
+<div id="dlg_company" aria-labeledby="spn_company">
+<span id="spn_company">Company details</span><br>
+<form action="{{ url_for("main.companies") }}" method="post" id="frm_company">
+{{ form.csrf_token }}
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{{ form.hid_company_id }}
+<ul>
+{% for s_field in ["sel_id_type", "txt_registration_number", "txt_organisation_name", "txt_trading_name", "txt_contact_person", "txt_contact_person_alternate", "txt_email", "txt_email_alternate", "txt_mobile_number", "txt_mobile_number_alternate", "txt_landline_number", "txt_landline_number_alternate", "txt_additional_address", "txt_building_number_name", "txt_street_name", "txt_suburb", "txt_city", "txt_province", "txt_municipality", "sel_country", "txt_code"] %}
+<li>{{ form[s_field].label }}&nbsp;{{ form[s_field] }}</li>
+{% endfor %}
+<li>{{ form.d_registration_date.label }}&nbsp;{{ form.d_registration_date }}</li>
+</ul>
+<input type="submit" name="btn_save_company" value="Save">
+</form>
+</div><!-- end of dlg_company -->
+<script type="text/javascript">
+$(document).ready( function() {
+
+try {
+
+var s_dlg_company = $("#dlg_company").html();
+
+$("#btn_add_company").click( function(event) {
+    event.preventDefault();
+    $("#dlg_company").html(s_dlg_company);
+    $("#dlg_company").redraw();
+    $("#dlg_company").dialog("open");
+});// end of #btn_add_company click event
+
+$("#tbl_companies").on("click", "button.btn_edit_company", function() {
+try {
+    $("#dlg_company").html(s_dlg_company);
+    $("#dlg_company").redraw();
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var s_url = "{{ url_for("main.company_details", i_company_id=99999) }}".replace("99999", s_id);
+    $.get(s_url, function(o_data) {
+        if (typeof(o_data)=="object") {
+            $("#hid_company_id").val(s_id);
+            $("#sel_id_type").val(o_data.i_id_type);
+{% for s_field, s_value in {"txt_registration_number": "v_registration_number", "txt_organisation_name": "v_organisation_name", "txt_trading_name": "v_trading_name", "txt_contact_person": "v_contact_person", "txt_contact_person_alternate": "v_contact_person_alternate", "txt_email": "v_email", "txt_email_alternate": "v_email_alternate", "txt_mobile_number": "v_mobile_number", "txt_mobile_number_alternate": "v_mobile_number_alternate", "txt_landline_number": "v_landline_number", "txt_landline_number_alternate": "v_landline_number_alternate", "txt_additional_address": "v_additional_address", "txt_building_number_name": "v_building_number_name", "txt_street_name": "v_street_name", "txt_suburb": "v_suburb", "txt_city": "v_city", "txt_province": "v_province", "txt_municipality": "v_municipality", "txt_code": "v_code"}.items() %}
+            $("#{{ s_field }}").val(o_data.{{ s_value }});
+{% endfor %}
+            $("#sel_country").val(o_data.i_country);
+            if ($("#sel_id_type").prop("selectedIndex")==0) { $("#d_registration_date").prop("disabled", true); } else { $("#d_registration_date").prop("disabled", false); }
+            $("#dlg_company").redraw();
+            $("#dlg_company").dialog("open");
+        } else {
+            alert("Error! " + String(o_data));
+        }// end of checking if o_data is an object
+    });// end of .get
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_edit_company click event inside tbl_companies
+
+$("#tbl_companies").on("click", "button.btn_remove_company", function() {
+try {
+    var td_parent = $(this).parent();
+    var s_id = String($(td_parent).attr("id")).replace("td_", "");
+    var bl_confirm = confirm("Are you sure?");
+    if (bl_confirm) {
+        $("#hid_remove_company_id").val(s_id);
+        document.getElementById("frm_remove_company").submit();
+    }// end of confirmation check
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+});// end of button.btn_remove_company click event inside tbl_companies
+
+function jump_page(i_page) {
+    i_page = (isNaN(i_page)) ? 1 : Number(i_page);
+    $("#hid_page").val(i_page);
+    document.getElementById("frm_paging").submit();
+}// end of jump_page function
+
+$(".a_page_number").click( function(event) {
+    event.preventDefault();
+    var s_page = String($(this).attr("href")).replace("#", "");
+    i_page = (isNaN(s_page)) ? 1 : Number(s_page);
+    jump_page(i_page);
+});// end of .a_page_number function
+
+$("#dlg_company").on("change", "#sel_id_type", function(event) {
+    if ($(this).prop("selectedIndex")==0) { $("#d_registration_date").prop("disabled", true); } else { $("#d_registration_date").prop("disabled", false); }
+});// end of sel_id_type change event
+
+window.setTimeout( function() {
+    var s_nada = ""; //alert("hello world");
+}, 300);
+var s = "nada"; // do_alert("hello world");
+
+} catch(e) {
+    var s_err = String(e.name) + "\nmessage:" + String(e.message);
+    s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
+    alert("Error! " + s_err);
+}//end of catch
+
+});// end of secondary document ready
+</script>
+<form action="{{ url_for("main.companies") }}" method="post" id="frm_paging">
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+</form>
+{% if remove_form %}
+<form action="{{ url_for("main.companies") }}" method="post" id="frm_remove_company">
+{{ remove_form.csrf_token }}
+<input type="hidden" name="hid_page" id="hid_page" value="{{ page }}">
+{{ remove_form.hid_remove_company_id }}
+</form>
+{% endif %}
+{% endblock %}

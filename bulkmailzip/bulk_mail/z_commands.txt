@@ -1,0 +1,32 @@
+# build flask application image
+podman build -t bulk_mail_app:latest .
+# create network to be used between containers inside pod
+podman network create bulk_mail_net
+# build pod including external (left:) mappings of ports
+podman pod create --name bulk_mail_pod --network bulk_mail_net -p 5002:5000 -p 5434:5432
+# create postgres container inside pod including db_bulk_mail container name which will be used as host name inside pod and including env variables for database creation/interaction later on and -v bulk_mail_db_data creates named/persistent volume for data
+podman create --pod bulk_mail_pod --name db_bulk_mail -e POSTGRES_USER=bulkmail_user -e POSTGRES_PASSWORD=bUlK-123 -e POSTGRES_DB=bulk_mail -v bulk_mail_db_data:/var/lib/postgresql/data postgres:16-alpine
+# old command - build app container named app_bulk_mail inside pod telling it to load env variables from .env file and base container on image bulk_mail_app:latest - this will stick to original content
+podman create --pod bulk_mail_pod --name app_bulk_mail --env-file .env bulk_mail_app:latest
+# NEW Command (Replace /c/podman/bulk_mail/app with the correct path if different):
+podman create --pod bulk_mail_pod --name app_bulk_mail --env-file .env -v /mnt/c/podman/bulk_mail/app:/usr/src/app:Z bulk_mail_app:latest
+
+# start pod
+podman pod start bulk_mail_pod
+
+# stop pod
+podman pod stop bulk_mail_pod
+
+# general podman monitoring commands
+# view all running pods
+podman ps -a
+# view all pods
+podman ps -a
+# stream output for app_bulk_mail
+podman logs -f app_bulk_mail
+# interactive shell inside container inside pod
+podman exec -it app_bulk_mail /bin/bash
+# exit, ctrl+D to exit?
+
+# forcefully remove pod and all it's containers
+podman pod rm -f bulk_mail_pod

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<span class="title"><h2>{% block title %}Error - exception{% endblock %}</h2></span>
+<div class="content-container content">
+Sorry - an error/exception occurred
+</div><!-- end of div.content -->
+<div id="div_details" style="display: inline;">
+{{ html_content|safe }}
+</div><!-- end of div_details -->
+{% endblock %}

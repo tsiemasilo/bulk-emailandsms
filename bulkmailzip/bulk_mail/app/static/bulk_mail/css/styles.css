@@ -1,0 +1,64 @@
+﻿@font-face {
+font-family: CaviarDreams;
+src:
+local("CaviarDreams"),
+url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams.woff") format("woff"),
+url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams.ttf") format('truetype');
+font-weight: normal;
+}
+@font-face {
+font-family: CaviarDreams;
+src:
+local("CaviarDreams"),
+url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams_Bold.woff") format("woff"),
+url("https://dev.blindza.com/static/cv_db/css/alteram/CaviarDreams_Bold.ttf") format('truetype');
+font-weight: bold;
+font-style: normal;
+}
+body {
+    font-family: CaviarDreams, Arial, sans-serif;
+    background-color: white;
+    color: rgb(39, 37, 92);
+}
+h2 {
+    font-family: CaviarDreams, Arial, sans-serif;
+    font-size: 14pt;
+    background-color: white;
+    color: rgb(39, 37, 92);
+}
+a {
+    color: rgb(250,122,30);
+}
+a.visited {
+    color: rgb(250,122,30);
+}
+#tbl_layout {
+border: 0px solid transparent;
+}
+#tbl_layout td {
+text-align: left;
+}
+.td_nav {
+width: 20%;
+}
+.td_top {
+vertical-align: top;
+}
+div {
+line-height: 1.2;
+margin-bottom: 10px;
+}
+table.multirow {
+border: 2px solid DimGray;
+}
+table.multirow tr {
+vertical-align: top;
+}
+table.multirow th {
+text-align: left;
+border: 1px solid DimGray;
+}
+table.multirow td {
+text-align: left;
+border: 1px solid DimGray;
+}

@@ -1,0 +1,4 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="currentColor" viewBox="0 0 10 10" role="img" title="sort descending" aria-label="sort descending">
+  <polygon points="5,8 8,3 2,3" fill="#000000" />
+  <line x1="2" y1="1.5" x2="8" y2="1.5" stroke="#000000" stroke-width="1" />
+</svg>
