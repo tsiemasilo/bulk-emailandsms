@@ -54,3 +54,5 @@ WHERE authentication.tbl_users.v_user_id = %(v_user_id_1)s
 (Background on this error at: https://sqlalche.me/e/20/f405)
 additional: 
 ---
+2025-12-02 16:44:04 - bulk_mail/auth/login: roger@spacequest.com logged in
+---
