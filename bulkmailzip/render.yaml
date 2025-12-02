@@ -1,0 +1,22 @@
+databases:
+  - name: bulkmail-db
+    databaseName: bulk_mail
+    user: bulkmail_user
+    plan: free
+
+services:
+  - type: web
+    name: bulk-mail-app
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --bind 0.0.0.0:$PORT wsgi:app
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: bulkmail-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
