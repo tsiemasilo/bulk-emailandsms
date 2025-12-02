@@ -34,3 +34,12 @@ outputType = "webview"
 [[ports]]
 localPort = 5000
 externalPort = 80
+
+[[ports]]
+localPort = 46659
+externalPort = 3000
+
+[userenv]
+
+[userenv.development]
+DATABASE_URL = "postgresql://bulkmail_user:tm4mnrJn7moDpCdSrJ9tWyKWvJaZgrXS@dpg-d4nf220bdp1s73bk3pcg-a.oregon-postgres.render.com/bulk_mail"
