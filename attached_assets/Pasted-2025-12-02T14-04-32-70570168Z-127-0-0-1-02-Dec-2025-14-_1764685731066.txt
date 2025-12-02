@@ -1,0 +1,88 @@
+2025-12-02T14:04:32.70570168Z 127.0.0.1 - - [02/Dec/2025:14:04:32 +0000] "HEAD / HTTP/1.1" 404 0 "-" "Go-http-client/1.1"
+2025-12-02T14:04:33.130540833Z ==> Your service is live 🎉
+2025-12-02T14:04:33.16451447Z ==> 
+2025-12-02T14:04:33.196442117Z ==> ///////////////////////////////////////////////////////////
+2025-12-02T14:04:33.242498563Z ==> 
+2025-12-02T14:04:33.27248686Z ==> Available at your primary URL https://bulk-mail-app-7rx4.onrender.com
+2025-12-02T14:04:33.301684557Z ==> 
+2025-12-02T14:04:33.329887245Z ==> ///////////////////////////////////////////////////////////
+2025-12-02T14:04:35.015254534Z 127.0.0.1 - - [02/Dec/2025:14:04:35 +0000] "GET / HTTP/1.1" 404 13434 "-" "Go-http-client/2.0"
+2025-12-02T14:08:39.389317834Z 127.0.0.1 - - [02/Dec/2025:14:08:39 +0000] "GET / HTTP/1.1" 404 13434 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:39.874212958Z 127.0.0.1 - - [02/Dec/2025:14:08:39 +0000] "GET /static/bulk_mail/js/jquery.js HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:39.904944802Z 127.0.0.1 - - [02/Dec/2025:14:08:39 +0000] "GET /static/bulk_mail/js/slim_menu/jquery.slimmenu.min.js HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:39.913931134Z 127.0.0.1 - - [02/Dec/2025:14:08:39 +0000] "GET /static/bulk_mail/js/slim_menu/slimmenu.min.css HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:40.920490512Z 127.0.0.1 - - [02/Dec/2025:14:08:40 +0000] "GET /static/bulk_mail/css/alteram/alteram1_1_600x197.png HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:40.949216374Z 127.0.0.1 - - [02/Dec/2025:14:08:40 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams.woff HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:40.960468734Z 127.0.0.1 - - [02/Dec/2025:14:08:40 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams_Bold.woff HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:41.473421063Z 127.0.0.1 - - [02/Dec/2025:14:08:41 +0000] "GET /static/bulk_mail/favicon.ico HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:43.755862524Z 127.0.0.1 - - [02/Dec/2025:14:08:43 +0000] "GET / HTTP/1.1" 404 13434 "https://www.google.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:44.473663993Z 127.0.0.1 - - [02/Dec/2025:14:08:44 +0000] "GET /static/bulk_mail/js/slim_menu/jquery.slimmenu.min.js HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:44.478846927Z 127.0.0.1 - - [02/Dec/2025:14:08:44 +0000] "GET /static/bulk_mail/js/slim_menu/slimmenu.min.css HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:44.481482585Z 127.0.0.1 - - [02/Dec/2025:14:08:44 +0000] "GET /static/bulk_mail/js/jquery.js HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:45.185000255Z 127.0.0.1 - - [02/Dec/2025:14:08:45 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams_Bold.woff HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:45.186126104Z 127.0.0.1 - - [02/Dec/2025:14:08:45 +0000] "GET /static/bulk_mail/css/alteram/alteram1_1_600x197.png HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:45.715488856Z 127.0.0.1 - - [02/Dec/2025:14:08:45 +0000] "GET /bulk_mail/auth/login HTTP/1.1" 200 14051 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:45.799982628Z 127.0.0.1 - - [02/Dec/2025:14:08:45 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams.woff HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:46.169276486Z 127.0.0.1 - - [02/Dec/2025:14:08:46 +0000] "GET /static/bulk_mail/js/jquery.js HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:46.178668329Z 127.0.0.1 - - [02/Dec/2025:14:08:46 +0000] "GET /static/bulk_mail/js/slim_menu/jquery.slimmenu.min.js HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:46.207657248Z 127.0.0.1 - - [02/Dec/2025:14:08:46 +0000] "GET /static/bulk_mail/js/slim_menu/slimmenu.min.css HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:46.644202683Z 127.0.0.1 - - [02/Dec/2025:14:08:46 +0000] "GET /static/bulk_mail/css/alteram/alteram1_1_600x197.png HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:46.657153917Z 127.0.0.1 - - [02/Dec/2025:14:08:46 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams.woff HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:46.662141856Z 127.0.0.1 - - [02/Dec/2025:14:08:46 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams_Bold.woff HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:46.744027201Z 127.0.0.1 - - [02/Dec/2025:14:08:46 +0000] "GET /static/bulk_mail/favicon.ico HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
+2025-12-02T14:08:48.279242643Z 127.0.0.1 - - [02/Dec/2025:14:08:48 +0000] "GET /bulk_mail/auth/login HTTP/1.1" 200 14051 "https://www.google.com/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:48.925806972Z 127.0.0.1 - - [02/Dec/2025:14:08:48 +0000] "GET /static/bulk_mail/js/slim_menu/jquery.slimmenu.min.js HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:49.533970889Z 127.0.0.1 - - [02/Dec/2025:14:08:49 +0000] "GET /static/bulk_mail/js/jquery.js HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:49.535466938Z 127.0.0.1 - - [02/Dec/2025:14:08:49 +0000] "GET /static/bulk_mail/js/slim_menu/slimmenu.min.css HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:50.800538371Z 127.0.0.1 - - [02/Dec/2025:14:08:50 +0000] "GET /static/bulk_mail/css/alteram/alteram1_1_600x197.png HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:50.809285647Z 127.0.0.1 - - [02/Dec/2025:14:08:50 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams.woff HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:50.827731944Z 127.0.0.1 - - [02/Dec/2025:14:08:50 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams_Bold.woff HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:08:51.718615453Z 127.0.0.1 - - [02/Dec/2025:14:08:51 +0000] "GET /static/bulk_mail/favicon.ico HTTP/1.1" 200 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:09:38.562117753Z ==> Detected service running on port 10000
+2025-12-02T14:09:38.713624344Z ==> Docs on specifying a port: https://render.com/docs/web-services#port-binding
+2025-12-02T14:10:45.142627565Z 127.0.0.1 - - [02/Dec/2025:14:10:45 +0000] "POST /bulk_mail/auth/login HTTP/1.1" 500 14449 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:10:45.602726284Z 127.0.0.1 - - [02/Dec/2025:14:10:45 +0000] "GET /static/bulk_mail/js/slim_menu/jquery.slimmenu.min.js HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:10:46.1916822Z 127.0.0.1 - - [02/Dec/2025:14:10:46 +0000] "GET /static/bulk_mail/js/jquery.js HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:10:46.226480129Z 127.0.0.1 - - [02/Dec/2025:14:10:46 +0000] "GET /static/bulk_mail/js/slim_menu/slimmenu.min.css HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:10:46.722012153Z 127.0.0.1 - - [02/Dec/2025:14:10:46 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams_Bold.woff HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:10:46.734933966Z 127.0.0.1 - - [02/Dec/2025:14:10:46 +0000] "GET /static/bulk_mail/css/alteram/alteram1_1_600x197.png HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:10:46.734957787Z 127.0.0.1 - - [02/Dec/2025:14:10:46 +0000] "GET /static/bulk_mail/css/alteram/CaviarDreams.woff HTTP/1.1" 304 0 "https://bulk-mail-app-7rx4.onrender.com/bulk_mail/auth/login" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36"
+2025-12-02T14:24:12.883407819Z ==> Deploying...
+2025-12-02T14:25:01.528635496Z ==> Running 'gunicorn --bind 0.0.0.0:$PORT wsgi:app'
+2025-12-02T14:25:17.436727568Z [2025-12-02 14:25:17 +0000] [58] [INFO] Starting gunicorn 21.2.0
+2025-12-02T14:25:17.437202087Z [2025-12-02 14:25:17 +0000] [58] [INFO] Listening at: http://0.0.0.0:10000 (58)
+2025-12-02T14:25:17.437295899Z [2025-12-02 14:25:17 +0000] [58] [INFO] Using worker: sync
+2025-12-02T14:25:17.528544154Z [2025-12-02 14:25:17 +0000] [59] [INFO] Booting worker with pid: 59
+2025-12-02T14:25:18.527590588Z Database not initialized, setting up: (psycopg2.errors.UndefinedTable) relation "authentication.tbl_users" does not exist
+2025-12-02T14:25:18.527614528Z LINE 1: SELECT 1 FROM authentication.tbl_users LIMIT 1
+2025-12-02T14:25:18.527619769Z                       ^
+2025-12-02T14:25:18.527623759Z 
+2025-12-02T14:25:18.527628359Z [SQL: SELECT 1 FROM authentication.tbl_users LIMIT 1]
+2025-12-02T14:25:18.527632749Z (Background on this error at: https://sqlalche.me/e/20/f405)
+2025-12-02T14:25:18.527639409Z SQL Error: (psycopg2.errors.InFailedSqlTransaction) current transaction is aborted, commands ignored until end 
+2025-12-02T14:25:18.527644369Z SQL Error: (psycopg2.errors.InvalidSchemaName) schema "authentication" does not exist
+2025-12-02T14:25:18.527648409Z 
+2025-12-02T14:25:18.527652639Z [SQL: CREATE SEQUENCE au
+2025-12-02T14:25:18.527656789Z SQL Error: (psycopg2.errors.InvalidSchemaName) schema "authentication" does not exist
+2025-12-02T14:25:18.527661409Z LINE 1: CREATE TABLE auth
+2025-12-02T14:25:18.527665869Z SQL Error: (psycopg2.errors.InvalidSchemaName) schema "authentication" does not exist
+2025-12-02T14:25:18.527669589Z 
+2025-12-02T14:25:18.52767346Z [SQL: ALTER SEQUENCE aut
+2025-12-02T14:25:18.52767809Z SQL Error: (psycopg2.errors.UndefinedTable) relation "authentication.tbl_users" does not exist
+2025-12-02T14:25:18.52768251Z LINE 1: INSERT I
+2025-12-02T14:25:18.52768702Z SQL Error: (psycopg2.errors.UndefinedTable) relation "authentication.tbl_users" does not exist
+2025-12-02T14:25:18.52769085Z LINE 1: INSERT I
+2025-12-02T14:25:18.52769501Z SQL Error: (psycopg2.errors.UndefinedTable) relation "authentication.tbl_users" does not exist
+2025-12-02T14:25:18.52769922Z LINE 1: INSERT I
+2025-12-02T14:25:18.52771128Z SQL Error: (psycopg2.errors.UndefinedTable) relation "authentication.tbl_users" does not exist
+2025-12-02T14:25:18.52771631Z LINE 1: INSERT I
+2025-12-02T14:25:18.52772061Z Database initialization complete. Success: 551, Errors: 8
+2025-12-02T14:25:18.527725061Z 127.0.0.1 - - [02/Dec/2025:14:25:18 +0000] "HEAD / HTTP/1.1" 404 0 "-" "Go-http-client/1.1"
+2025-12-02T14:25:24.247673276Z ==> Your service is live 🎉
+2025-12-02T14:25:24.280779414Z ==> 
+2025-12-02T14:25:24.316330621Z ==> ///////////////////////////////////////////////////////////
+2025-12-02T14:25:24.348410818Z ==> 
+2025-12-02T14:25:24.381174824Z ==> Available at your primary URL https://bulk-mail-app-7rx4.onrender.com
+2025-12-02T14:25:24.416695471Z ==> 
+2025-12-02T14:25:24.455927638Z ==> ///////////////////////////////////////////////////////////
+2025-12-02T14:25:27.400831573Z 127.0.0.1 - - [02/Dec/2025:14:25:27 +0000] "GET / HTTP/1.1" 404 13434 "-" "Go-http-client/2.0"
