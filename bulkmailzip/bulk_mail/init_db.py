@@ -5,22 +5,29 @@ def init_database(app, db):
     with app.app_context():
         try:
             result = db.session.execute(text("SELECT 1 FROM authentication.tbl_users LIMIT 1"))
+            db.session.commit()
             print("Database already initialized - tables exist.")
             return True
         except Exception as e:
+            db.session.rollback()
             print(f"Tables don't exist, initializing database...")
         
         try:
             db.session.execute(text("CREATE SCHEMA IF NOT EXISTS authentication"))
+            db.session.commit()
             db.session.execute(text("CREATE SCHEMA IF NOT EXISTS companies"))
+            db.session.commit()
             db.session.execute(text("CREATE SCHEMA IF NOT EXISTS customers"))
+            db.session.commit()
             db.session.execute(text("CREATE SCHEMA IF NOT EXISTS emails"))
+            db.session.commit()
             db.session.execute(text("CREATE SCHEMA IF NOT EXISTS queueing"))
             db.session.commit()
             print("Schemas created successfully")
         except Exception as e:
             db.session.rollback()
             print(f"Error creating schemas: {e}")
+            return False
         
         sql_file_path = os.path.join(os.path.dirname(__file__), 'bulk_mail.sql')
         
@@ -70,6 +77,7 @@ def init_database(app, db):
                     current_statement = []
             
             success_count = 0
+            error_count = 0
             for stmt in create_statements:
                 try:
                     if stmt.strip():
@@ -78,13 +86,15 @@ def init_database(app, db):
                         success_count += 1
                 except Exception as e:
                     db.session.rollback()
+                    error_count += 1
                     if 'already exists' not in str(e).lower():
                         pass
             
-            print(f"Database initialization complete. Executed {success_count} statements.")
+            print(f"Database initialization complete. Success: {success_count}, Errors: {error_count}")
             return True
             
         except Exception as e:
+            db.session.rollback()
             print(f"Error initializing database: {e}")
             try:
                 db.session.execute(text("""
