@@ -14,8 +14,17 @@ def create_app(config_class=Config):
     def inject_url_values():
         return dict(static_prefix="bulk_mail/")
     # end of inject_url_values
+    app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+        "pool_recycle": 300,
+        "pool_pre_ping": True,
+    }
+    
     # Initialize Flask extensions here
     db.init_app(app)
+    
+    from init_db import init_database
+    init_database(app, db)
+    
     # Register blueprints here
     from app.main import bp as main_bp
     app.register_blueprint(main_bp, url_prefix="/bulk_mail")
