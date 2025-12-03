@@ -1,7 +1,7 @@
-modules = ["python-3.11"]
+modules = ["nodejs-20", "python-3.11", "web"]
 [nix]
 channel = "stable-25_05"
-packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "tcl", "tk", "unzip", "zlib"]
+packages = ["freetype", "lcms2", "libimagequant", "libjpeg", "libtiff", "libwebp", "libxcrypt", "openjpeg", "openssl", "postgresql", "tcl", "tk", "unzip", "zlib"]
 
 [agent]
 expertMode = true
@@ -39,7 +39,15 @@ externalPort = 80
 localPort = 46659
 externalPort = 3000
 
+[[ports]]
+localPort = 46773
+externalPort = 3001
+
 [userenv]
 
 [userenv.development]
 DATABASE_URL = "postgresql://bulkmail_user:tm4mnrJn7moDpCdSrJ9tWyKWvJaZgrXS@dpg-d4nf220bdp1s73bk3pcg-a.oregon-postgres.render.com/bulk_mail"
+
+[deployment]
+deploymentTarget = "autoscale"
+run = ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
