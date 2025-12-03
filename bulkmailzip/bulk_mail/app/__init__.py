@@ -36,6 +36,12 @@ def create_app(config_class=Config):
         return '<h1>Testing the Flask Application Factory Pattern</h1>'
     # end of test_page view function for route /bulk_mail/test/
     
+    @app.route("/")
+    def root_redirect():
+        from flask import redirect, url_for
+        return redirect(url_for("auth.login"))
+    # end of root_redirect view function for route /
+    
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
