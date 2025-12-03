@@ -46,7 +46,7 @@ display: inline-block;
 <!-- filter row -->
 <div style="flex: 1 1 200px;">
 <label for="sel_group_filter">Select Group</label>
-<select name="sel_group_filter" id="sel_group_filter" style="width: 100%; padding: 6px;">
+<select name="sel_group_filter" id="sel_group_filter">
 <option value="0">---all groups---</option>
 {% for group in groups %}
 <option value="{{ group.id }}"{% if group.id==group_id %} selected{% endif %}>{{ group.v_group_name }}</option>
@@ -69,7 +69,7 @@ display: inline-block;
 <tbody>
 {% for customer in customers %}
 <tr>
-<td>{{ customer.v_last_name }}</td><td>{{ customer.v_first_names }}</td><td>{{ customer.v_email }}</td><td>{{ customer.v_mobile_number }}</td><td>{{ customer.v_nationality }}</td>
+<td>{{ customer.v_last_name }}</td><td>{{ customer.v_first_names }}</td><td class="email-cell">{{ customer.v_email }}</td><td>{{ customer.v_mobile_number }}</td><td>{{ customer.v_nationality }}</td>
 <td id="td_{{ customer.id }}">
 <button type="button" class="btn_edit_customer btn-icon" value="Edit Customer" title="Edit Customer" aria-label="Edit Customer">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>

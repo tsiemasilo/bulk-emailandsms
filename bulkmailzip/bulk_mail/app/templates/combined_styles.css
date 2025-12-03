@@ -2063,16 +2063,21 @@ align-items: center;
 overflow: visible !important
 }
 
-/* Email link - not orange, use neutral dark color */
-#tbl_customers tbody td a[href^="mailto:"],
-#tbl_customers a[href^="mailto:"] {
+/* Email cell - not orange, use neutral dark color */
+#tbl_customers tbody td.email-cell,
+.email-cell {
 color: #374151 !important;
-text-decoration: none;
 font-weight: 500
 }
 
-#tbl_customers tbody td a[href^="mailto:"]:hover,
-#tbl_customers a[href^="mailto:"]:hover {
+#tbl_customers tbody td.email-cell a,
+.email-cell a {
+color: #374151 !important;
+text-decoration: none
+}
+
+#tbl_customers tbody td.email-cell a:hover,
+.email-cell a:hover {
 color: #1f2937 !important;
 text-decoration: underline
 }
