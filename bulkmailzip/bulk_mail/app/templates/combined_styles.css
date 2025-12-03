@@ -338,13 +338,13 @@ margin-top: 1rem
 }
 
 .table-header-row h3 {
-margin: 0;
-font-size: 1rem;
-font-weight: 600;
-color: #ffffff;
+margin: 0 !important;
+font-size: 1rem !important;
+font-weight: 600 !important;
+color: #ffffff !important;
 text-transform: uppercase;
 letter-spacing: 0.05em;
-background-color: transparent
+background-color: transparent !important
 }
 
 .table-header-actions {
@@ -353,18 +353,33 @@ gap: 0.5rem;
 align-items: center
 }
 
-.table-header-actions .action-btn {
-background-color: #ffffff;
-color: var(--table-header-bg);
-border: none;
-padding: 0.4rem 0.75rem;
-font-size: 0.8rem;
-font-weight: 500;
-border-radius: 0.25rem
+.table-header-actions .action-btn,
+.table-header-actions button {
+background-color: #ffffff !important;
+color: var(--table-header-bg) !important;
+border: none !important;
+padding: 0.5rem 1rem !important;
+font-size: 0.813rem !important;
+font-weight: 500 !important;
+border-radius: 0.25rem !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 0.4rem !important;
+white-space: nowrap !important;
+transition: all 0.2s ease !important
 }
 
-.table-header-actions .action-btn:hover {
-background-color: #f3f4f6
+.table-header-actions .action-btn:hover,
+.table-header-actions button:hover {
+background-color: var(--accent-color) !important;
+color: #ffffff !important
+}
+
+.table-header-actions .action-btn svg,
+.table-header-actions button svg {
+width: 16px;
+height: 16px;
+stroke: currentColor
 }
 
 .table-container {
