@@ -355,8 +355,8 @@ align-items: center
 
 .table-header-actions .action-btn,
 .table-header-actions button {
-background-color: #ffffff !important;
-color: var(--table-header-bg) !important;
+background-color: #e5e7eb !important;
+color: #374151 !important;
 border: none !important;
 padding: 0.5rem 1rem !important;
 font-size: 0.813rem !important;
