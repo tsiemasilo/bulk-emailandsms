@@ -90,81 +90,120 @@ z-index: -1;
 opacity: 0.15
 }
 header {
-background-color: rgba(255, 255, 255, 0.95);
-padding: 1rem 0;
-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+background-color: rgba(255, 255, 255, 0.98);
+padding: 0.5rem 0;
+box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
 position: fixed;
 width: 100%;
 top: 0;
-z-index: 100
+z-index: 100;
 }
 .header-container {
 display: flex;
 justify-content: space-between;
 align-items: center;
-padding: 5 2rem;
-max-width: 1140px;
-margin: 0 auto
+padding: 0 1rem;
+max-width: 1400px;
+margin: 0 auto;
+width: 100%;
 }
 .logo-area {
-width: 180px;
-height: 60px;
+width: 100px;
+height: 35px;
 background-image: url("{{ url_for("static", filename=static_prefix+"css/alteram/alteram1_1_600x197.png") }}");
 background-size: contain;
 background-repeat: no-repeat;
 background-position: left center;
-margin-left: -250px;
-margin-right: 40px
+flex-shrink: 0;
+margin-right: 0.75rem;
 }
 nav {
 display: flex;
-align-items: center
+align-items: center;
+flex: 1;
+justify-content: flex-end;
 }
-ul.nav {
-width: 100%
+ul.nav.slimmenu {
 display: flex;
 list-style: none;
-gap: 1rem;
-flex-wrap: nowrap;
-justify-content: center;
+gap: 0.25rem;
+flex-wrap: wrap;
+justify-content: flex-end;
 align-items: center;
 padding: 0;
 margin: 0;
-height: 100%
+width: auto;
 }
-ul.nav li {
+ul.nav.slimmenu > li {
 margin: 0;
-height: 40px;
 display: inline-block;
-align-items: center
+position: relative;
+float: none;
+background-color: transparent;
 }
-ul.nav li a {
+ul.nav.slimmenu > li > a {
 color: var(--accent-color);
 text-decoration: none;
 font-weight: 600;
-padding: 0.75rem 1.5rem;
+padding: 0.35rem 0.6rem;
 border-radius: 4px;
 transition: all 0.3s ease;
 background-color: transparent;
-border: 2px solid var(--accent-color);
+border: 1.5px solid var(--accent-color);
 white-space: nowrap;
-display: flex;
+display: inline-flex;
 align-items: center;
 justify-content: center;
-height: 100%;
-font-size: 0.95rem;
-letter-spacing: 0.02em
+font-size: 0.75rem;
+letter-spacing: 0.02em;
 }
-ul.nav li a:hover, ul.nav li a[aria-current="true"] {
+ul.nav.slimmenu > li > a:hover,
+ul.nav.slimmenu > li > a[aria-current="true"] {
 background-color: var(--accent-color);
 color: white;
-transform: translatey(-2px);
-box-shadow: 0 4px 12px rgba(250, 122, 30, 0.2)
+transform: translateY(-1px);
+box-shadow: 0 3px 10px rgba(250, 122, 30, 0.2);
+}
+ul.nav.slimmenu > li > ul.slimmenu {
+position: absolute;
+top: 100%;
+left: 0;
+background-color: white;
+border-radius: 6px;
+box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+min-width: 180px;
+padding: 0.5rem 0;
+z-index: 1000;
+display: none;
+}
+ul.nav.slimmenu > li:hover > ul.slimmenu {
+display: block;
+}
+ul.nav.slimmenu > li > ul.slimmenu > li {
+display: block;
+background-color: transparent;
+float: none;
+}
+ul.nav.slimmenu > li > ul.slimmenu > li > a {
+display: block;
+padding: 0.5rem 1rem;
+color: var(--primary-color);
+text-decoration: none;
+font-size: 0.8rem;
+border: none;
+border-radius: 0;
+transition: background-color 0.2s ease;
+}
+ul.nav.slimmenu > li > ul.slimmenu > li > a:hover {
+background-color: var(--accent-lighter);
+color: var(--accent-color);
+transform: none;
+box-shadow: none;
 }
 main {
-padding-top: 250px;
-min-height: calc(100vh - 100px);
-justify-content: center
+padding-top: 80px;
+min-height: calc(100vh - 80px);
+justify-content: center;
 }
 .content-container.content {
 width: auto;
@@ -506,5 +545,135 @@ margin: 1rem;
 }
 .login-header h2 {
 font-size: 1.75rem;
+}
+}
+
+button, .btn {
+display: inline-flex;
+align-items: center;
+gap: 0.4rem;
+padding: 0.5rem 0.9rem;
+font-family: CaviarDreams, Arial, sans-serif;
+font-size: 0.85rem;
+font-weight: 600;
+color: var(--primary-color);
+background-color: white;
+border: 1.5px solid var(--primary-color);
+border-radius: 5px;
+cursor: pointer;
+transition: all 0.2s ease;
+white-space: nowrap;
+margin: 0.2rem;
+vertical-align: middle;
+}
+button:hover, .btn:hover {
+background-color: var(--primary-color);
+color: white;
+transform: translateY(-1px);
+box-shadow: 0 3px 8px rgba(39, 37, 92, 0.2);
+}
+button:active, .btn:active {
+transform: translateY(0);
+}
+button svg, .btn svg {
+width: 14px;
+height: 14px;
+flex-shrink: 0;
+}
+button[type="submit"], .btn-primary {
+background-color: var(--accent-color);
+color: white;
+border-color: var(--accent-color);
+}
+button[type="submit"]:hover, .btn-primary:hover {
+background-color: #e5691f;
+border-color: #e5691f;
+box-shadow: 0 4px 12px rgba(250, 122, 30, 0.3);
+}
+.btn_edit_customer, .btn_remove_customer {
+padding: 0.35rem 0.6rem;
+font-size: 0.75rem;
+}
+.btn_remove_customer {
+color: #dc3545;
+border-color: #dc3545;
+}
+.btn_remove_customer:hover {
+background-color: #dc3545;
+color: white;
+border-color: #dc3545;
+}
+
+select {
+padding: 0.5rem 2rem 0.5rem 0.75rem;
+font-family: CaviarDreams, Arial, sans-serif;
+font-size: 0.9rem;
+color: var(--primary-color);
+background-color: white;
+border: 1.5px solid rgba(39, 37, 92, 0.25);
+border-radius: 5px;
+cursor: pointer;
+transition: all 0.2s ease;
+appearance: none;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2327255c' d='M6 8L2 4h8z'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 0.6rem center;
+min-width: 150px;
+}
+select:hover {
+border-color: var(--accent-color);
+}
+select:focus {
+outline: none;
+border-color: var(--accent-color);
+box-shadow: 0 0 0 2px rgba(250, 122, 30, 0.1);
+}
+select option {
+padding: 0.5rem;
+background-color: white;
+color: var(--primary-color);
+}
+
+.div_data_filtering {
+background-color: rgba(255, 255, 255, 0.95);
+border-radius: 8px;
+padding: 1.25rem;
+margin-bottom: 1.5rem;
+box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+border: 1px solid rgba(39, 37, 92, 0.1);
+}
+.div_filter_row {
+display: flex;
+flex-wrap: wrap;
+gap: 1rem;
+align-items: flex-end;
+}
+.div_filter_row > div {
+flex: 1 1 200px;
+}
+.div_filter_row label {
+display: block;
+margin-bottom: 0.4rem;
+font-size: 0.85rem;
+font-weight: 600;
+color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+.header-container {
+flex-direction: column;
+gap: 0.5rem;
+padding: 0.5rem;
+}
+ul.nav.slimmenu {
+justify-content: center;
+}
+ul.nav.slimmenu > li > a {
+padding: 0.3rem 0.5rem;
+font-size: 0.7rem;
+}
+button, .btn {
+padding: 0.4rem 0.7rem;
+font-size: 0.8rem;
 }
 }
