@@ -141,9 +141,57 @@ margin: 0;
 display: inline-block;
 position: relative;
 float: none;
-background-color: transparent;
+background-color: white;
+color: var(--accent-color);
+font-weight: 600;
+padding: 0.6rem 1rem;
+border-radius: 6px;
+transition: all 0.3s ease;
+border: 2px solid var(--accent-color);
+white-space: nowrap;
+font-size: 0.9rem;
+letter-spacing: 0.02em;
+min-height: 42px;
+cursor: pointer;
+line-height: 1.4;
 }
-ul.nav.slimmenu > li > a,
+ul.nav.slimmenu > li:hover {
+background-color: var(--accent-color);
+color: white;
+transform: translateY(-1px);
+box-shadow: 0 3px 10px rgba(250, 122, 30, 0.2);
+}
+ul.nav.slimmenu > li > a {
+color: inherit;
+text-decoration: none;
+font-weight: 600;
+padding: 0;
+border-radius: 0;
+transition: none;
+background-color: transparent;
+border: none;
+white-space: nowrap;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+font-size: inherit;
+letter-spacing: inherit;
+min-height: auto;
+cursor: pointer;
+}
+ul.nav.slimmenu > li > a:hover {
+background-color: transparent;
+color: inherit;
+transform: none;
+box-shadow: none;
+}
+ul.nav.slimmenu > li > a[aria-current="true"] {
+color: inherit;
+}
+ul.nav.slimmenu > li:has(> a[aria-current="true"]) {
+background-color: var(--accent-color);
+color: white;
+}
 .nav-control {
 color: var(--accent-color);
 text-decoration: none;
@@ -162,13 +210,21 @@ letter-spacing: 0.02em;
 min-height: 42px;
 cursor: pointer;
 }
-ul.nav.slimmenu > li > a:hover,
-ul.nav.slimmenu > li > a[aria-current="true"],
 .nav-control:hover {
 background-color: var(--accent-color);
 color: white;
 transform: translateY(-1px);
 box-shadow: 0 3px 10px rgba(250, 122, 30, 0.2);
+}
+ul.nav.slimmenu > li:last-child {
+background-color: var(--primary-color);
+border-color: var(--primary-color);
+color: white;
+}
+ul.nav.slimmenu > li:last-child:hover {
+background-color: #1a1845;
+border-color: #1a1845;
+box-shadow: 0 3px 10px rgba(39, 37, 92, 0.3);
 }
 ul.nav.slimmenu > li > ul.slimmenu {
 position: absolute;
@@ -720,8 +776,7 @@ ul.nav.slimmenu {
 justify-content: center;
 gap: 0.5rem;
 }
-ul.nav.slimmenu > li > a,
-.nav-control {
+ul.nav.slimmenu > li {
 padding: 0.5rem 0.75rem;
 font-size: 0.8rem;
 min-height: 36px;
