@@ -1,0 +1,105 @@
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.getElementById('loginForm');
+  const usernameInput = document.getElementById('username');
+  const passwordInput = document.getElementById('password');
+  const togglePasswordBtn = document.getElementById('togglePassword');
+  const eyeIcon = document.getElementById('eyeIcon');
+  const eyeOffIcon = document.getElementById('eyeOffIcon');
+  const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const spinner = document.getElementById('spinner');
+  const loginIcon = submitBtn.querySelector('.login-icon');
+
+  // Toggle password visibility
+  togglePasswordBtn.addEventListener('click', function() {
+    const isPassword = passwordInput.type === 'password';
+    passwordInput.type = isPassword ? 'text' : 'password';
+    
+    // Toggle icons
+    eyeIcon.classList.toggle('hidden');
+    eyeOffIcon.classList.toggle('hidden');
+  });
+
+  // Handle form submission
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const username = usernameInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    // Validate inputs
+    if (!username || !password) {
+      showToast('Missing credentials', 'Please enter both username and password');
+      return;
+    }
+
+    // Show loading state
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+        credentials: 'include'
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || 'Invalid username or password');
+      }
+
+      // Success - redirect to home
+      showToast('Success', 'Login successful! Redirecting...', true);
+      
+      setTimeout(function() {
+        window.location.href = '/';
+      }, 500);
+
+    } catch (error) {
+      showToast('Login failed', error.message || 'Invalid username or password');
+      setLoading(false);
+    }
+  });
+
+  // Set loading state
+  function setLoading(isLoading) {
+    submitBtn.disabled = isLoading;
+    usernameInput.disabled = isLoading;
+    passwordInput.disabled = isLoading;
+    togglePasswordBtn.disabled = isLoading;
+
+    if (isLoading) {
+      btnText.textContent = 'Signing in...';
+      loginIcon.classList.add('hidden');
+      spinner.classList.remove('hidden');
+    } else {
+      btnText.textContent = 'Sign In';
+      loginIcon.classList.remove('hidden');
+      spinner.classList.add('hidden');
+    }
+  }
+
+  // Show toast notification
+  function showToast(title, message, isSuccess = false) {
+    const toast = document.getElementById('toast');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMessage = document.getElementById('toastMessage');
+
+    toastTitle.textContent = title;
+    toastMessage.textContent = message;
+    
+    toast.classList.remove('hidden', 'success');
+    if (isSuccess) {
+      toast.classList.add('success');
+    }
+
+    // Auto-hide after 4 seconds
+    setTimeout(function() {
+      toast.classList.add('hidden');
+    }, 4000);
+  }
+});
