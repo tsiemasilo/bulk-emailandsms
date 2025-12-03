@@ -251,9 +251,10 @@ main {
 
 .table-container {
   background-color: #ffffff;
-  border-radius: 0.5rem;
+  border-radius: 0 0 0.5rem 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
+  border-top: none;
   overflow: hidden;
 }
 
@@ -265,21 +266,39 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.75rem;
-  padding: 0.5rem 0;
+  background-color: var(--table-header-bg);
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  margin-bottom: 0;
 }
 
 .table-header-row h3 {
   margin: 0;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: var(--primary-color);
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .table-header-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+.table-header-actions .action-btn {
+  background-color: #ffffff;
+  color: var(--table-header-bg);
+  border: none;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 0.25rem;
+}
+
+.table-header-actions .action-btn:hover {
+  background-color: #f3f4f6;
 }
 
 .data-table {
