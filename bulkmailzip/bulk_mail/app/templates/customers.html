@@ -10,6 +10,57 @@ font-size: smaller;
 #ol_values > li {
 display: inline-block;
 }
+.table-header-row {
+display: flex !important;
+justify-content: space-between !important;
+align-items: center !important;
+background-color: rgb(0, 0, 83) !important;
+padding: 0.75rem 1rem !important;
+border-radius: 0.5rem 0.5rem 0 0 !important;
+margin-bottom: 0 !important;
+margin-top: 1rem !important;
+}
+.table-header-row h3 {
+margin: 0 !important;
+font-size: 1rem !important;
+font-weight: 600 !important;
+color: #ffffff !important;
+text-transform: uppercase !important;
+letter-spacing: 0.05em !important;
+background-color: transparent !important;
+}
+.table-header-actions {
+display: flex !important;
+gap: 0.5rem !important;
+align-items: center !important;
+}
+.table-header-actions .action-btn,
+.table-header-actions button {
+background-color: #e5e7eb !important;
+color: #374151 !important;
+border: none !important;
+padding: 0.5rem 1rem !important;
+font-size: 0.813rem !important;
+font-weight: 500 !important;
+border-radius: 0.25rem !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 0.4rem !important;
+white-space: nowrap !important;
+transition: all 0.2s ease !important;
+cursor: pointer !important;
+}
+.table-header-actions .action-btn:hover,
+.table-header-actions button:hover {
+background-color: #f97316 !important;
+color: #ffffff !important;
+}
+.table-header-actions .action-btn svg,
+.table-header-actions button svg {
+width: 16px !important;
+height: 16px !important;
+stroke: currentColor !important;
+}
 </style>
 {% endblock %}
 
