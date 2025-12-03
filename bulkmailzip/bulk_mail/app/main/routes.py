@@ -415,7 +415,7 @@ def customers(i_company_id:int):
         # end of checking if need to filter via join against group membership
         o_company = db.session.get(tbl_companies, i_company_id)
         s_company_name = o_company.v_organisation_name
-        pagination = q_customers.paginate(page=i_page, per_page=20)
+        pagination = q_customers.paginate(page=i_page, per_page=10)
         l_customers = list(map(dict_row, pagination.items))
         s_base = "base_bs.html" if Config.BOOTSTRAP else "base.html"
         s_url = url_for("main.customers", i_company_id=i_company_id)#, _external=True)
