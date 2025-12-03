@@ -1953,14 +1953,15 @@ position: relative
 .btn-icon svg {
 width: 16px;
 height: 16px;
-flex-shrink: 0
+flex-shrink: 0;
+transition: stroke 0.2s ease
 }
 
-/* Edit button - Blue */
+/* Edit button - Gray default, Blue on hover */
 .btn_edit_customer.btn-icon {
-background: #eff6ff;
-color: #2563eb;
-border: 1px solid #bfdbfe
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
 }
 
 .btn_edit_customer.btn-icon:hover {
@@ -1971,14 +1972,18 @@ box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25)
 }
 
 .btn_edit_customer.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_edit_customer.btn-icon:hover svg {
 stroke: #2563eb
 }
 
-/* Remove button - Red */
+/* Remove button - Gray default, Red on hover */
 .btn_remove_customer.btn-icon {
-background: #fef2f2;
-color: #dc2626;
-border: 1px solid #fecaca
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
 }
 
 .btn_remove_customer.btn-icon:hover {
@@ -1989,6 +1994,10 @@ box-shadow: 0 4px 8px rgba(220, 38, 38, 0.25)
 }
 
 .btn_remove_customer.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_remove_customer.btn-icon:hover svg {
 stroke: #dc2626
 }
 
@@ -2010,7 +2019,7 @@ font-size: 0.75rem;
 font-weight: 500;
 border-radius: 6px;
 white-space: nowrap;
-z-index: 100;
+z-index: 1000;
 margin-bottom: 6px;
 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
 }
@@ -2024,19 +2033,99 @@ transform: translateX(-50%);
 border: 6px solid transparent;
 border-top-color: #1e293b;
 margin-bottom: -6px;
-z-index: 100
+z-index: 1000
+}
+
+/* Remove button tooltip - position to the left to avoid cutoff */
+.btn_remove_customer.btn-icon[title]:hover::after {
+left: auto;
+right: 0;
+transform: none
+}
+
+.btn_remove_customer.btn-icon[title]:hover::before {
+left: auto;
+right: 10px;
+transform: none
 }
 
 /* Table action cell styling */
 #tbl_customers tbody td:last-child {
-text-align: center
+text-align: center;
+overflow: visible !important
 }
 
 #tbl_customers tbody td[id^="td_"] {
 display: flex;
 justify-content: center;
 gap: 0.5rem;
-align-items: center
+align-items: center;
+overflow: visible !important
+}
+
+/* Email link - not orange, use neutral dark color */
+#tbl_customers tbody td a[href^="mailto:"],
+#tbl_customers a[href^="mailto:"] {
+color: #374151 !important;
+text-decoration: none;
+font-weight: 500
+}
+
+#tbl_customers tbody td a[href^="mailto:"]:hover,
+#tbl_customers a[href^="mailto:"]:hover {
+color: #1f2937 !important;
+text-decoration: underline
+}
+
+/* =============================================
+   IMPROVED SELECT GROUP DROPDOWN
+   ============================================= */
+
+#sel_group_filter {
+appearance: none;
+-webkit-appearance: none;
+-moz-appearance: none;
+background-color: #ffffff;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 0.75rem center;
+background-size: 16px;
+padding: 0.625rem 2.5rem 0.625rem 0.875rem !important;
+font-size: 0.875rem;
+font-weight: 500;
+color: #374151;
+border: 1px solid #d1d5db;
+border-radius: 8px;
+cursor: pointer;
+transition: all 0.2s ease;
+min-width: 180px
+}
+
+#sel_group_filter:hover {
+border-color: #9ca3af;
+background-color: #f9fafb
+}
+
+#sel_group_filter:focus {
+outline: none;
+border-color: var(--primary-color);
+box-shadow: 0 0 0 3px rgba(39, 37, 92, 0.1)
+}
+
+#sel_group_filter option {
+padding: 0.5rem 0.75rem;
+font-size: 0.875rem;
+color: #374151;
+background: #ffffff
+}
+
+#sel_group_filter option:checked {
+background: linear-gradient(135deg, var(--primary-color), #1e1b4b);
+color: #ffffff
+}
+
+#sel_group_filter option:hover {
+background: #f3f4f6
 }
 
 /* =============================================
