@@ -82,3 +82,24 @@ Preferred communication style: Simple, everyday language.
 - **JavaScript**: jQuery for client-side interactions
 - **CSS**: Custom Alteram theme with custom fonts (CaviarDreams)
 - **Menu System**: SlimMenu jQuery plugin for responsive navigation
+
+# Recent Changes
+
+## UI/UX Styling Standardization (December 2024)
+- Implemented consistent unified table styling across all pages matching the Customers page design pattern
+- Added unified table styles to `combined_styles.css` for global use:
+  - `.table-unified` - Container with rounded corners and shadow
+  - `.table-header-row-unified` - Dark blue header row with action buttons
+  - `.table-header-content` - Flexbox layout for title and buttons
+  - `.table-header-actions` - White buttons with orange hover effect
+  - `.btn-icon` - Icon-only action buttons in table rows
+- Updated templates to use unified styling:
+  - campaigns.html - Campaigns list with Add Campaign button
+  - email_templates.html - Email templates with Add Template button
+  - customer_groups.html - Customer groups with Add Group button
+  - company_email_addresses.html - Email addresses with Add E-mail button
+  - queued.html - Queued emails with filter toggle
+  - campaign_reports.html - Campaign reports with filtering
+- All row action buttons now use icon-only format with SVG icons
+- Added JavaScript cleanup for SlimMenu dropdown menu styling in base.html
+- Fixed navbar dropdown menu visibility and button text clipping issues
