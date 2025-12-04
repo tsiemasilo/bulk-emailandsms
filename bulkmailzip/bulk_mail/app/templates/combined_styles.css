@@ -169,7 +169,8 @@ width: auto
 
 ul.nav.slimmenu > li {
 margin: 0;
-display: inline-block;
+display: inline-flex;
+align-items: center;
 position: relative;
 float: none;
 background-color: white;
@@ -184,7 +185,8 @@ font-size: 0.9rem;
 letter-spacing: 0.02em;
 min-height: 42px;
 cursor: pointer;
-line-height: 1.4
+line-height: 1.4;
+overflow: visible
 }
 
 ul.nav.slimmenu > li:hover {
@@ -248,10 +250,11 @@ left: 0;
 background-color: white;
 border-radius: 6px;
 box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-min-width: 180px;
+min-width: 220px;
 padding: 0.5rem 0;
 z-index: 1000;
-display: none
+display: none;
+margin-top: 2px
 }
 
 ul.nav.slimmenu > li:hover > ul.slimmenu {
@@ -261,18 +264,27 @@ display: block
 ul.nav.slimmenu > li > ul.slimmenu > li {
 display: block;
 background-color: transparent;
-float: none
+float: none;
+padding: 0;
+border: none;
+margin: 0;
+width: 100%
 }
 
 ul.nav.slimmenu > li > ul.slimmenu > li > a {
 display: block;
-padding: 0.5rem 1rem;
+padding: 0.6rem 1rem;
 color: var(--primary-color);
 text-decoration: none;
-font-size: 0.8rem;
+font-size: 0.85rem;
+font-weight: 500;
 border: none;
 border-radius: 0;
-transition: background-color 0.2s ease
+transition: background-color 0.2s ease;
+white-space: nowrap;
+text-align: left;
+width: 100%;
+box-sizing: border-box
 }
 
 ul.nav.slimmenu > li > ul.slimmenu > li > a:hover {
@@ -282,51 +294,38 @@ transform: none;
 box-shadow: none
 }
 
+/* Hide sub-toggle in dropdown items */
+ul.nav.slimmenu > li > ul.slimmenu > li > .sub-toggle {
+display: none !important
+}
+
 /* Dropdown toggle arrow fix */
 ul.nav.slimmenu > li:has(> ul.slimmenu) {
-padding-right: 2.5rem !important
+padding-right: 2.2rem !important
 }
 
+/* Hide slimmenu default sub-toggle completely and use CSS arrow */
 ul.nav.slimmenu > li > .sub-toggle {
+display: none !important
+}
+
+/* Add custom dropdown arrow using ::after on parent li */
+ul.nav.slimmenu > li:has(> ul.slimmenu)::after {
+content: '' !important;
 position: absolute !important;
-right: 0.5rem !important;
+right: 0.75rem !important;
 top: 50% !important;
 transform: translateY(-50%) !important;
-width: 20px !important;
-height: 20px !important;
-display: flex !important;
-align-items: center !important;
-justify-content: center !important;
-background: transparent !important;
-border: none !important;
-padding: 0 !important;
-cursor: pointer !important
-}
-
-ul.nav.slimmenu > li > .sub-toggle::before {
-content: '' !important;
-display: block !important;
 width: 0 !important;
 height: 0 !important;
 border-left: 5px solid transparent !important;
 border-right: 5px solid transparent !important;
-border-top: 5px solid currentColor !important
+border-top: 6px solid var(--accent-color) !important;
+pointer-events: none !important
 }
 
-ul.nav.slimmenu > li:hover > .sub-toggle::before {
+ul.nav.slimmenu > li:has(> ul.slimmenu):hover::after {
 border-top-color: white !important
-}
-
-/* Fix slimmenu default arrow styling */
-ul.slimmenu li .sub-toggle {
-position: absolute !important;
-right: 8px !important;
-top: 50% !important;
-transform: translateY(-50%) !important;
-height: auto !important;
-width: auto !important;
-background: none !important;
-border: none !important
 }
 
 /* =============================================
