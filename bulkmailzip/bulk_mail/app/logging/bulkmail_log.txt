@@ -100,3 +100,7 @@ additional:
 ---
 2025-12-03 16:25:42 - bulk_mail/auth/login: roger@spacequest.com logged in
 ---
+2025-12-03 16:27:12 - bulk_mail/auth/login: roger@spacequest.com logged in
+---
+2025-12-04 09:01:49 - bulk_mail/auth/login: roger@spacequest.com logged in
+---
