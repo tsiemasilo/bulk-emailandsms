@@ -10,17 +10,23 @@ font-size: smaller;
 #ol_values > li {
 display: inline-block;
 }
-.table-header-row {
+.table-unified {
+margin-top: 1rem !important;
+border-radius: 0.5rem !important;
+overflow: hidden !important;
+}
+.table-header-row-unified th {
+background-color: rgb(0, 0, 83) !important;
+padding: 0 !important;
+border: none !important;
+}
+.table-header-content {
 display: flex !important;
 justify-content: space-between !important;
 align-items: center !important;
-background-color: rgb(0, 0, 83) !important;
 padding: 0.75rem 1rem !important;
-border-radius: 0.5rem 0.5rem 0 0 !important;
-margin-bottom: 0 !important;
-margin-top: 1rem !important;
 }
-.table-header-row h3 {
+.table-header-content h3 {
 margin: 0 !important;
 font-size: 1rem !important;
 font-weight: 600 !important;
@@ -103,7 +109,12 @@ stroke: currentColor !important;
 </form>
 </div><!-- end of #div_filter -->
 {% if customers %}
-<div class="table-header-row">
+<div class="table-container table-unified">
+<table class="data-table" id="tbl_customers">
+<thead>
+<tr class="table-header-row-unified">
+<th colspan="6">
+<div class="table-header-content">
 <h3>Customers</h3>
 <div class="table-header-actions">
 <button type="button" id="btn_add_customer" class="action-btn btn-add-customer" value="Add Customer" title="Add Customer">
@@ -120,9 +131,8 @@ stroke: currentColor !important;
 </button>
 </div>
 </div>
-<div class="table-container">
-<table class="data-table" id="tbl_customers">
-<thead>
+</th>
+</tr>
 <tr>
 <th>Last Name</th><th>First Name(s)</th><th>E-mail Address</th><th>Mobile Number</th><th>Nationality</th><th>Actions</th>
 </tr>
