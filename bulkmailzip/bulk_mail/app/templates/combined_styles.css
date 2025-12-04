@@ -657,6 +657,8 @@ flex-shrink: 0 !important
 background-color: var(--table-header-bg) !important;
 color: #ffffff !important;
 border: none !important;
+border-left: none !important;
+border-right: none !important;
 border-radius: 0 !important;
 padding: 0.75rem 1rem !important;
 font-weight: 600 !important;
@@ -1810,7 +1812,7 @@ color: #ffffff;
 text-transform: uppercase;
 letter-spacing: 0.08em;
 text-align: left;
-border-bottom: none;
+border: none !important;
 white-space: nowrap
 }
 
