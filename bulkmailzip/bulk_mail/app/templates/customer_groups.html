@@ -10,6 +10,82 @@ font-size: smaller;
 #ol_values > li {
 display: inline-block;
 }
+.table-unified {
+margin-top: 1rem !important;
+border-radius: 0.5rem !important;
+overflow: hidden !important;
+}
+.table-unified table {
+border-collapse: collapse !important;
+border-spacing: 0 !important;
+}
+.table-header-row-unified th {
+background-color: rgb(0, 0, 83) !important;
+padding: 0 !important;
+border: none !important;
+border-radius: 0 !important;
+}
+.table-header-content {
+display: flex !important;
+justify-content: space-between !important;
+align-items: center !important;
+padding: 0.75rem 1rem !important;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.table-header-content h3 {
+margin: 0 !important;
+font-size: 1rem !important;
+font-weight: 600 !important;
+color: #ffffff !important;
+text-transform: uppercase !important;
+letter-spacing: 0.05em !important;
+background-color: transparent !important;
+}
+#tbl_groups thead tr:nth-child(2) th {
+background-color: rgb(0, 0, 83) !important;
+color: #ffffff !important;
+border: none !important;
+border-radius: 0 !important;
+padding: 0.75rem 1rem !important;
+font-weight: 600 !important;
+text-transform: uppercase !important;
+font-size: 0.75rem !important;
+letter-spacing: 0.05em !important;
+}
+.table-header-actions {
+display: flex !important;
+gap: 0.5rem !important;
+align-items: center !important;
+}
+.table-header-actions .action-btn,
+.table-header-actions button {
+background: #ffffff !important;
+color: #374151 !important;
+border: 1px solid #d1d5db !important;
+padding: 0.5rem 1rem !important;
+font-size: 0.813rem !important;
+font-weight: 500 !important;
+border-radius: 0.25rem !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 0.4rem !important;
+white-space: nowrap !important;
+transition: all 0.2s ease !important;
+cursor: pointer !important;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+.table-header-actions .action-btn:hover,
+.table-header-actions button:hover {
+background: #f97316 !important;
+color: #ffffff !important;
+border-color: #f97316 !important;
+}
+.table-header-actions .action-btn svg,
+.table-header-actions button svg {
+width: 16px !important;
+height: 16px !important;
+stroke: currentColor !important;
+}
 </style>
 {% endblock %}
 
