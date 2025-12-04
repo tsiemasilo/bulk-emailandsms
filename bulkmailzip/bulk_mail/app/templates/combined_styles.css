@@ -637,7 +637,20 @@ font-weight: 600 !important;
 color: #ffffff !important;
 text-transform: uppercase !important;
 letter-spacing: 0.05em !important;
-background-color: transparent !important
+background-color: transparent !important;
+display: flex !important;
+align-items: center !important;
+gap: 0.5rem !important
+}
+
+.table-header-content h3::before {
+content: "" !important;
+display: inline-block !important;
+width: 4px !important;
+height: 1.125rem !important;
+background: var(--accent-color) !important;
+border-radius: 2px !important;
+flex-shrink: 0 !important
 }
 
 .table-unified thead tr:nth-child(2) th {
@@ -1767,6 +1780,96 @@ white-space: nowrap
 }
 
 #tbl_customers tbody td[id^="td_"] {
+display: flex;
+justify-content: center;
+gap: 0.5rem;
+align-items: center
+}
+
+/* Customer Groups Table - Matching Customers styling */
+#tbl_groups {
+width: 100%;
+border-collapse: separate;
+border-spacing: 0;
+background: #ffffff;
+border-radius: 10px;
+overflow: hidden;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+border: 1px solid #e5e7eb
+}
+
+#tbl_groups thead {
+background: linear-gradient(135deg, var(--table-header-bg) 0%, #0a0a3d 100%)
+}
+
+#tbl_groups thead tr th {
+padding: 0.875rem 1.125rem;
+font-size: 0.75rem;
+font-weight: 700;
+color: #ffffff;
+text-transform: uppercase;
+letter-spacing: 0.08em;
+text-align: left;
+border-bottom: none;
+white-space: nowrap
+}
+
+#tbl_groups thead tr th:first-child {
+border-top-left-radius: 10px
+}
+
+#tbl_groups thead tr th:last-child {
+border-top-right-radius: 10px;
+text-align: center
+}
+
+#tbl_groups tbody tr {
+transition: all 0.15s ease
+}
+
+#tbl_groups tbody tr:hover {
+background-color: #fef7f0
+}
+
+#tbl_groups tbody tr:nth-child(even) {
+background-color: #fafbfc
+}
+
+#tbl_groups tbody tr:nth-child(even):hover {
+background-color: #fef7f0
+}
+
+#tbl_groups tbody td {
+padding: 0.75rem 1.125rem;
+font-size: 0.875rem;
+color: #475569;
+border-bottom: 1px solid #f1f5f9;
+vertical-align: middle
+}
+
+#tbl_groups tbody tr:last-child td {
+border-bottom: none
+}
+
+#tbl_groups tbody tr:last-child td:first-child {
+border-bottom-left-radius: 10px
+}
+
+#tbl_groups tbody tr:last-child td:last-child {
+border-bottom-right-radius: 10px
+}
+
+#tbl_groups tbody td:first-child {
+font-weight: 600;
+color: #1e293b
+}
+
+#tbl_groups tbody td:last-child {
+text-align: center;
+white-space: nowrap
+}
+
+#tbl_groups tbody td[id^="td_"] {
 display: flex;
 justify-content: center;
 gap: 0.5rem;
