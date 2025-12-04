@@ -17,14 +17,23 @@ display: inline-block;
 {% import "macros/action_icons_static.html" as icons with context %}
 <span class="title"><h2>{% block title %}Customer Groups - {{ company_name }}{% endblock %}</h2></span>
 <div class="content-container content">
-<div>
-<button type="button" id="btn_add_group" value="Add Group">{{ icons.add_svg(s_label="Add Group") }}Add Group</button>
-</div><!-- end of buttons for actions -->
 {% if groups %}
-<h3>Customer Groups</h3>
-<div class="table-container">
+<div class="table-container table-unified">
 <table class="data-table" id="tbl_groups">
 <thead>
+<tr class="table-header-row-unified">
+<th colspan="3">
+<div class="table-header-content">
+<h3>Customer Groups</h3>
+<div class="table-header-actions">
+<button type="button" id="btn_add_group" class="action-btn" value="Add Group" title="Add Group">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+<span>Add Group</span>
+</button>
+</div>
+</div>
+</th>
+</tr>
 <tr>
 <th>Group Name</th><th>Description</th><th>Actions</th>
 </tr>
@@ -34,9 +43,15 @@ display: inline-block;
 <tr>
 <td>{{ group.v_group_name }}</td><td>{{ group.v_description }}</td>
 <td id="td_{{ group.id }}">
-<button type="button" class="btn_edit_group" value="Edit Group">{{ icons.edit_svg(s_label="Edit Group") }} Edit Group</button>
-<button type="button" class="btn_remove_group" value="Remove Group">{{ icons.delete_svg(s_label="Remove Group") }} Remove Group</button>
-<button type="button" class="btn_group_customers" value="Group Customers">{{ icons.settings_svg(s_label="Group Customers") }} Group Customers</button>
+<button type="button" class="btn_edit_group btn-icon" value="Edit" title="Edit" aria-label="Edit">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+</button>
+<button type="button" class="btn_remove_group btn-icon" value="Remove" title="Remove" aria-label="Remove">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+</button>
+<button type="button" class="btn_group_customers btn-icon" value="Group Customers" title="Group Customers" aria-label="Group Customers">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+</button>
 </td>
 </tr>
 {% endfor %}{# end of looping through groups #}
@@ -45,6 +60,34 @@ display: inline-block;
 </div><!-- end of div.table-container -->
 {% from "macros/paging.html" import paging_basics with context %}
 {{ paging_basics() }}
+{% else %}
+<div class="table-container table-unified">
+<table class="data-table" id="tbl_groups">
+<thead>
+<tr class="table-header-row-unified">
+<th colspan="3">
+<div class="table-header-content">
+<h3>Customer Groups</h3>
+<div class="table-header-actions">
+<button type="button" id="btn_add_group" class="action-btn" value="Add Group" title="Add Group">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+<span>Add Group</span>
+</button>
+</div>
+</div>
+</th>
+</tr>
+<tr>
+<th>Group Name</th><th>Description</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">No customer groups found. Click "Add Group" to create one.</td>
+</tr>
+</tbody>
+</table>
+</div>
 {% endif %}{# end of checking if groups existed #}
 </div><!-- end of div.content -->
 {% from "macros/dialog.html" import dlg_prep with context %}

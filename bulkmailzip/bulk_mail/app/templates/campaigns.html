@@ -11,15 +11,23 @@ font-weight: bold;
 {% import "macros/action_icons_static.html" as icons with context %}
 <span class="title"><h2>{% block title %}Campaigns{% endblock %}</h2></span>
 <div class="content-container content">
-<div><button type="button" id="btn_add_campaign" value="Add campaign">
-{{ icons.add_svg(s_label="add Campaign") }}
-Add campaign
-</button></div>
 {% if campaigns %}
-<h3>Campaigns</h3>
-<div class="table-container">
+<div class="table-container table-unified">
 <table class="data-table" id="tbl_campaigns">
 <thead>
+<tr class="table-header-row-unified">
+<th colspan="4">
+<div class="table-header-content">
+<h3>Campaigns</h3>
+<div class="table-header-actions">
+<button type="button" id="btn_add_campaign" class="action-btn" value="Add Campaign" title="Add Campaign">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+<span>Add Campaign</span>
+</button>
+</div>
+</div>
+</th>
+</tr>
 <tr>
 <th>Reference Number</th><th>Title</th><th>Description</th><th>Actions</th>
 </tr>
@@ -29,9 +37,15 @@ Add campaign
 <tr>
 <td>{{ campaign.v_reference_number }}</td><td>{{ campaign.v_campaign_title }}</td><td>{{ campaign.v_description }}</td>
 <td id="td_{{ campaign.id }}">
-<button type="button" class="btn_edit_campaign" value="Campaign Basics">{{ icons.edit_svg(s_label="Campaign Basics") }}Campaign Basics</button>
-<button type="button" class="btn_remove_campaign" value="Remove Campaign">{{ icons.delete_svg(s_label="Remove Campaign") }}Remove Campaign</button>
-<button type="button" class="btn_campaign_sending" value="Campaign Sending">{{ icons.settings_svg(s_label="Campaign Sending") }}Campaign Sending</button>
+<button type="button" class="btn_edit_campaign btn-icon" value="Campaign Basics" title="Campaign Basics" aria-label="Campaign Basics">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+</button>
+<button type="button" class="btn_remove_campaign btn-icon" value="Remove Campaign" title="Remove Campaign" aria-label="Remove Campaign">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+</button>
+<button type="button" class="btn_campaign_sending btn-icon" value="Campaign Sending" title="Campaign Sending" aria-label="Campaign Sending">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+</button>
 </td>
 </tr>
 {% endfor %}{# end of looping through campaigns #}
@@ -40,6 +54,34 @@ Add campaign
 </div><!-- end of div.table-container -->
 {% from "macros/paging.html" import paging_basics with context %}
 {{ paging_basics() }}
+{% else %}
+<div class="table-container table-unified">
+<table class="data-table" id="tbl_campaigns">
+<thead>
+<tr class="table-header-row-unified">
+<th colspan="4">
+<div class="table-header-content">
+<h3>Campaigns</h3>
+<div class="table-header-actions">
+<button type="button" id="btn_add_campaign" class="action-btn" value="Add Campaign" title="Add Campaign">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+<span>Add Campaign</span>
+</button>
+</div>
+</div>
+</th>
+</tr>
+<tr>
+<th>Reference Number</th><th>Title</th><th>Description</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="4">No campaigns found. Click "Add Campaign" to create one.</td>
+</tr>
+</tbody>
+</table>
+</div>
 {% endif %}{# end of checking if campaigns existed #}
 </div><!-- end of div.content -->
 {% from "macros/dialog.html" import dlg_prep with context %}

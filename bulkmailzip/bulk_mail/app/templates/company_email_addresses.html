@@ -11,15 +11,23 @@ font-weight: bold;
 {% import "macros/action_icons_static.html" as icons with context %}
 <span class="title"><h2>{% block title %}Outgoing Company E-mail Addresses{% endblock %}</h2></span>
 <div class="content-container content">
-<div><button type="button" id="btn_add_email" value="Add E-mail">
-{{ icons.add_svg(s_label="add E-mail") }}
-Add E-mail
-</button></div>
 {% if emails %}
-<h3>Outgoing E-mails</h3>
-<div class="table-container">
+<div class="table-container table-unified">
 <table class="data-table" id="tbl_emails">
 <thead>
+<tr class="table-header-row-unified">
+<th colspan="3">
+<div class="table-header-content">
+<h3>Outgoing E-mails</h3>
+<div class="table-header-actions">
+<button type="button" id="btn_add_email" class="action-btn" value="Add E-mail" title="Add E-mail">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+<span>Add E-mail</span>
+</button>
+</div>
+</div>
+</th>
+</tr>
 <tr>
 <th>E-Mail Address</th><th>Server/Host name</th><th>Actions</th>
 </tr>
@@ -29,8 +37,12 @@ Add E-mail
 <tr>
 <td>{{ email.v_email_address }}</td><td>{{ email.v_server_name }}</td>
 <td id="td_{{ email.id }}">
-<button type="button" class="btn_edit_email" value="E-mail Details">{{ icons.edit_svg(s_label="E-mail Details") }}E-mail Details</button>
-<button type="button" class="btn_remove_email" value="Remove E-mail">{{ icons.delete_svg(s_label="Remove E-mail") }}Remove E-mail</button>
+<button type="button" class="btn_edit_email btn-icon" value="Edit" title="Edit" aria-label="Edit">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+</button>
+<button type="button" class="btn_remove_email btn-icon" value="Remove" title="Remove" aria-label="Remove">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+</button>
 </td>
 </tr>
 {% endfor %}{# end of looping through emails #}
@@ -39,6 +51,34 @@ Add E-mail
 </div><!-- end of div.table-container -->
 {% from "macros/paging.html" import paging_basics with context %}
 {{ paging_basics() }}
+{% else %}
+<div class="table-container table-unified">
+<table class="data-table" id="tbl_emails">
+<thead>
+<tr class="table-header-row-unified">
+<th colspan="3">
+<div class="table-header-content">
+<h3>Outgoing E-mails</h3>
+<div class="table-header-actions">
+<button type="button" id="btn_add_email" class="action-btn" value="Add E-mail" title="Add E-mail">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+<span>Add E-mail</span>
+</button>
+</div>
+</div>
+</th>
+</tr>
+<tr>
+<th>E-Mail Address</th><th>Server/Host name</th><th>Actions</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="3">No outgoing e-mail addresses found. Click "Add E-mail" to create one.</td>
+</tr>
+</tbody>
+</table>
+</div>
 {% endif %}{# end of checking if emails existed #}
 </div><!-- end of div.content -->
 {% from "macros/dialog.html" import dlg_prep with context %}

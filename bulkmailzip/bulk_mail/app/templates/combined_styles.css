@@ -598,6 +598,138 @@ font-size: 0.875rem
 }
 
 /* =============================================
+   UNIFIED TABLE STYLING (Customers Page Pattern)
+   ============================================= */
+
+.table-unified {
+margin-top: 1rem !important;
+border-radius: 0.5rem !important;
+overflow: hidden !important;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+border: 1px solid var(--border-color)
+}
+
+.table-unified table {
+border-collapse: collapse !important;
+border-spacing: 0 !important;
+margin: 0 !important
+}
+
+.table-header-row-unified th {
+background-color: var(--table-header-bg) !important;
+padding: 0 !important;
+border: none !important;
+border-radius: 0 !important
+}
+
+.table-header-content {
+display: flex !important;
+justify-content: space-between !important;
+align-items: center !important;
+padding: 0.75rem 1rem !important;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important
+}
+
+.table-header-content h3 {
+margin: 0 !important;
+font-size: 1rem !important;
+font-weight: 600 !important;
+color: #ffffff !important;
+text-transform: uppercase !important;
+letter-spacing: 0.05em !important;
+background-color: transparent !important
+}
+
+.table-unified thead tr:nth-child(2) th {
+background-color: var(--table-header-bg) !important;
+color: #ffffff !important;
+border: none !important;
+border-radius: 0 !important;
+padding: 0.75rem 1rem !important;
+font-weight: 600 !important;
+text-transform: uppercase !important;
+font-size: 0.75rem !important;
+letter-spacing: 0.05em !important
+}
+
+.table-header-actions {
+display: flex !important;
+gap: 0.5rem !important;
+align-items: center !important
+}
+
+.table-header-actions .action-btn,
+.table-header-actions button,
+.btn-add-new,
+.btn-header-action {
+background: #ffffff !important;
+color: #374151 !important;
+border: 1px solid #d1d5db !important;
+padding: 0.5rem 1rem !important;
+font-size: 0.813rem !important;
+font-weight: 500 !important;
+border-radius: 0.25rem !important;
+display: inline-flex !important;
+align-items: center !important;
+gap: 0.4rem !important;
+white-space: nowrap !important;
+transition: all 0.2s ease !important;
+cursor: pointer !important;
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important
+}
+
+.table-header-actions .action-btn:hover,
+.table-header-actions button:hover,
+.btn-add-new:hover,
+.btn-header-action:hover {
+background: var(--accent-color) !important;
+color: #ffffff !important;
+border-color: var(--accent-color) !important
+}
+
+.table-header-actions .action-btn svg,
+.table-header-actions button svg {
+width: 16px !important;
+height: 16px !important;
+stroke: currentColor !important
+}
+
+/* Icon-only buttons for table actions */
+.btn-icon {
+display: inline-flex !important;
+align-items: center !important;
+justify-content: center !important;
+width: 32px !important;
+height: 32px !important;
+padding: 0 !important;
+background: transparent !important;
+border: 1px solid var(--border-light) !important;
+border-radius: 0.25rem !important;
+color: var(--text-secondary) !important;
+cursor: pointer !important;
+transition: all 0.15s ease !important;
+margin: 0 0.125rem !important
+}
+
+.btn-icon:hover {
+background: var(--accent-light) !important;
+border-color: var(--accent-color) !important;
+color: var(--accent-color) !important
+}
+
+.btn-icon.btn-danger:hover {
+background: #fef2f2 !important;
+border-color: #fecaca !important;
+color: #dc2626 !important
+}
+
+.btn-icon svg {
+width: 16px !important;
+height: 16px !important;
+stroke: currentColor !important
+}
+
+/* =============================================
    BUTTONS - ALL TYPES
    ============================================= */
 

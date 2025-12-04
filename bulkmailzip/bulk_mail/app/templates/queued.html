@@ -11,16 +11,23 @@ font-weight: bold;
 {% import "macros/action_icons_static.html" as icons with context %}
 <span class="title"><h2>{% block title %}Queued E-mails{% endblock %}</h2></span>
 <div class="content-container content">
-<div id="div_filter" class="div_data_filtering">
-<form action="{{ url_for("main.queued_emails") }}" method="post" id="frm_filter">
-<input type="checkbox" id="chk_filter_processed" name="chk_filter_processed"{% if processed %} checked{% endif %} aria-labeledby="lbl_processed"><label id="lbl_processed">Processed E-mail Queues</label>
-</form>
-</div><!-- div_filter -->
 {% if emails %}
-<h3>Queued E-mails</h3>
-<div class="table-container">
+<div class="table-container table-unified">
 <table class="data-table" id="tbl_emails">
 <thead>
+<tr class="table-header-row-unified">
+<th colspan="5">
+<div class="table-header-content">
+<h3>Queued E-mails</h3>
+<div class="table-header-actions">
+<form action="{{ url_for("main.queued_emails") }}" method="post" id="frm_filter" class="filter-checkbox">
+<input type="checkbox" id="chk_filter_processed" name="chk_filter_processed"{% if processed %} checked{% endif %} aria-labeledby="lbl_processed">
+<label id="lbl_processed" for="chk_filter_processed">Processed E-mail Queues</label>
+</form>
+</div>
+</div>
+</th>
+</tr>
 <tr>
 <th>Subject</th><th>Target Date-Time</th><th>Processed</th><th>Active</th><th>Details</th>
 </tr>
@@ -30,7 +37,9 @@ font-weight: bold;
 <tr>
 <td>{{ email.v_subject }}</td><td>{{ email.dt_target|date_time_format }}</td><td><input type="checkbox" value="{{ email.id }}" class="chk_done" {% if email.bl_done %} checked{% endif%} disabled></td><td><input type="checkbox" class="chk_active" value="{{ email.id }}" {% if email.bl_active %} checked{% endif%}{% if email.bl_done %} disabled{% endif%}></td>
 <td id="td_{{ email.id }}">
-<button type="button" class="btn_email_details" value="E-mail Details">{{ icons.settings_svg(s_label="E-mail Details") }}E-mail Details</button>
+<button type="button" class="btn_email_details btn-icon" value="Details" title="Details" aria-label="Details">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+</button>
 </td>
 </tr>
 {% endfor %}{# end of looping through emails #}
@@ -40,7 +49,33 @@ font-weight: bold;
 {% from "macros/paging.html" import paging_basics with context %}
 {{ paging_basics() }}
 {% else %}
-<div>Currently no queued e-Mail sending that fall under {% if processed %}processed{% else %}not processed{% endif%}.</div>
+<div class="table-container table-unified">
+<table class="data-table" id="tbl_emails">
+<thead>
+<tr class="table-header-row-unified">
+<th colspan="5">
+<div class="table-header-content">
+<h3>Queued E-mails</h3>
+<div class="table-header-actions">
+<form action="{{ url_for("main.queued_emails") }}" method="post" id="frm_filter" class="filter-checkbox">
+<input type="checkbox" id="chk_filter_processed" name="chk_filter_processed"{% if processed %} checked{% endif %} aria-labeledby="lbl_processed">
+<label id="lbl_processed" for="chk_filter_processed">Processed E-mail Queues</label>
+</form>
+</div>
+</div>
+</th>
+</tr>
+<tr>
+<th>Subject</th><th>Target Date-Time</th><th>Processed</th><th>Active</th><th>Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td colspan="5">Currently no queued e-Mail sending that fall under {% if processed %}processed{% else %}not processed{% endif%}.</td>
+</tr>
+</tbody>
+</table>
+</div>
 {% endif %}{# end of checking if queued e-mails existed #}
 </div><!-- end of div.content -->
 {% from "macros/dialog.html" import dlg_prep with context %}
