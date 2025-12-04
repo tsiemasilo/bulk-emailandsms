@@ -603,10 +603,10 @@ font-size: 0.875rem
 
 .table-unified {
 margin-top: 1rem !important;
-border-radius: 0 !important;
+border-radius: 10px 10px 0 0 !important;
 overflow: hidden !important;
-box-shadow: none !important;
-border: none !important
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+border: 1px solid var(--border-color) !important
 }
 
 .table-unified table {
@@ -1794,10 +1794,10 @@ width: 100%;
 border-collapse: separate;
 border-spacing: 0;
 background: #ffffff;
-border-radius: 0;
+border-radius: 10px 10px 0 0;
 overflow: hidden;
-box-shadow: none;
-border: none
+box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
+border: 1px solid #e5e7eb
 }
 
 #tbl_groups thead {
@@ -1817,11 +1817,11 @@ white-space: nowrap
 }
 
 #tbl_groups thead tr th:first-child {
-border-top-left-radius: 0
+border-top-left-radius: 10px
 }
 
 #tbl_groups thead tr th:last-child {
-border-top-right-radius: 0;
+border-top-right-radius: 10px;
 text-align: center
 }
 
