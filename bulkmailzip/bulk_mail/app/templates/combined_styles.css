@@ -603,10 +603,11 @@ font-size: 0.875rem
 
 .table-unified {
 margin-top: 1rem !important;
-border-radius: 10px 10px 0 0 !important;
-overflow: hidden !important;
-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
-border: 1px solid var(--border-color) !important
+border-radius: 0 !important;
+overflow: visible !important;
+box-shadow: none !important;
+border: none !important;
+background: transparent !important
 }
 
 .table-unified table {
@@ -1796,8 +1797,8 @@ border-spacing: 0;
 background: #ffffff;
 border-radius: 10px 10px 0 0;
 overflow: hidden;
-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.04);
-border: 1px solid #e5e7eb
+box-shadow: none;
+border: none
 }
 
 #tbl_groups thead {
