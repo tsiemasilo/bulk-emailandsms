@@ -566,6 +566,13 @@ justify-content: center;
 gap: 0.5rem
 }
 
+.data-table th:last-child,
+.data-table td:last-child {
+width: 1%;
+white-space: nowrap;
+text-align: center
+}
+
 /* Legacy multirow table */
 table.multirow {
 border: 1px solid var(--border-color);
