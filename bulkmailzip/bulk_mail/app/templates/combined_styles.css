@@ -2525,16 +2525,17 @@ transform: none
 
 /* Table action cell styling */
 #tbl_customers tbody td:last-child {
-text-align: center;
+text-align: right;
 overflow: visible !important
 }
 
 #tbl_customers tbody td[id^="td_"] {
 display: flex;
-justify-content: center;
+justify-content: flex-end;
 gap: 0.5rem;
 align-items: center;
-overflow: visible !important
+overflow: visible !important;
+padding-right: 1.5rem
 }
 
 /* Email cell - not orange, use neutral dark color */
