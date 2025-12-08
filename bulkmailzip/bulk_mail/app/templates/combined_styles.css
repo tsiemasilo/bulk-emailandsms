@@ -2525,12 +2525,17 @@ transform: none
 
 /* Table action cell styling */
 #tbl_customers tbody td:last-child,
-#tbl_groups tbody td:last-child,
 #tbl_emails tbody td:last-child,
 #tbl_campaigns tbody td:last-child {
 text-align: center;
 overflow: visible !important;
 min-width: 140px
+}
+
+#tbl_groups tbody td:last-child {
+text-align: center;
+overflow: visible !important;
+min-width: 160px
 }
 
 #tbl_customers tbody td[id^="td_"],
@@ -2542,6 +2547,18 @@ justify-content: center;
 gap: 0.5rem;
 align-items: center;
 overflow: visible !important
+}
+
+/* Customer Groups table action buttons - larger and more square */
+#tbl_groups .btn-icon {
+width: 40px !important;
+height: 40px !important;
+border-radius: 6px !important
+}
+
+#tbl_groups .btn-icon svg {
+width: 20px !important;
+height: 20px !important
 }
 
 /* Edit button for groups - Gray default, Blue on hover */
