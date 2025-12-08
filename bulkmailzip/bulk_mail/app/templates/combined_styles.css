@@ -2522,12 +2522,26 @@ width: 100%;
 padding: 1rem 1.25rem;
 background: #ffffff;
 border-radius: 0 0 10px 10px;
-margin-top: -1px;
+margin-top: 0;
 border: 1px solid #e5e7eb;
-border-top: none;
+border-top: 1px solid #e5e7eb;
 flex-wrap: wrap;
 gap: 1rem;
 box-sizing: border-box
+}
+
+.table-container .pagination-container,
+.table-unified .pagination-container {
+margin-top: 0;
+border-top: 1px solid #e5e7eb
+}
+
+.data-table {
+margin-bottom: 0 !important
+}
+
+.data-table tbody tr:last-child td {
+border-bottom: none
 }
 
 .pagination-info {
