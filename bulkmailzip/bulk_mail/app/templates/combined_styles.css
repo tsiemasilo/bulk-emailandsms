@@ -625,11 +625,45 @@ border-radius: 0 !important
 
 .table-header-content {
 display: flex !important;
-justify-content: flex-start !important;
+justify-content: space-between !important;
 align-items: center !important;
 padding: 0.75rem 1rem !important;
-border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-gap: 1.5rem !important
+border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important
+}
+
+.table-header-title {
+padding: 0.75rem 1rem !important;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important
+}
+
+.table-header-title h3 {
+margin: 0 !important;
+font-size: 1rem !important;
+font-weight: 600 !important;
+color: #ffffff !important;
+text-transform: uppercase !important;
+letter-spacing: 0.05em !important;
+background-color: transparent !important;
+display: flex !important;
+align-items: center !important;
+gap: 0.5rem !important
+}
+
+.table-header-title h3::before {
+content: "" !important;
+display: inline-block !important;
+width: 4px !important;
+height: 1.125rem !important;
+background: var(--accent-color) !important;
+border-radius: 2px !important;
+flex-shrink: 0 !important
+}
+
+.table-header-button-cell {
+text-align: right !important;
+padding: 0.5rem 1rem !important;
+vertical-align: middle !important;
+border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important
 }
 
 .table-header-content h3 {
