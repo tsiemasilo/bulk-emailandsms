@@ -218,3 +218,13 @@ additional:
 ---
 2025-12-08 15:16:34 - bulk_mail/auth/login: roger@spacequest.com logged in
 ---
+2025-12-08 15:17:38 - bulk_mail/toggle_queued_active/12/False/: line no.: 1226
+filename: /home/runner/workspace/bulkmailzip/bulk_mail/app/main/routes.py
+except: UPDATE statement on table 'tbl_queued_emails' expected to update 1 row(s); 3 were matched.
+additional: toggle queued e-mail active state
+---
+2025-12-08 15:17:39 - bulk_mail/toggle_queued_active/12/True/: line no.: 1511
+filename: /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/app.py
+except: The view function for 'main.toggle_queued_active' did not return a valid response. The function either returned None or ended without a return statement.
+additional: 
+---
