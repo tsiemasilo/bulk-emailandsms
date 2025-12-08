@@ -634,7 +634,8 @@ gap: 1rem !important
 
 .table-header-content .table-header-actions {
 margin-left: auto !important;
-padding-right: 4rem !important
+padding-right: 6rem !important;
+padding-top: 0.5rem !important
 }
 
 .table-header-title {
