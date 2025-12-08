@@ -170,9 +170,9 @@ stroke: currentColor !important;
 {% endfor %}{# end of looping through customers #}
 </tbody>
 </table><!-- end of tbl_customers -->
-</div><!-- end of div.table-container -->
 {% from "macros/paging.html" import paging_basics with context %}
 {{ paging_basics() }}
+</div><!-- end of div.table-container -->
 {% endif %}{# end of checking if customers existed #}
 </div><!-- end of div.content -->
 {% from "macros/dialog.html" import dlg_prep with context %}

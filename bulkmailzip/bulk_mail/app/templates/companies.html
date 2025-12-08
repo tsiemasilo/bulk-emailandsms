@@ -35,9 +35,9 @@ font-weight: bold;
 {% endfor %}{# end of looping through companies #}
 </tbody>
 </table><!-- end of tbl_companies -->
-</div><!-- end of div.table-container -->
 {% from "macros/paging.html" import paging_basics with context %}
 {{ paging_basics() }}
+</div><!-- end of div.table-container -->
 {% endif %}{# end of checking if companies existed #}
 </div><!-- end of div.content -->
 {% from "macros/dialog.html" import dlg_prep with context %}

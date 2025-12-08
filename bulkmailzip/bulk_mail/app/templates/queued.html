@@ -45,9 +45,9 @@ font-weight: bold;
 {% endfor %}{# end of looping through emails #}
 </tbody>
 </table><!-- end of tbl_emails -->
-</div><!-- end of div.table-container -->
 {% from "macros/paging.html" import paging_basics with context %}
 {{ paging_basics() }}
+</div><!-- end of div.table-container -->
 {% else %}
 <div class="table-container table-unified">
 <table class="data-table" id="tbl_emails">
