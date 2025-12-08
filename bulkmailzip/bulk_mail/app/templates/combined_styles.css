@@ -2532,8 +2532,9 @@ box-sizing: border-box
 
 .table-container .pagination-container,
 .table-unified .pagination-container {
-margin-top: 0;
-border-top: 1px solid #e5e7eb
+margin-top: 0 !important;
+border-top: 1px solid #e5e7eb !important;
+border-radius: 0 0 10px 10px !important
 }
 
 .data-table {
@@ -2541,7 +2542,28 @@ margin-bottom: 0 !important
 }
 
 .data-table tbody tr:last-child td {
-border-bottom: none
+border-bottom: none !important;
+border-radius: 0 !important
+}
+
+.table-container .data-table tbody tr:last-child td:first-child,
+.table-unified .data-table tbody tr:last-child td:first-child,
+#tbl_customers tbody tr:last-child td:first-child,
+#tbl_groups tbody tr:last-child td:first-child,
+#tbl_campaigns tbody tr:last-child td:first-child,
+#tbl_emails tbody tr:last-child td:first-child,
+#tbl_companies tbody tr:last-child td:first-child {
+border-bottom-left-radius: 0 !important
+}
+
+.table-container .data-table tbody tr:last-child td:last-child,
+.table-unified .data-table tbody tr:last-child td:last-child,
+#tbl_customers tbody tr:last-child td:last-child,
+#tbl_groups tbody tr:last-child td:last-child,
+#tbl_campaigns tbody tr:last-child td:last-child,
+#tbl_emails tbody tr:last-child td:last-child,
+#tbl_companies tbody tr:last-child td:last-child {
+border-bottom-right-radius: 0 !important
 }
 
 .pagination-info {
