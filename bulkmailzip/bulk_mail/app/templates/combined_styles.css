@@ -2524,18 +2524,86 @@ transform: none
 }
 
 /* Table action cell styling */
-#tbl_customers tbody td:last-child {
+#tbl_customers tbody td:last-child,
+#tbl_groups tbody td:last-child {
 text-align: center;
 overflow: visible !important;
-min-width: 120px
+min-width: 140px
 }
 
-#tbl_customers tbody td[id^="td_"] {
+#tbl_customers tbody td[id^="td_"],
+#tbl_groups tbody td[id^="td_"] {
 display: flex;
 justify-content: center;
 gap: 0.5rem;
 align-items: center;
 overflow: visible !important
+}
+
+/* Edit button for groups - Gray default, Blue on hover */
+.btn_edit_group.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_edit_group.btn-icon:hover {
+background: #dbeafe;
+border-color: #93c5fd;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25)
+}
+
+.btn_edit_group.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_edit_group.btn-icon:hover svg {
+stroke: #2563eb
+}
+
+/* Remove button for groups - Gray default, Red on hover */
+.btn_remove_group.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_remove_group.btn-icon:hover {
+background: #fee2e2;
+border-color: #fca5a5;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(220, 38, 38, 0.25)
+}
+
+.btn_remove_group.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_remove_group.btn-icon:hover svg {
+stroke: #dc2626
+}
+
+/* Group customers button - Gray default, Green on hover */
+.btn_group_customers.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_group_customers.btn-icon:hover {
+background: #dcfce7;
+border-color: #86efac;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(22, 163, 74, 0.25)
+}
+
+.btn_group_customers.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_group_customers.btn-icon:hover svg {
+stroke: #16a34a
 }
 
 /* Email cell - not orange, use neutral dark color */
