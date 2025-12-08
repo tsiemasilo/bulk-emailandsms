@@ -2532,9 +2532,38 @@ box-sizing: border-box
 
 .table-container .pagination-container,
 .table-unified .pagination-container {
-margin-top: 0 !important;
+margin-top: -5px !important;
 border-top: 1px solid #e5e7eb !important;
-border-radius: 0 0 10px 10px !important
+border-radius: 0 0 10px 10px !important;
+position: relative !important;
+z-index: 1 !important
+}
+
+.table-container table,
+.table-unified table,
+.data-table {
+margin-bottom: 0 !important;
+border-bottom: none !important;
+border-collapse: collapse !important;
+border-spacing: 0 !important;
+padding-bottom: 0 !important
+}
+
+.table-container tbody,
+.table-unified tbody,
+.data-table tbody {
+margin-bottom: 0 !important;
+padding-bottom: 0 !important
+}
+
+.data-table tbody tr:last-child {
+margin-bottom: 0 !important;
+padding-bottom: 0 !important
+}
+
+.data-table tbody tr:last-child td {
+padding-bottom: 0.75rem !important;
+margin-bottom: 0 !important
 }
 
 .data-table {
