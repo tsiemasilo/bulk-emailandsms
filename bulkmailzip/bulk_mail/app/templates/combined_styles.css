@@ -573,10 +573,16 @@ white-space: nowrap;
 text-align: center
 }
 
+#tbl_emails {
+table-layout: auto !important;
+width: auto !important
+}
+
 #tbl_emails th,
 #tbl_emails td {
 width: 1% !important;
-white-space: nowrap
+white-space: nowrap;
+padding: 0.5rem 0.75rem !important
 }
 
 /* Legacy multirow table */
