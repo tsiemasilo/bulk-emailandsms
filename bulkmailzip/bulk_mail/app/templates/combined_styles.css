@@ -423,7 +423,8 @@ background-color: transparent !important
 .table-header-actions {
 display: flex;
 gap: 0.5rem;
-align-items: center
+align-items: center;
+margin-left: auto
 }
 
 .table-header-actions .action-btn,
@@ -634,8 +635,9 @@ gap: 1rem !important
 
 .table-header-content .table-header-actions {
 margin-left: auto !important;
-padding-right: 4rem !important;
-padding-top: 0.5rem !important
+padding-right: 0 !important;
+padding-top: 0.5rem !important;
+margin-right: 0 !important
 }
 
 .table-header-title {
