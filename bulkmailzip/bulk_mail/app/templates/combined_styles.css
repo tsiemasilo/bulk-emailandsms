@@ -575,7 +575,7 @@ text-align: center
 
 #tbl_emails th,
 #tbl_emails td {
-width: auto !important;
+width: 1% !important;
 white-space: nowrap
 }
 
@@ -583,6 +583,12 @@ white-space: nowrap
 #tbl_emails td:first-child {
 width: auto !important;
 white-space: normal
+}
+
+#tbl_emails th:nth-child(2),
+#tbl_emails td:nth-child(2) {
+width: 1% !important;
+white-space: nowrap
 }
 
 /* Legacy multirow table */
