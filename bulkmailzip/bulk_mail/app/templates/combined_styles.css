@@ -2518,6 +2518,7 @@ background: #f3f4f6
 display: flex;
 align-items: center;
 justify-content: space-between;
+width: 100%;
 padding: 1rem 1.25rem;
 background: #ffffff;
 border-radius: 0 0 10px 10px;
@@ -2525,7 +2526,8 @@ margin-top: -1px;
 border: 1px solid #e5e7eb;
 border-top: none;
 flex-wrap: wrap;
-gap: 1rem
+gap: 1rem;
+box-sizing: border-box
 }
 
 .pagination-info {
