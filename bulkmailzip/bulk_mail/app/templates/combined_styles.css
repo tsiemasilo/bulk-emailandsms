@@ -2525,14 +2525,18 @@ transform: none
 
 /* Table action cell styling */
 #tbl_customers tbody td:last-child,
-#tbl_groups tbody td:last-child {
+#tbl_groups tbody td:last-child,
+#tbl_emails tbody td:last-child,
+#tbl_campaigns tbody td:last-child {
 text-align: center;
 overflow: visible !important;
 min-width: 140px
 }
 
 #tbl_customers tbody td[id^="td_"],
-#tbl_groups tbody td[id^="td_"] {
+#tbl_groups tbody td[id^="td_"],
+#tbl_emails tbody td[id^="td_"],
+#tbl_campaigns tbody td[id^="td_"] {
 display: flex;
 justify-content: center;
 gap: 0.5rem;
@@ -2604,6 +2608,190 @@ stroke: #6b7280
 
 .btn_group_customers.btn-icon:hover svg {
 stroke: #16a34a
+}
+
+/* =============================================
+   EMAIL TABLE ACTION BUTTONS
+   ============================================= */
+
+/* Edit email button - Gray default, Blue on hover */
+.btn_edit_email.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_edit_email.btn-icon:hover {
+background: #dbeafe;
+border-color: #93c5fd;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25)
+}
+
+.btn_edit_email.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_edit_email.btn-icon:hover svg {
+stroke: #2563eb
+}
+
+/* Remove email button - Gray default, Red on hover */
+.btn_remove_email.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_remove_email.btn-icon:hover {
+background: #fee2e2;
+border-color: #fca5a5;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(220, 38, 38, 0.25)
+}
+
+.btn_remove_email.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_remove_email.btn-icon:hover svg {
+stroke: #dc2626
+}
+
+/* Preview email button - Gray default, Purple on hover */
+.btn_preview_email.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_preview_email.btn-icon:hover {
+background: #f3e8ff;
+border-color: #c4b5fd;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(139, 92, 246, 0.25)
+}
+
+.btn_preview_email.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_preview_email.btn-icon:hover svg {
+stroke: #8b5cf6
+}
+
+/* Email details button - Gray default, Blue on hover */
+.btn_email_details.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_email_details.btn-icon:hover {
+background: #dbeafe;
+border-color: #93c5fd;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25)
+}
+
+.btn_email_details.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_email_details.btn-icon:hover svg {
+stroke: #2563eb
+}
+
+/* Email recipients button - Gray default, Green on hover */
+.btn_email_recipients.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_email_recipients.btn-icon:hover {
+background: #dcfce7;
+border-color: #86efac;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(22, 163, 74, 0.25)
+}
+
+.btn_email_recipients.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_email_recipients.btn-icon:hover svg {
+stroke: #16a34a
+}
+
+/* =============================================
+   CAMPAIGN TABLE ACTION BUTTONS
+   ============================================= */
+
+/* Edit campaign button - Gray default, Blue on hover */
+.btn_edit_campaign.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_edit_campaign.btn-icon:hover {
+background: #dbeafe;
+border-color: #93c5fd;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(37, 99, 235, 0.25)
+}
+
+.btn_edit_campaign.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_edit_campaign.btn-icon:hover svg {
+stroke: #2563eb
+}
+
+/* Remove campaign button - Gray default, Red on hover */
+.btn_remove_campaign.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_remove_campaign.btn-icon:hover {
+background: #fee2e2;
+border-color: #fca5a5;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(220, 38, 38, 0.25)
+}
+
+.btn_remove_campaign.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_remove_campaign.btn-icon:hover svg {
+stroke: #dc2626
+}
+
+/* Campaign sending button - Gray default, Orange on hover */
+.btn_campaign_sending.btn-icon {
+background: #f3f4f6;
+color: #6b7280;
+border: 1px solid #d1d5db
+}
+
+.btn_campaign_sending.btn-icon:hover {
+background: #ffedd5;
+border-color: #fdba74;
+transform: translateY(-2px);
+box-shadow: 0 4px 8px rgba(234, 88, 12, 0.25)
+}
+
+.btn_campaign_sending.btn-icon svg {
+stroke: #6b7280
+}
+
+.btn_campaign_sending.btn-icon:hover svg {
+stroke: #ea580c
 }
 
 /* Email cell - not orange, use neutral dark color */
