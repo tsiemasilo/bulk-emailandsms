@@ -285,7 +285,7 @@ main {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  margin-left: 1rem;
+  margin-left: 3rem;
 }
 
 .table-header-actions .action-btn {
