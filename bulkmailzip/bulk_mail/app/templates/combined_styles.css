@@ -2532,11 +2532,17 @@ box-sizing: border-box
 
 .table-container .pagination-container,
 .table-unified .pagination-container {
-margin-top: -1px !important;
+margin-top: -15px !important;
 border-top: 1px solid #e5e7eb !important;
 border-radius: 0 0 10px 10px !important;
 position: relative !important;
 z-index: 1 !important
+}
+
+/* Customers table specific pagination */
+.table-container:has(#tbl_customers) .pagination-container,
+.table-unified:has(#tbl_customers) .pagination-container {
+margin-top: -1px !important
 }
 
 .table-container table,
