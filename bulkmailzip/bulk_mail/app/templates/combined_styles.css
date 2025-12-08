@@ -661,8 +661,8 @@ flex-shrink: 0 !important
 
 .table-header-button-cell {
 text-align: center !important;
-padding: 1rem 1rem 0.5rem 1rem !important;
-vertical-align: middle !important;
+padding: 1.5rem 1rem 0.5rem 1rem !important;
+vertical-align: bottom !important;
 border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important
 }
 
