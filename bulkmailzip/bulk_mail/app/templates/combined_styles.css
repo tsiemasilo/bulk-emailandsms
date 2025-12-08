@@ -579,18 +579,6 @@ width: 1% !important;
 white-space: nowrap
 }
 
-#tbl_emails th:first-child,
-#tbl_emails td:first-child {
-width: auto !important;
-white-space: normal
-}
-
-#tbl_emails th:nth-child(2),
-#tbl_emails td:nth-child(2) {
-width: 1% !important;
-white-space: nowrap
-}
-
 /* Legacy multirow table */
 table.multirow {
 border: 1px solid var(--border-color);
