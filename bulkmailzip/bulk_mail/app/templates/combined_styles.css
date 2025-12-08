@@ -2532,7 +2532,7 @@ box-sizing: border-box
 
 .table-container .pagination-container,
 .table-unified .pagination-container {
-margin-top: -20px !important;
+margin-top: -16px !important;
 border-top: 1px solid #e5e7eb !important;
 border-radius: 0 0 10px 10px !important;
 position: relative !important;
