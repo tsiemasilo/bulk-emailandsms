@@ -584,7 +584,7 @@ padding: 0.75rem 1rem !important
 #tbl_emails td:last-child {
 padding-left: 0.5rem !important;
 padding-right: 0.5rem !important;
-text-align: left !important
+text-align: center !important
 }
 
 /* Legacy multirow table */
@@ -2523,25 +2523,40 @@ right: 10px;
 transform: none
 }
 
-/* Table action cell styling */
+/* Table action cell styling - Headers */
+.data-table thead th:last-child {
+text-align: center !important;
+min-width: 140px
+}
+
+#tbl_groups thead th:last-child {
+min-width: 160px
+}
+
+/* Table action cell styling - Body cells */
 #tbl_customers tbody td:last-child,
 #tbl_emails tbody td:last-child,
-#tbl_campaigns tbody td:last-child {
-text-align: center;
+#tbl_campaigns tbody td:last-child,
+#tbl_companies tbody td:last-child,
+#tbl_users tbody td:last-child {
+text-align: center !important;
 overflow: visible !important;
 min-width: 140px
 }
 
 #tbl_groups tbody td:last-child {
-text-align: center;
+text-align: center !important;
 overflow: visible !important;
 min-width: 160px
 }
 
+/* Flex container for action buttons */
 #tbl_customers tbody td[id^="td_"],
 #tbl_groups tbody td[id^="td_"],
 #tbl_emails tbody td[id^="td_"],
-#tbl_campaigns tbody td[id^="td_"] {
+#tbl_campaigns tbody td[id^="td_"],
+#tbl_companies tbody td[id^="td_"],
+#tbl_users tbody td[id^="td_"] {
 display: flex;
 justify-content: center;
 gap: 0.5rem;
