@@ -573,6 +573,18 @@ white-space: nowrap;
 text-align: center
 }
 
+#tbl_emails th,
+#tbl_emails td {
+width: auto !important;
+white-space: nowrap
+}
+
+#tbl_emails th:first-child,
+#tbl_emails td:first-child {
+width: auto !important;
+white-space: normal
+}
+
 /* Legacy multirow table */
 table.multirow {
 border: 1px solid var(--border-color);
