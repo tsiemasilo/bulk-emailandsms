@@ -573,6 +573,11 @@ white-space: nowrap;
 text-align: center
 }
 
+#tbl_emails {
+width: auto !important;
+table-layout: auto !important
+}
+
 #tbl_emails th,
 #tbl_emails td {
 width: 1% !important;
