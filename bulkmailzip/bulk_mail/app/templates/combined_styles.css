@@ -575,16 +575,22 @@ text-align: center
 
 #tbl_emails th,
 #tbl_emails td {
-width: 1% !important;
 white-space: nowrap;
 padding: 0.75rem 1rem !important
 }
 
 #tbl_emails th:last-child,
 #tbl_emails td:last-child {
-padding-left: 0.5rem !important;
-padding-right: 0.5rem !important;
-text-align: center !important
+text-align: center !important;
+min-width: 150px !important;
+width: auto !important
+}
+
+#tbl_emails td[id^="td_"] {
+display: flex !important;
+justify-content: center !important;
+align-items: center !important;
+gap: 0.5rem !important
 }
 
 /* Legacy multirow table */
