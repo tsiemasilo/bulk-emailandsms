@@ -308,3 +308,5 @@ filename: /home/runner/workspace/.pythonlibs/lib/python3.11/site-packages/flask/
 except: The view function for 'main.toggle_queued_active' did not return a valid response. The function either returned None or ended without a return statement.
 additional: 
 ---
+2025-12-09 10:57:26 - bulk_mail/auth/login: roger@spacequest.com logged in
+---
