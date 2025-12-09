@@ -2379,12 +2379,22 @@ font-weight: 500;
 border: 1px solid #bbf7d0
 }
 
-/* jQuery UI Dialog Override */
+/* jQuery UI Dialog Override - Professional Styling */
+.ui-widget-overlay {
+background: rgba(0, 0, 0, 0.5) !important;
+backdrop-filter: blur(4px) !important;
+-webkit-backdrop-filter: blur(4px) !important;
+opacity: 1 !important
+}
+
 .ui-dialog {
-border-radius: 12px !important;
+border-radius: 16px !important;
 border: none !important;
-box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-padding: 0 !important
+box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.35), 0 10px 30px -10px rgba(0, 0, 0, 0.2) !important;
+padding: 0 !important;
+background: #ffffff !important;
+overflow: hidden !important;
+max-height: 90vh !important
 }
 
 .ui-dialog-titlebar {
@@ -2392,7 +2402,182 @@ display: none !important
 }
 
 .ui-dialog-content {
-padding: 0 !important
+padding: 1.5rem !important;
+overflow-y: auto !important;
+max-height: calc(90vh - 120px) !important;
+background: #ffffff !important;
+border-radius: 16px 16px 0 0 !important
+}
+
+.ui-dialog-buttonpane {
+background: #f8fafc !important;
+border-top: 1px solid #e5e7eb !important;
+padding: 1rem 1.5rem !important;
+margin: 0 !important;
+border-radius: 0 0 16px 16px !important
+}
+
+.ui-dialog-buttonpane .ui-dialog-buttonset {
+display: flex !important;
+gap: 0.75rem !important;
+justify-content: flex-end !important
+}
+
+.ui-dialog-buttonpane button {
+font-family: 'Inter', system-ui, sans-serif !important;
+font-size: 0.875rem !important;
+font-weight: 500 !important;
+padding: 0.625rem 1.25rem !important;
+border-radius: 8px !important;
+border: 1px solid #d1d5db !important;
+background: #ffffff !important;
+color: #374151 !important;
+cursor: pointer !important;
+transition: all 0.2s ease !important
+}
+
+.ui-dialog-buttonpane button:hover {
+background: #6b7280 !important;
+border-color: #6b7280 !important;
+color: #ffffff !important
+}
+
+/* Dialog Header Span Styling - Custom Title */
+#dlg_customer > span:first-child,
+#dlg_group > span:first-child,
+#dlg_upload > span:first-child {
+display: block !important;
+font-size: 1.25rem !important;
+font-weight: 700 !important;
+color: #ffffff !important;
+margin: -1.5rem -1.5rem 1.25rem -1.5rem !important;
+padding: 1rem 1.5rem !important;
+background: linear-gradient(135deg, var(--primary-color) 0%, #1a1845 100%) !important;
+font-family: 'Inter', system-ui, sans-serif !important;
+border-radius: 16px 16px 0 0 !important
+}
+
+/* Hide the br after title spans */
+#dlg_customer > span:first-child + br,
+#dlg_group > span:first-child + br,
+#dlg_upload > span:first-child + br {
+display: none !important
+}
+
+/* Dialog Form Styling */
+.ui-dialog form ul,
+#dlg_customer form ul,
+#dlg_group form ul,
+#dlg_upload form ul {
+list-style: none !important;
+padding: 0 !important;
+margin: 0 !important;
+display: grid !important;
+grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+gap: 1rem !important
+}
+
+.ui-dialog form ul li,
+#dlg_customer form ul li,
+#dlg_group form ul li,
+#dlg_upload form ul li {
+display: flex !important;
+flex-direction: column !important;
+gap: 0.375rem !important
+}
+
+.ui-dialog form ul li label,
+#dlg_customer form ul li label,
+#dlg_group form ul li label,
+#dlg_upload form ul li label {
+font-size: 0.813rem !important;
+font-weight: 600 !important;
+color: var(--text-primary) !important;
+text-transform: uppercase !important;
+letter-spacing: 0.025em !important
+}
+
+.ui-dialog form ul li input[type="text"],
+.ui-dialog form ul li input[type="email"],
+.ui-dialog form ul li input[type="tel"],
+.ui-dialog form ul li input[type="number"],
+.ui-dialog form ul li input[type="password"],
+.ui-dialog form ul li select,
+.ui-dialog form ul li textarea,
+#dlg_customer input[type="text"],
+#dlg_customer select,
+#dlg_customer textarea,
+#dlg_group input[type="text"],
+#dlg_group select,
+#dlg_group textarea,
+#dlg_upload input[type="text"],
+#dlg_upload select,
+#dlg_upload textarea {
+width: 100% !important;
+padding: 0.625rem 0.875rem !important;
+font-size: 0.875rem !important;
+font-family: 'Inter', system-ui, sans-serif !important;
+border: 1px solid #d1d5db !important;
+border-radius: 8px !important;
+background: #ffffff !important;
+color: var(--text-primary) !important;
+transition: all 0.2s ease !important;
+outline: none !important;
+box-sizing: border-box !important
+}
+
+.ui-dialog form ul li input:focus,
+.ui-dialog form ul li select:focus,
+.ui-dialog form ul li textarea:focus,
+#dlg_customer input:focus,
+#dlg_customer select:focus,
+#dlg_customer textarea:focus,
+#dlg_group input:focus,
+#dlg_group select:focus,
+#dlg_group textarea:focus,
+#dlg_upload input:focus,
+#dlg_upload select:focus,
+#dlg_upload textarea:focus {
+border-color: var(--accent-color) !important;
+box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.15) !important
+}
+
+.ui-dialog form ul li input:hover,
+.ui-dialog form ul li select:hover,
+.ui-dialog form ul li textarea:hover,
+#dlg_customer input:hover,
+#dlg_customer select:hover,
+#dlg_customer textarea:hover,
+#dlg_group input:hover,
+#dlg_group select:hover,
+#dlg_group textarea:hover,
+#dlg_upload input:hover,
+#dlg_upload select:hover,
+#dlg_upload textarea:hover {
+border-color: #9ca3af !important
+}
+
+.ui-dialog form ul li textarea,
+#dlg_customer textarea,
+#dlg_group textarea,
+#dlg_upload textarea {
+min-height: 80px !important;
+resize: vertical !important
+}
+
+.ui-dialog form ul li input[type="file"],
+#dlg_upload input[type="file"] {
+padding: 0.75rem !important;
+border: 2px dashed #d1d5db !important;
+border-radius: 8px !important;
+background: #f9fafb !important;
+cursor: pointer !important
+}
+
+.ui-dialog form ul li input[type="file"]:hover,
+#dlg_upload input[type="file"]:hover {
+border-color: var(--accent-color) !important;
+background: rgba(249, 115, 22, 0.05) !important
 }
 
 /* Paging Container */
