@@ -634,10 +634,10 @@ function showNotify(message, type, title) {
     var $notify = $(notifyHtml);
     $('#notify_container').append($notify);
     
-    // Auto-dismiss after 10 seconds
+    // Auto-dismiss after 4 seconds
     setTimeout(function() {
         closeNotify($notify.find('.bm-notify-close')[0]);
-    }, 10000);
+    }, 4000);
 }
 
 function closeNotify(button) {
@@ -695,7 +695,7 @@ $("#btn_insert_click_through").click( function(event) {
     var s_url = String($("#txt_click_url").val()).trim();
     
     if (s_text === "" || s_url === "" || s_url === "https://") {
-        showNotify("Please enter both visible text and destination URL.", "warning", "Missing Information");
+        showNotify("Please enter both visible text and destination URL.", "error", "Missing Information");
         return;
     }
     
