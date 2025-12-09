@@ -8,17 +8,65 @@
 {% if js %}
 <script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/jquery.js") }}"></script>
 <script type="text/javascript">
-var do_alert;
+var showToast;
 
 $(document).ready( function() {
 try {
 
-do_alert = function(s_in) {
-        s_in = String(s_in).replace("\n", "<br />");
-        $("#div_alert").show();
-        //document.getElementById("div_alert").innerHTML = s_in;
-        $("#div_alert").html(s_in);
-}//end of do_alert function
+var toastCounter = 0;
+
+showToast = function(message, type, duration) {
+    type = type || 'info';
+    duration = duration || 5000;
+    
+    var icons = {
+        success: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>',
+        error: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>',
+        warning: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>',
+        info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>'
+    };
+    
+    var toastId = 'toast-' + (++toastCounter);
+    var toast = $('<div class="toast toast-' + type + '" id="' + toastId + '">' +
+        '<div class="toast-icon">' + icons[type] + '</div>' +
+        '<div class="toast-content">' +
+            '<div class="toast-message">' + String(message).replace(/\n/g, "<br />") + '</div>' +
+        '</div>' +
+        '<button class="toast-close" aria-label="Close">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
+        '</button>' +
+        '<div class="toast-progress"><div class="toast-progress-bar"></div></div>' +
+    '</div>');
+    
+    $('#toast-container').append(toast);
+    
+    setTimeout(function() { toast.addClass('toast-show'); }, 10);
+    
+    toast.find('.toast-progress-bar').css('animation-duration', duration + 'ms');
+    
+    var dismissToast = function() {
+        toast.removeClass('toast-show');
+        setTimeout(function() { toast.remove(); }, 300);
+    };
+    
+    toast.find('.toast-close').on('click', dismissToast);
+    
+    var autoClose = setTimeout(dismissToast, duration);
+    
+    toast.on('mouseenter', function() {
+        clearTimeout(autoClose);
+        toast.find('.toast-progress-bar').css('animation-play-state', 'paused');
+    });
+    
+    toast.on('mouseleave', function() {
+        toast.find('.toast-progress-bar').css('animation-play-state', 'running');
+        autoClose = setTimeout(dismissToast, 2000);
+    });
+};
+
+var do_alert = function(s_in, type) {
+    showToast(s_in, type || 'info');
+};
 
 $.fn.redraw =function(){
         $(this).each(function(){var redraw =this.offsetHeight;});
@@ -28,7 +76,6 @@ var s_server_url = "{{ url }}";
 $.each($("ul.nav").find("a"), function(ix, a) {
     if (s_server_url.endsWith($(a).attr("href"))) { $(a).attr("aria-current", "true"); } else { $(a).attr("aria-current", ""); }
 });// end of .each on nav links
-// alert([s_url, s_server_url]);
 
 var s_msg = "";
 {% with messages = get_flashed_messages() %}
@@ -38,8 +85,7 @@ s_msg = "{{ messages[-1] }}";
 {% endwith %}
 if (String(s_msg).length>0) {
     window.setTimeout( function() {
-    $("#div_alert").toggleClass("warning");
-    do_alert(s_msg);
+        showToast(s_msg, 'success');
     }, 300);
 }
 
@@ -137,7 +183,7 @@ $nav.find("> li > ul > li > a").css({
 <main>
 <div class="background-container"></div>
 <div class="content-container content">
-<div id="div_alert" style="text-align: center; position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background-color: #1f2937; color: #ffffff; padding: 1rem 1.5rem; border-radius: 8px; z-index: 9999; display: none; max-width: 90%; min-width: 280px; box-shadow: 0 10px 40px rgba(0,0,0,0.25); font-size: 0.9375rem; font-weight: 500; border-left: 4px solid #22c55e;" aria-live="assertive">&nbsp;</div>
+<div id="toast-container" aria-live="assertive"></div>
 {% block content %}{% endblock %}
 </div><!-- end of div.content -->
 </main>
