@@ -399,6 +399,130 @@
     fill: none;
     stroke-width: 2;
 }
+
+/* Toast notification styling */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 20000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid #f97316;
+    min-width: 300px;
+    max-width: 450px;
+    pointer-events: auto;
+    animation: toast-slide-in 0.3s ease-out;
+}
+
+.toast.toast-error {
+    border-left-color: #ef4444;
+}
+
+.toast.toast-success {
+    border-left-color: #22c55e;
+}
+
+.toast.toast-warning {
+    border-left-color: #f97316;
+}
+
+.toast-icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+}
+
+.toast-icon svg {
+    width: 24px;
+    height: 24px;
+    stroke-width: 2;
+}
+
+.toast-warning .toast-icon svg {
+    stroke: #f97316;
+}
+
+.toast-error .toast-icon svg {
+    stroke: #ef4444;
+}
+
+.toast-success .toast-icon svg {
+    stroke: #22c55e;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #1f2937;
+    margin-bottom: 2px;
+}
+
+.toast-message {
+    font-size: 0.85rem;
+    color: #6b7280;
+}
+
+.toast-close {
+    flex-shrink: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    color: #9ca3af;
+    transition: color 0.15s ease;
+}
+
+.toast-close:hover {
+    color: #6b7280;
+}
+
+.toast-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+@keyframes toast-slide-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes toast-slide-out {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+}
+
+.toast.hiding {
+    animation: toast-slide-out 0.3s ease-in forwards;
+}
 </style>
 {% from "macros/summernote.html" import summernote_head with context %}
 {{ summernote_head("txt_body", version="-lite") }}
@@ -449,6 +573,9 @@
 
 </div>
 
+<!-- Toast notification container -->
+<div class="toast-container" id="toast_container"></div>
+
 <!-- Click-through overlay -->
 <div class="click-through-overlay" id="click_through_overlay"></div>
 
@@ -472,6 +599,48 @@
 <div>Hello world...</div>
 </div>
 <script type="text/javascript">
+// Toast notification function
+function showToast(message, type, title) {
+    type = type || 'warning';
+    title = title || (type === 'error' ? 'Error' : type === 'success' ? 'Success' : 'Notice');
+    
+    var iconSvg = '';
+    if (type === 'warning') {
+        iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>';
+    } else if (type === 'error') {
+        iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>';
+    } else if (type === 'success') {
+        iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
+    }
+    
+    var toastHtml = '<div class="toast toast-' + type + '">' +
+        '<div class="toast-icon">' + iconSvg + '</div>' +
+        '<div class="toast-content">' +
+            '<div class="toast-title">' + title + '</div>' +
+            '<div class="toast-message">' + message + '</div>' +
+        '</div>' +
+        '<button class="toast-close" onclick="closeToast(this)">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
+        '</button>' +
+    '</div>';
+    
+    var $toast = $(toastHtml);
+    $('#toast_container').append($toast);
+    
+    // Auto-dismiss after 5 seconds
+    setTimeout(function() {
+        closeToast($toast.find('.toast-close')[0]);
+    }, 5000);
+}
+
+function closeToast(button) {
+    var $toast = $(button).closest('.toast');
+    $toast.addClass('hiding');
+    setTimeout(function() {
+        $toast.remove();
+    }, 300);
+}
+
 $(document).ready( function() {
 
 try {
@@ -519,7 +688,7 @@ $("#btn_insert_click_through").click( function(event) {
     var s_url = String($("#txt_click_url").val()).trim();
     
     if (s_text === "" || s_url === "" || s_url === "https://") {
-        alert("Please enter both visible text and destination URL.");
+        showToast("Please enter both visible text and destination URL.", "warning", "Missing Information");
         return;
     }
     
