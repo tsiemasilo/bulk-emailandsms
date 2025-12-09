@@ -533,7 +533,33 @@ $(document).on("keydown", function(event) {
         $("#click_through_overlay").removeClass("show");
         $("#btn_click_through").focus();
     }
+    // Also close Summernote modals on Escape
+    if (event.key === "Escape") {
+        $(".note-modal").hide();
+        $(".note-modal-backdrop").hide();
+    }
 });
+
+// Fix Summernote modal close buttons
+$(document).on("click", ".note-modal .close, .note-modal .note-modal-footer .note-btn:not(.note-btn-primary)", function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    $(this).closest(".note-modal").hide();
+    $(".note-modal-backdrop").hide();
+});
+
+// Fix clicking outside modal to close it
+$(document).on("click", ".note-modal-backdrop", function(event) {
+    event.preventDefault();
+    $(".note-modal").hide();
+    $(this).hide();
+});
+
+// Ensure modals are hidden on page load
+setTimeout(function() {
+    $(".note-modal").hide();
+    $(".note-modal-backdrop").hide();
+}, 500);
 
 } catch(e) {
     var s_err = String(e.name) + "\nmessage:" + String(e.message);
