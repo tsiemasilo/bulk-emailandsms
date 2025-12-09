@@ -165,6 +165,10 @@ body {
   display: none !important;
 }
 
+.toast.hidden {
+  display: none !important;
+}
+
 .checkbox-wrapper {
   flex-direction: row;
   align-items: center;
@@ -235,18 +239,28 @@ body {
 .toast {
   position: fixed;
   bottom: 1.5rem;
-  right: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
   padding: 1rem 1.5rem;
-  background: #ef4444;
-  color: var(--white);
+  background: #1f2937;
+  color: #ffffff;
   border-radius: 8px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-  z-index: 1000;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 9999;
   animation: slideIn 0.3s ease-out;
+  border-left: 4px solid #ef4444;
+  min-width: 280px;
+  text-align: center;
 }
 
 .toast.success {
-  background: #22c55e;
+  background: #1f2937;
+  border-left-color: #22c55e;
+}
+
+.toast.error {
+  background: #1f2937;
+  border-left-color: #ef4444;
 }
 
 .toast-content {
@@ -257,21 +271,22 @@ body {
 
 .toast-title {
   font-weight: 600;
-  font-size: 0.875rem;
+  font-size: 0.9375rem;
+  color: #ffffff;
 }
 
 .toast-message {
-  font-size: 0.8125rem;
-  opacity: 0.9;
+  font-size: 0.875rem;
+  color: #e5e7eb;
 }
 
 @keyframes slideIn {
   from {
-    transform: translateX(100%);
+    transform: translateX(-50%) translateY(20px);
     opacity: 0;
   }
   to {
-    transform: translateX(0);
+    transform: translateX(-50%) translateY(0);
     opacity: 1;
   }
 }
