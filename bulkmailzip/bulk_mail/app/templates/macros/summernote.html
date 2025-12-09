@@ -6,17 +6,6 @@
 {% endif %}
 <link rel="stylesheet" href="{{ url_for("static", filename=static_prefix+"js/rte/summernote" + version + ".css") }}">
 <script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/rte/summernote" + version + ".js") }}"></script>
-<style>
-.note-modal.note-modal-help,
-.note-modal[aria-label*="Help"],
-.note-help-dialog,
-.modal-dialog.note-help {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
-}
-</style>
 <script type="text/javascript">
 $(document).ready(function () {
 // https://summernote.org/deep-dive/
@@ -35,19 +24,8 @@ $("#{{ s_id }}").summernote({
       ["view", ["fullscreen", "codeview"]]
     ],
     fontNames: ['CaviarDreams', 'Arial', 'Arial Black', 'Helvetica'],
-    fontNamesIgnoreCheck: ['CaviarDreams'],
-    callbacks: {
-        onInit: function() {
-            $(".note-modal").hide();
-            $(".note-modal-backdrop").hide();
-            $('[data-name="help"]').remove();
-        }
-    }
+    fontNamesIgnoreCheck: ['CaviarDreams']
  });// end of summernote init
- 
- // Immediately hide any help dialogs that might appear
- $(".note-modal").hide();
- $(".note-modal-backdrop").hide();
 });// end of document ready
 </script>
 {%- endmacro %}
