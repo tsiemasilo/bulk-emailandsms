@@ -1185,26 +1185,51 @@ form {
 }
 
 /* =============================================
-   ALERTS
+   ALERTS / TOAST NOTIFICATIONS
    ============================================= */
 
 #div_alert {
   position: fixed;
-  bottom: 20px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--accent-color);
-  color: white;
-  padding: 1rem 2rem;
-  border-radius: 4px;
-  z-index: 1000;
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  z-index: 9999;
   display: none;
-  max-width: 80%;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  max-width: 90%;
+  min-width: 280px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  text-align: center;
+  animation: toastSlideIn 0.3s ease-out;
+  border-left: 4px solid #22c55e;
 }
 
 #div_alert.warning {
-  background-color: #e53e3e;
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  border-left-color: #ef4444;
+}
+
+#div_alert.success {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+  border-left-color: #22c55e;
+}
+
+@keyframes toastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 }
 
 /* =============================================
