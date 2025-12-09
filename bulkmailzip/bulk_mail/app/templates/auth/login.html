@@ -80,6 +80,33 @@ document.addEventListener('DOMContentLoaded', function() {
             eyeOffIcon.classList.toggle('hidden');
         });
     }
+
+    function showToast(message, type) {
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        
+        toast.className = 'toast ' + (type || 'info');
+        toastTitle.textContent = type === 'error' ? 'Error' : 'Notice';
+        toastMessage.textContent = message;
+        toast.classList.remove('hidden');
+        
+        setTimeout(function() {
+            toast.classList.add('hidden');
+        }, 4000);
+    }
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    var flashMsg = "{{ messages[-1] }}";
+    if (flashMsg.length > 0) {
+        var msgType = flashMsg.toLowerCase().includes('invalid') ? 'error' : 'info';
+        setTimeout(function() {
+            showToast(flashMsg, msgType);
+        }, 300);
+    }
+    {% endif %}
+    {% endwith %}
 });
 </script>
 {% endblock %}
