@@ -9,6 +9,11 @@
 <script type="text/javascript">
 $(document).ready(function () {
 // https://summernote.org/deep-dive/
+// Override default modules to exclude helpDialog
+if ($.summernote && $.summernote.options && $.summernote.options.modules) {
+    delete $.summernote.options.modules.helpDialog;
+}
+
 $("#{{ s_id }}").summernote({
     dialogsInBody: true,
     tabsize: 2,
@@ -24,7 +29,8 @@ $("#{{ s_id }}").summernote({
       ["view", ["fullscreen", "codeview"]]
     ],
     fontNames: ['CaviarDreams', 'Arial', 'Arial Black', 'Helvetica'],
-    fontNamesIgnoreCheck: ['CaviarDreams']
+    fontNamesIgnoreCheck: ['CaviarDreams'],
+    shortcuts: false
  });// end of summernote init
 });// end of document ready
 </script>
