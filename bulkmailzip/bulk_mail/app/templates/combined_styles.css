@@ -1424,11 +1424,11 @@ border-color: var(--border-color)
 
 #toast-container {
 position: fixed;
-top: 100px;
+bottom: 24px;
 right: 24px;
 z-index: 10000;
 display: flex;
-flex-direction: column;
+flex-direction: column-reverse;
 gap: 12px;
 max-width: 420px;
 width: calc(100vw - 48px);
