@@ -155,7 +155,12 @@
 
 /* Add Click-Through button - left aligned */
 .click-through-cell {
-    text-align: left;
+    text-align: left !important;
+    padding-left: 0 !important;
+}
+
+#tbl_email .click-through-cell {
+    text-align: left !important;
 }
 
 #btn_click_through {
@@ -172,7 +177,8 @@
     font-weight: 500;
     cursor: pointer;
     transition: all 0.15s ease;
-    margin-left: 0;
+    margin-left: 0 !important;
+    float: left;
 }
 
 #btn_click_through:hover {
