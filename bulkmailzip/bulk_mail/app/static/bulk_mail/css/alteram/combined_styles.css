@@ -1199,6 +1199,15 @@ form {
   max-width: 420px;
   width: calc(100vw - 48px);
   pointer-events: none;
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+#toast-container:empty {
+  display: none;
 }
 
 .toast {
