@@ -400,8 +400,8 @@
     stroke-width: 2;
 }
 
-/* Toast notification styling */
-.toast-container {
+/* Custom notification styling (using bm-notify to avoid Bootstrap toast conflicts) */
+.bm-notify-container {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -412,7 +412,7 @@
     pointer-events: none;
 }
 
-.toast {
+.bm-notify {
     display: flex;
     align-items: center;
     gap: 12px;
@@ -424,62 +424,62 @@
     min-width: 300px;
     max-width: 450px;
     pointer-events: auto;
-    animation: toast-slide-in 0.15s ease-out;
+    animation: bm-notify-slide-in 0.15s ease-out;
 }
 
-.toast.toast-error {
+.bm-notify.bm-notify-error {
     border-left-color: #ef4444;
 }
 
-.toast.toast-success {
+.bm-notify.bm-notify-success {
     border-left-color: #22c55e;
 }
 
-.toast.toast-warning {
+.bm-notify.bm-notify-warning {
     border-left-color: #f97316;
 }
 
-.toast-icon {
+.bm-notify-icon {
     flex-shrink: 0;
     width: 24px;
     height: 24px;
 }
 
-.toast-icon svg {
+.bm-notify-icon svg {
     width: 24px;
     height: 24px;
     stroke-width: 2;
 }
 
-.toast-warning .toast-icon svg {
+.bm-notify-warning .bm-notify-icon svg {
     stroke: #f97316;
 }
 
-.toast-error .toast-icon svg {
+.bm-notify-error .bm-notify-icon svg {
     stroke: #ef4444;
 }
 
-.toast-success .toast-icon svg {
+.bm-notify-success .bm-notify-icon svg {
     stroke: #22c55e;
 }
 
-.toast-content {
+.bm-notify-content {
     flex: 1;
 }
 
-.toast-title {
+.bm-notify-title {
     font-weight: 600;
     font-size: 0.9rem;
     color: #1f2937;
     margin-bottom: 2px;
 }
 
-.toast-message {
+.bm-notify-message {
     font-size: 0.85rem;
     color: #6b7280;
 }
 
-.toast-close {
+.bm-notify-close {
     flex-shrink: 0;
     background: none;
     border: none;
@@ -489,16 +489,16 @@
     transition: color 0.15s ease;
 }
 
-.toast-close:hover {
+.bm-notify-close:hover {
     color: #6b7280;
 }
 
-.toast-close svg {
+.bm-notify-close svg {
     width: 18px;
     height: 18px;
 }
 
-@keyframes toast-slide-in {
+@keyframes bm-notify-slide-in {
     from {
         transform: translateX(50px);
         opacity: 0;
@@ -509,7 +509,7 @@
     }
 }
 
-@keyframes toast-slide-out {
+@keyframes bm-notify-slide-out {
     from {
         transform: translateX(0);
         opacity: 1;
@@ -520,8 +520,8 @@
     }
 }
 
-.toast.hiding {
-    animation: toast-slide-out 0.3s ease-in forwards;
+.bm-notify.hiding {
+    animation: bm-notify-slide-out 0.3s ease-in forwards;
 }
 </style>
 {% from "macros/summernote.html" import summernote_head with context %}
@@ -573,8 +573,8 @@
 
 </div>
 
-<!-- Toast notification container -->
-<div class="toast-container" id="toast_container"></div>
+<!-- Notification container -->
+<div class="bm-notify-container" id="notify_container"></div>
 
 <!-- Click-through overlay -->
 <div class="click-through-overlay" id="click_through_overlay"></div>
@@ -599,8 +599,8 @@
 <div>Hello world...</div>
 </div>
 <script type="text/javascript">
-// Toast notification function
-function showToast(message, type, title) {
+// Notification function (using bm-notify to avoid Bootstrap toast conflicts)
+function showNotify(message, type, title) {
     type = type || 'warning';
     title = title || (type === 'error' ? 'Error' : type === 'success' ? 'Success' : 'Notice');
     
@@ -613,31 +613,31 @@ function showToast(message, type, title) {
         iconSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>';
     }
     
-    var toastHtml = '<div class="toast toast-' + type + '">' +
-        '<div class="toast-icon">' + iconSvg + '</div>' +
-        '<div class="toast-content">' +
-            '<div class="toast-title">' + title + '</div>' +
-            '<div class="toast-message">' + message + '</div>' +
+    var notifyHtml = '<div class="bm-notify bm-notify-' + type + '">' +
+        '<div class="bm-notify-icon">' + iconSvg + '</div>' +
+        '<div class="bm-notify-content">' +
+            '<div class="bm-notify-title">' + title + '</div>' +
+            '<div class="bm-notify-message">' + message + '</div>' +
         '</div>' +
-        '<button class="toast-close" onclick="closeToast(this)">' +
+        '<button class="bm-notify-close" onclick="closeNotify(this)">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>' +
         '</button>' +
     '</div>';
     
-    var $toast = $(toastHtml);
-    $('#toast_container').append($toast);
+    var $notify = $(notifyHtml);
+    $('#notify_container').append($notify);
     
-    // Auto-dismiss after 30 seconds
+    // Auto-dismiss after 10 seconds
     setTimeout(function() {
-        closeToast($toast.find('.toast-close')[0]);
-    }, 30000);
+        closeNotify($notify.find('.bm-notify-close')[0]);
+    }, 10000);
 }
 
-function closeToast(button) {
-    var $toast = $(button).closest('.toast');
-    $toast.addClass('hiding');
+function closeNotify(button) {
+    var $notify = $(button).closest('.bm-notify');
+    $notify.addClass('hiding');
     setTimeout(function() {
-        $toast.remove();
+        $notify.remove();
     }, 300);
 }
 
@@ -688,7 +688,7 @@ $("#btn_insert_click_through").click( function(event) {
     var s_url = String($("#txt_click_url").val()).trim();
     
     if (s_text === "" || s_url === "" || s_url === "https://") {
-        showToast("Please enter both visible text and destination URL.", "warning", "Missing Information");
+        showNotify("Please enter both visible text and destination URL.", "warning", "Missing Information");
         return;
     }
     
