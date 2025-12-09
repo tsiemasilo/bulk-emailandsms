@@ -2,7 +2,198 @@
 {% block head_extra %}
 <style>
 .label {
-font-weight: bold;
+    font-weight: bold;
+}
+
+/* Database content row styling */
+.database-content-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#sel_tag {
+    max-width: 200px;
+    min-width: 150px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    background-color: white;
+}
+
+#btn_insert_tag {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    height: 36px;
+    padding: 0 0.75rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+#btn_insert_tag:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Click-through popup styling */
+#div_click_through {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 10000 !important;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    padding: 1.5rem;
+    min-width: 350px;
+    max-width: 450px;
+}
+
+#div_click_through ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem 0;
+}
+
+#div_click_through ul li {
+    margin-bottom: 1rem;
+}
+
+#div_click_through ul li:last-child {
+    margin-bottom: 0;
+}
+
+#div_click_through ul li label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    color: var(--text-primary);
+    margin-bottom: 0.375rem;
+}
+
+#div_click_through ul li input {
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease;
+}
+
+#div_click_through ul li input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+}
+
+.click-through-buttons {
+    display: flex;
+    gap: 0.75rem;
+    justify-content: flex-end;
+}
+
+#btn_insert_click_through,
+#btn_cancel_click_through {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+#btn_insert_click_through {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+}
+
+#btn_insert_click_through:hover {
+    background-color: var(--accent-hover);
+}
+
+#btn_cancel_click_through {
+    background-color: white;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+}
+
+#btn_cancel_click_through:hover {
+    background-color: #f3f4f6;
+    border-color: var(--border-light);
+}
+
+#btn_insert_click_through img,
+#btn_cancel_click_through img {
+    width: 16px;
+    height: 16px;
+}
+
+/* Click-through overlay */
+.click-through-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    z-index: 9999;
+}
+
+.click-through-overlay.show {
+    display: block;
+}
+
+/* Add Click-Through button styling */
+#btn_click_through {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.375rem;
+    padding: 0.5rem 1rem;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+#btn_click_through:hover {
+    background-color: var(--accent-hover);
+}
+
+#btn_click_through img {
+    width: 16px;
+    height: 16px;
+    filter: brightness(0) invert(1);
+}
+
+/* Popup header */
+.popup-header {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--border-color);
 }
 </style>
 {% from "macros/summernote.html" import summernote_head with context %}
@@ -27,38 +218,55 @@ font-weight: bold;
 <th>{{ form.txt_subject.label }}</th><td>{{ form.txt_subject }}</td>
 </tr>
 <tr>
-<th><label for="sel_tag">Database content</label></th><td><select id="sel_tag">{% for tag in tags %}
-<option value="||{{ tag }}||">{{ tag }}</option>
-{% endfor %}</select><button type="button" id="btn_insert_tag" value="+" aria-label="insert content">+</button></td>
+<th><label for="sel_tag">Database content</label></th>
+<td>
+    <div class="database-content-row">
+        <select id="sel_tag">{% for tag in tags %}
+        <option value="||{{ tag }}||">{{ tag }}</option>
+        {% endfor %}</select>
+        <button type="button" id="btn_insert_tag" value="+" aria-label="Insert selected tag">Insert</button>
+    </div>
+</td>
 </tr>
 <tr>
-<th>Add click-through link</th><td style="position: relative;"><button type="button" id="btn_click_through" value="Add Click-Through">{{ icons.add_svg(s_label="Add Click-Through") }}Add Click-Through</button>
-<div style="display: none; position: absolute; top:30px; left: 50px; backdrop-filter: blur(10px);" id="div_click_through">
-<ul>
-<li><label for="txt_click_text">Visible text</label><input type="text" id="txt_click_text" value=""></li>
-<li><label for="txt_click_url">Destination URL</label><input type="url" id="txt_click_url" value=""></li>
-</ul>
-<button type="button" id="btn_insert_click_through" value="Insert click-through">{{ icons.save_svg(s_label="Insert Click-through") }} Insert Click-through</button><button type="button" id="btn_cancel_click_through" value="Cancel">{{ icons.delete_svg(s_label="Cancel") }} Cancel</button>
-</div>
+<th>Add click-through link</th>
+<td>
+    <button type="button" id="btn_click_through" value="Add Click-Through">{{ icons.add_svg(s_label="Add Click-Through") }} Add Click-Through</button>
 </td>
 </tr>
 <tr style="vertical-align: top;">
 <th>{{ form.txt_body.label }}</th>
 <td>{{ form.txt_body }}</td>
 </tr>
-</table><!-- end of tbl_email -->
-</div><!-- end of div.table-container -->
+</table>
+</div>
 <button type="submit" form="frm_email" name="btn_save_email" id="btn_save_email" value="Save E-mail Template">{{ icons.save_svg(s_label="Save E-mail Template") }} Save E-mail Template</button>
 </form>
 
-</div><!-- end of div.content -->
+</div>
+
+<!-- Click-through overlay -->
+<div class="click-through-overlay" id="click_through_overlay"></div>
+
+<!-- Click-through popup -->
+<div style="display: none;" id="div_click_through">
+    <div class="popup-header">Add Click-Through Link</div>
+    <ul>
+        <li><label for="txt_click_text">Visible text</label><input type="text" id="txt_click_text" value="" placeholder="Enter the text users will see"></li>
+        <li><label for="txt_click_url">Destination URL</label><input type="url" id="txt_click_url" value="" placeholder="https://example.com"></li>
+    </ul>
+    <div class="click-through-buttons">
+        <button type="button" id="btn_cancel_click_through" value="Cancel">Cancel</button>
+        <button type="button" id="btn_insert_click_through" value="Insert click-through">Insert Link</button>
+    </div>
+</div>
+
 {% from "macros/dialog.html" import dlg_prep with context %}
 {{ dlg_prep(["dlg_email"]) }}
-{# dlg divs below #}
 <div id="dlg_email" aria-labeledby="spn_email">
 <span id="spn_email">E-Mail Template Details</span><br>
 <div>Hello world...</div>
-</div><!-- end of dlg_email -->
+</div>
 <script type="text/javascript">
 $(document).ready( function() {
 
@@ -68,45 +276,72 @@ var s_dlg_email = $("#dlg_email").html();
 
 $("#btn_insert_tag").click( function(event) {
     event.preventDefault();
+    event.stopPropagation();
     var s_tag = ($("#sel_tag").prop("selectedIndex")>=0) ? String($("#sel_tag").val()) : $($("#sel_tag").children("option")[0]).attr("value");
     $("#txt_body").summernote("editor.insertText", s_tag);
     $("#txt_body").summernote("focus");
-});// end of btn_insert_tag click event
+});
 
 $("#btn_click_through").click( function(event) {
     event.preventDefault();
-    $("#txt_click_text").val(""); $("#txt_click_url").val("https://");
+    event.stopPropagation();
+    $("#txt_click_text").val("");
+    $("#txt_click_url").val("https://");
+    $("#click_through_overlay").addClass("show");
     $("#div_click_through").show();
-    $("#txt_click_text").focus();
-});// end of btn_click_through click event
+    setTimeout(function() {
+        $("#txt_click_text").focus();
+    }, 100);
+});
 
 $("#btn_cancel_click_through").click( function(event) {
     event.preventDefault();
+    event.stopPropagation();
     $("#div_click_through").hide();
+    $("#click_through_overlay").removeClass("show");
     $("#btn_click_through").focus();
-});// end of btn_cancel_click_through click event
+});
+
+$("#click_through_overlay").click( function(event) {
+    event.preventDefault();
+    $("#div_click_through").hide();
+    $("#click_through_overlay").removeClass("show");
+});
 
 $("#btn_insert_click_through").click( function(event) {
     event.preventDefault();
-    var s_text = String($("#txt_click_text").val());
-    var s_url = String($("#txt_click_url").val());
+    event.stopPropagation();
+    var s_text = String($("#txt_click_text").val()).trim();
+    var s_url = String($("#txt_click_url").val()).trim();
+    
+    if (s_text === "" || s_url === "" || s_url === "https://") {
+        alert("Please enter both visible text and destination URL.");
+        return;
+    }
+    
     $("#txt_body").summernote("createLink", {text: s_text, url: s_url, isNewWindow: true, title: "||##redirect##||"});
     $("#div_click_through").hide();
-    $("#txt_click_text").val(""); $("#txt_click_url").val("");
-    $("#txt_body").focus();
-});// end of btn_insert_click through click event
+    $("#click_through_overlay").removeClass("show");
+    $("#txt_click_text").val("");
+    $("#txt_click_url").val("");
+    $("#txt_body").summernote("focus");
+});
 
-window.setTimeout( function() {
-    var s_nada = ""; //alert("hello world");
-}, 300);
-var s = "nada"; // do_alert("hello world");
+// Handle Escape key to close popup
+$(document).on("keydown", function(event) {
+    if (event.key === "Escape" && $("#div_click_through").is(":visible")) {
+        $("#div_click_through").hide();
+        $("#click_through_overlay").removeClass("show");
+        $("#btn_click_through").focus();
+    }
+});
 
 } catch(e) {
     var s_err = String(e.name) + "\nmessage:" + String(e.message);
     s_err = (typeof(e.lineNumber)!="undefined") ? s_err + "\nline:" + String(e.lineNumber) : s_err;
-    alert("Error! " + s_err);
-}//end of catch
+    console.error("Error! " + s_err);
+}
 
-});// end of secondary document ready
+});
 </script>
 {% endblock %}
