@@ -259,9 +259,8 @@ body::before {
 
 .toast {
   position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 1.5rem;
+  right: 1.5rem;
   padding: 1rem 1.5rem;
   background: #1f2937;
   color: #ffffff;
@@ -269,14 +268,14 @@ body::before {
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: 9999;
   animation: slideIn 0.3s ease-out;
-  border-left: 4px solid #ef4444;
+  border-left: 4px solid var(--primary);
   min-width: 280px;
-  text-align: center;
+  text-align: left;
 }
 
 .toast.success {
   background: #1f2937;
-  border-left-color: #22c55e;
+  border-left-color: var(--primary);
 }
 
 .toast.error {
@@ -303,11 +302,11 @@ body::before {
 
 @keyframes slideIn {
   from {
-    transform: translateX(-50%) translateY(20px);
+    transform: translateX(20px);
     opacity: 0;
   }
   to {
-    transform: translateX(-50%) translateY(0);
+    transform: translateX(0);
     opacity: 1;
   }
 }
