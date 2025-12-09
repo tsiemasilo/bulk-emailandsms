@@ -627,10 +627,10 @@ function showToast(message, type, title) {
     var $toast = $(toastHtml);
     $('#toast_container').append($toast);
     
-    // Auto-dismiss after 15 seconds
+    // Auto-dismiss after 30 seconds
     setTimeout(function() {
         closeToast($toast.find('.toast-close')[0]);
-    }, 15000);
+    }, 30000);
 }
 
 function closeToast(button) {
