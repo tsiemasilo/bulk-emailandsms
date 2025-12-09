@@ -344,3 +344,5 @@ additional:
 ---
 2025-12-09 13:46:53 - bulk_mail/auth/login: roger@spacequest.com logged in
 ---
+2025-12-09 13:48:38 - bulk_mail/auth/login: roger@spacequest.com logged in
+---

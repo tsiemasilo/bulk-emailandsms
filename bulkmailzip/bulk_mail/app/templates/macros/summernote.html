@@ -6,22 +6,6 @@
 {% endif %}
 <link rel="stylesheet" href="{{ url_for("static", filename=static_prefix+"js/rte/summernote" + version + ".css") }}">
 <script type="text/javascript" src="{{ url_for("static", filename=static_prefix+"js/rte/summernote" + version + ".js") }}"></script>
-<style>
-/* Hide all Summernote modals by default until user interaction */
-.note-modal {
-    display: none !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-}
-.note-modal.note-modal-show {
-    display: flex !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-}
-.note-modal-backdrop {
-    display: none !important;
-}
-</style>
 <script type="text/javascript">
 $(document).ready(function () {
 // https://summernote.org/deep-dive/
@@ -42,26 +26,6 @@ $("#{{ s_id }}").summernote({
     fontNames: ['CaviarDreams', 'Arial', 'Arial Black', 'Helvetica'],
     fontNamesIgnoreCheck: ['CaviarDreams']
  });// end of summernote init
-
-// Override Summernote's modal show method to use our CSS class
-var originalShow = $.fn.modal;
-$(document).on('show.bs.modal', '.note-modal', function() {
-    $(this).addClass('note-modal-show');
-});
-$(document).on('hide.bs.modal hidden.bs.modal', '.note-modal', function() {
-    $(this).removeClass('note-modal-show');
-});
-
-// Ensure all modals are hidden on page load
-setTimeout(function() {
-    $('.note-modal').removeClass('note-modal-show').css({
-        'display': 'none',
-        'opacity': '0',
-        'visibility': 'hidden'
-    });
-    $('.note-modal-backdrop').hide();
-}, 100);
-
 });// end of document ready
 </script>
 {%- endmacro %}

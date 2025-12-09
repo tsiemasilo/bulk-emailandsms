@@ -199,8 +199,8 @@
    SUMMERNOTE EDITOR FIXES
    ============================================= */
 
-/* Fix Summernote modal dialogs */
-.note-modal {
+/* Fix Summernote modal dialogs - only style when open */
+.note-modal.open, .note-modal[style*="display: block"] {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
