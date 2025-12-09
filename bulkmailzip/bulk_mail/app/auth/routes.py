@@ -24,7 +24,10 @@ def login():
                 login_user(o_user, remember=bl_remember)
                 write_log(f"{s_user_id} logged in")
                 flash("logged in")
-                resp = redirect(url_for("main.index"))# if o_user.bl_admin==True else redirect(url_for("main.campaigns"))
+                if o_user.bl_admin:
+                    resp = redirect(url_for("main.index"))
+                else:
+                    resp = redirect(url_for("main.customers", i_company_id=o_user.i_company_id))
                 if bl_remember:
                     resp.set_cookie("cv_db_user", s_user_id, max_age=604800) # expires after 7 days
                 else:

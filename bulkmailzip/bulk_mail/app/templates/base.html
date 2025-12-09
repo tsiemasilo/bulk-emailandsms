@@ -103,7 +103,9 @@ $nav.find("> li > ul > li > a").css({
 <nav>
 <ul class="nav slimmenu" role="navigation" id="ul_navigation">
 {% if current_user.id %}
+{% if current_user.bl_admin %}
 <li><a href="{{ url_for("main.index") }}">Landing page</a></li>
+{% endif %}
 {% if current_user.bl_admin %}
 <li><a href="{{ url_for("main.id_types") }}">I.D. Types</a></li>
 <li>Company activities<ul class="slimmenu">
